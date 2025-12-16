@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  postgresdbserviclick:
+    image: "postgres:15-alpine"
+    container_name: postgresdb_serviclick_container
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  serviclick:
+    build: .
+    container_name: springboot_serviclick_container
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresdbserviclick
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresdbserviclick:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+
+volumes:
+  postgres_data:

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiClicks - Servicios</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="listadoServicios.html">Buscar Servicios</a>
+                <a href="#" onclick="showBackendAlert()">Publicar Servicio</a>
+            </div>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn-primary">Iniciar Sesión</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Resultados de búsqueda</h2>
+        <div class="filters">
+            <select style="padding: 0.5rem;">
+                <option>Todas las categorías</option>
+                <option>Hogar</option>
+                <option>Tecnología</option>
+            </select>
+            <select style="padding: 0.5rem;">
+                <option>Ordenar por precio</option>
+                <option>Mejor valorados</option>
+            </select>
+        </div>
+
+        <div class="services-grid">
+            <a href="detalleServicio.html" class="service-card">
+                <div class="card-img"><i class="fas fa-tools fa-3x"></i></div>
+                <div class="card-body">
+                    <div class="user-info">
+                        <div class="user-avatar">JP</div>
+                        <span>Juan Pérez</span>
+                    </div>
+                    <div class="service-title">Fontanería urgente 24h</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i> 4.8 <span style="color: #666">(45 opiniones)</span>
+                    </div>
+                    <div class="price">
+                        35€ / hora
+                        <span class="badge">Hogar</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="detalleServicio.html" class="service-card">
+                <div class="card-img"><i class="fas fa-desktop fa-3x"></i></div>
+                <div class="card-body">
+                    <div class="user-info">
+                        <div class="user-avatar">MG</div>
+                        <span>María García</span>
+                    </div>
+                    <div class="service-title">Reparación de Ordenadores</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i> 4.5 <span style="color: #666">(12 opiniones)</span>
+                    </div>
+                    <div class="price">
+                        20€ / hora
+                        <span class="badge">Informática</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ServiClicks</p>
+    </footer>
+    <script src="main.js"></script>
+</body>
+</html>
