@@ -286,3 +286,56 @@ footer {
 select{
     padding: 0.5rem;
 }
+
+/* Estilo para el Avatar de usuario en el menú */
+.user-account-badge {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary); /* Azul */
+    color: var(--white);
+    border-radius: 50%; /* Esto lo hace redondo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border: 2px solid #e5e7eb;
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-account-badge:hover {
+    background-color: var(--secondary);
+    transform: scale(1.05);
+}
+
+/* Tooltip simple para que al pasar el ratón diga "Cerrar Sesión" */
+.user-account-badge:hover::after {
+    content: "Ajustes";
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background: #333;
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* Botón de peligro (Rojo) */
+.btn-danger {
+    background-color: #ef4444;
+    color: white;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiJobs - Mi Perfil</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiJobs</a>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="listadoServicios.html">Buscar Servicios</a>
+                <a href="publicar.html">Publicar Servicio</a>
+            </div>
+            <div class="auth-buttons">
+                </div>
+        </nav>
+    </header>
+
+    <main>
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h1 style="margin-bottom: 2rem;">Ajustes de Cuenta</h1>
+
+            <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem;">
+                    <div style="width: 80px; height: 80px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <h2 style="margin-bottom: 0.2rem;">Mi Cuenta</h2>
+                        <p style="color: var(--text-gray);">Gestiona tus datos personales y seguridad.</p>
+                    </div>
+                </div>
+
+                <form onsubmit="guardarPerfil(event)">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" value="Usuario de Prueba" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="tel" value="+34 600 000 000">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" value="usuario@ejemplo.com" disabled style="background-color: #f3f4f6; cursor: not-allowed;">
+                        <small style="color: #6b7280;">El correo no se puede cambiar.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nueva Contraseña (Dejar en blanco para mantener)</label>
+                        <input type="password" placeholder="********">
+                    </div>
+
+                    <div style="text-align: right; margin-top: 1.5rem;">
+                        <button type="submit" class="btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+
+            <div style="background: #fef2f2; padding: 1.5rem; border-radius: 12px; border: 1px solid #fee2e2;">
+                <h3 style="color: #991b1b; margin-bottom: 0.5rem;">Zona de Sesión</h3>
+                <p style="color: #b91c1c; margin-bottom: 1rem; font-size: 0.9rem;">
+                    Si cierras sesión tendrás que volver a introducir tus credenciales para acceder.
+                </p>
+                <button onclick="cerrarSesion()" class="btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ServClicks</p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
