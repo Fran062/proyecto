@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ServiJobs - Registro</title>
+    <title>ServiClicks - Registro</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -11,7 +11,7 @@
 <body>
     <header>
         <nav>
-            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiJobs</a>
+            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
             <div class="nav-links">
                 <a href="index.html">Inicio</a>
                 <a href="services.html">Buscar Servicios</a>
@@ -38,8 +38,8 @@
                     <label>Tipo de Cuenta</label>
                     <select id="reg-rol" required style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px;">
                         <option value="" disabled selected>Selecciona tu rol...</option>
-                        <option value="CLIENTE">Quiero contratar servicios</option>
-                        <option value="PROFESIONAL">Quiero ofrecer mis servicios</option>
+                        <option  id="tipo-cliente" value="CLIENTE">Quiero contratar servicios</option>
+                        <option id="tipo-cliente" value="PROFESIONAL">Quiero ofrecer mis servicios</option>
                     </select>
                 </div>
 
