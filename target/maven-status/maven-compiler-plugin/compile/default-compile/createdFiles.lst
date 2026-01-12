@@ -1,0 +1,8 @@
+edu\serviClick\proyecto\controladores\UsuarioControlador.class
+edu\serviClick\proyecto\servicios\UsuarioServicio.class
+edu\serviClick\proyecto\config\AplicacionConfig.class
+edu\serviClick\proyecto\enums\Rol.class
+edu\serviClick\proyecto\config\CorsConfig.class
+edu\serviClick\proyecto\entidades\Usuario.class
+edu\serviClick\proyecto\repositorios\UsuariosRepositorio.class
+edu\serviClick\proyecto\ProyectoAplicacion.class

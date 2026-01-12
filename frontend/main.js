@@ -1,12 +1,10 @@
-/* --- main.js ACTUALIZADO --- */
-
 const CLAVE_SESION = 'usuarioLogueado';
 
 document.addEventListener('DOMContentLoaded', () => {
     actualizarBotonSesion();
 });
 
-// --- 1. ACTUALIZACIÓN DEL BLOQUEO (HARD WALL) ---
+//1. Actualización del bloqueo
 document.addEventListener('click', (event) => {
     const estoyEnLogin = window.location.href.includes('login.html');
     const estoyEnRegistro = window.location.href.includes('registro.html');
@@ -56,7 +54,6 @@ function handleRegister(event) {
     }
 
     // Simulación de éxito
-    // Aquí podríamos guardar el nombre en localStorage para usarlo en el perfil
     localStorage.setItem('nombreUsuarioTemp', nombre); 
 
     alert("¡Cuenta creada con éxito! Ahora por favor inicia sesión.");
@@ -174,7 +171,7 @@ function enviarCodigo() {
     }, 1500);
 }
 
-// PASO 2: Verificar Código
+//PASO 2: Verificar Código
 function verificarCodigo() {
     const codigoUsuario = document.getElementById('rec-code-input').value;
 
@@ -220,4 +217,79 @@ function reiniciarRecuperacion() {
     document.getElementById('titulo-pagina').innerText = "Recuperar Contraseña";
     document.getElementById('subtitulo-pagina').innerText = "Introduce tu correo para buscar tu cuenta.";
     codigoCorrectoGenerado = null;
+}
+
+// Función para cargar servicios (con o sin búsqueda)
+async function cargarServicios(filtro = "") {
+    try {
+        // Construimos la URL: si hay filtro ponemos ?query=algo, si no, nada
+        let url = '/api/servicios';
+        if (filtro) {
+            url += `?query=${encodeURIComponent(filtro)}`;
+        }
+
+        const response = await fetch(url);
+        
+        if (response.ok) {
+            const servicios = await response.json();
+            mostrarServiciosEnHTML(servicios); // Tu función que pinta las cajitas
+        } else {
+            console.error("Error al buscar servicios");
+        }
+    } catch (error) {
+        console.error("Error de conexión", error);
+    }
+}
+
+// ESCUCHADOR DEL BUSCADOR
+// Esto hace que cada vez que escribas y pulses Enter (o un botón), busque.
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. Cargar todos al principio
+    cargarServicios(); 
+
+    // 2. Configurar el buscador
+    const inputBuscador = document.getElementById('buscador-servicios');
+    const btnBuscar = document.getElementById('btn-buscar'); // Si tienes botón
+
+    if (btnBuscar) {
+        btnBuscar.addEventListener('click', (e) => {
+            e.preventDefault(); // Evita que recargue la página
+            const texto = inputBuscador.value;
+            cargarServicios(texto);
+        });
+    }
+
+    // Opcional: Buscar al pulsar ENTER en el input
+    if (inputBuscador) {
+        inputBuscador.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                cargarServicios(inputBuscador.value);
+            }
+        });
+    }
+});
+
+// Función simple para pintar (adapta esto a tu diseño real)
+function mostrarServiciosEnHTML(servicios) {
+    const contenedor = document.querySelector('.services-grid'); // Tu contenedor
+    contenedor.innerHTML = ''; // Limpiamos lo que hubiera antes
+
+    if (servicios.length === 0) {
+        contenedor.innerHTML = '<p>No se encontraron servicios con esa búsqueda.</p>';
+        return;
+    }
+
+    servicios.forEach(servicio => {
+        // Aquí generas tu HTML de tarjeta
+        const tarjeta = `
+            <div class="service-card">
+                <h3>${servicio.titulo}</h3>
+                <p>${servicio.descripcion}</p>
+                <span class="price">${servicio.precioHora}€/h</span>
+            </div>
+        `;
+        contenedor.innerHTML += tarjeta;
+    });
 }

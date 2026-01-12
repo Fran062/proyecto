@@ -40,9 +40,6 @@ public class Usuario {
     @Column(name = "usr_fecha_alta")
     private Date fechaAlta;
 
-    @Column(name = "usr_foto")
-    private String foto;
-
 
     //Constructor
     public Usuario() {
@@ -77,6 +74,4 @@ public class Usuario {
     public Date getFechaAlta() { return fechaAlta; }
     public void setFechaAlta(Date fechaAlta) { this.fechaAlta = fechaAlta; }
 
-    public String getFoto() { return foto; }
-    public void setFoto(String foto) { this.foto = foto; }
 }
