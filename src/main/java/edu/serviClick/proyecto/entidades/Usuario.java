@@ -2,6 +2,8 @@ package edu.serviClick.proyecto.entidades;
 
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
+
 import edu.serviClick.proyecto.enums.Rol;
 
 @Entity
@@ -10,36 +12,50 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "usr_id") 
+    @Column(name = "usrId") 
     private Long id;
 
-    @Column(name = "usr_nombre_completo", nullable = false, length = 50)
+    @Column(name = "usrNombreCompleto", nullable = false, length = 50)
     private String nombreCompleto;
 
-    @Column(name = "usr_correo", nullable = false, unique = true)
+    @Column(name = "usrCorreo", nullable = false, unique = true)
     private String correo;
 
-    @Column(name = "usr_movil", length = 15)
+    @Column(name = "usrMovil", length = 15)
     private String movil;
 
-    @Column(name = "usr_password", nullable = false)
+    @Column(name = "usrPassword", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "usr_rol", nullable = false)
+    @Column(name = "usrRol", nullable = false)
     private Rol rol;
     
-    @Column(name = "usr_activo")
+    @Column(name = "usrActivo")
     private boolean activo = false;
 
 
-    @Column(name = "usr_token_recuperacion")
+    @Column(name = "usrTokenRecuperacion")
     private String token;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "usr_fecha_alta")
+    @Column(name = "usrFechaAlta")
     private Date fechaAlta;
 
+
+    //Relaciones
+
+    // Un profesional puede publicar muchos servicios
+    @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL)
+    private List<Servicio> serviciosOfrecidos;
+
+    // Un cliente puede hacer muchas contrataciones
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Contratacion> historialContrataciones;
+
+    // INNOVACIÓN: Un usuario puede tener UNA suscripción activa
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private Suscripcion suscripcion;
 
     //Constructor
     public Usuario() {
