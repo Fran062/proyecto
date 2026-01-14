@@ -9,27 +9,27 @@ public class Contratacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="conId")
+    @Column(name = "conId")
     private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="conFechaSolicitud")
+    @Column(name = "conFechaSolicitud")
     private Date fechaSolicitud;
     
-    @Column(name="conEstado")
-    private String estado; // "PENDIENTE", "ACEPTADO", "FINALIZADO"
-
-    @Column(name="conMensajeCliente")
+    @Column(name = "conEstado")
+    private String estado; 
+    
+    @Column(name = "conMensajeCliente")
     private String mensajeCliente;
 
-    // Relación: Quién contrata
+    // Relación con Cliente
     @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @JoinColumn(name = "usrId", nullable = false) 
     private Usuario cliente;
 
-    // Relación: Qué servicio contrata
+    // Relación con Servicio
     @ManyToOne
-    @JoinColumn(name = "servicio_id", nullable = false)
+    @JoinColumn(name = "serId", nullable = false) 
     private Servicio servicio;
 
     public Contratacion() {

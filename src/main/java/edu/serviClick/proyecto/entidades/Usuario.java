@@ -1,10 +1,7 @@
 package edu.serviClick.proyecto.entidades;
 
 import jakarta.persistence.*;
-import java.util.Date;
 import java.util.List;
-
-import edu.serviClick.proyecto.enums.Rol;
 
 @Entity
 @Table(name = "usuarios")
@@ -12,82 +9,54 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "usrId") 
+    @Column(name = "usrId") // <--- EL NOMBRE EN TU BBDD
     private Long id;
 
-    @Column(name = "usrNombreCompleto", nullable = false, length = 50)
+    @Column(name = "usrNombreCompleto", nullable = false)
     private String nombreCompleto;
 
-    @Column(name = "usrCorreo", nullable = false, unique = true)
+    @Column(name = "usrCorreo", unique = true, nullable = false)
     private String correo;
-
-    @Column(name = "usrMovil", length = 15)
-    private String movil;
 
     @Column(name = "usrPassword", nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "usrRol", nullable = false)
-    private Rol rol;
+    @Column(name = "usrRol")
+    private String rol; 
+
+    @Column(name = "usrTelefono")
+    private String telefono;
+
+    @Column(name = "usrUbicacion")
+    private String ubicacion;
+
     
-    @Column(name = "usrActivo")
-    private boolean activo = false;
+    // --- RELACIONES (No llevan @Column, llevan mappedBy) ---
 
-
-    @Column(name = "usrTokenRecuperacion")
-    private String token;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "usrFechaAlta")
-    private Date fechaAlta;
-
-
-    //Relaciones
-
-    // Un profesional puede publicar muchos servicios
     @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL)
     private List<Servicio> serviciosOfrecidos;
 
-    // Un cliente puede hacer muchas contrataciones
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Contratacion> historialContrataciones;
 
-    // INNOVACIÓN: Un usuario puede tener UNA suscripción activa
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Suscripcion suscripcion;
 
-    //Constructor
-    public Usuario() {
-        this.fechaAlta = new Date();
-    }
+    public Usuario() {}
 
-    //Getters y setters
+    // Getters y Setters (Java se queda igual, solo cambia el mapeo arriba)
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public String getNombreCompleto() { return nombreCompleto; }
     public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
-
     public String getCorreo() { return correo; }
     public void setCorreo(String correo) { this.correo = correo; }
-
-    public String getMovil() { return movil; }
-    public void setMovil(String movil) { this.movil = movil; }
-
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-
-    public Rol getRol() { return rol; }
-    public void setRol(Rol rol) { this.rol = rol; }
-
-    public boolean isActivo() { return activo; }
-    public void setActivo(boolean activo) { this.activo = activo; }
-
-    public String getToken() { return token; }
-    public void setToken(String token) { this.token = token; }
-
-    public Date getFechaAlta() { return fechaAlta; }
-    public void setFechaAlta(Date fechaAlta) { this.fechaAlta = fechaAlta; }
-
+    public String getRol() { return rol; }
+    public void setRol(String rol) { this.rol = rol; }
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
+    public String getUbicacion() { return ubicacion; }
+    public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
 }

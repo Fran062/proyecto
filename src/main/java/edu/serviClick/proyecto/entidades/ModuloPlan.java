@@ -3,24 +3,24 @@ package edu.serviClick.proyecto.entidades;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "modulos_plan")
+@Table(name = "modulosplan") // He quitado el guion bajo del nombre de la tabla por si acaso
 public class ModuloPlan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="modId")
+    @Column(name = "modId")
     private Long id;
 
-    @Column(name="modNombre")
+    @Column(name = "modNombre")
     private String nombre;
-    
-    @Column(name="modDescripcion")
+
+    @Column(name = "modDescripcion")
     private String descripcion;
 
-    @Column(name="modPrecioMensual")
+    @Column(name = "modPrecioMensual")
     private Double precioMensual;
 
-    @Column(name="modIcono")
+    @Column(name = "modIcono")
     private String icono;
 
     public ModuloPlan() {}

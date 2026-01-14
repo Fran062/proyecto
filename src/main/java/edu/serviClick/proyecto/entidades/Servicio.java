@@ -8,29 +8,30 @@ public class Servicio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="serId")
+    @Column(name = "serId")
     private Long id;
 
-    @Column(name="serTitulo", nullable = false)
+    @Column(name = "serTitulo", nullable = false)
     private String titulo;
 
-    @Column(name="serDescripcion", columnDefinition = "TEXT")
+    @Column(name = "serDescripcion", columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(name="serPrecioHora")
+    @Column(name = "serPrecioHora")
     private Double precioHora;
-
-    @Column(name="serCategoria")
+    
+    @Column(name = "serCategoria")
     private String categoria;
 
-    // Relación: Un servicio pertenece a un Profesional
+    // Clave foránea apuntando al usuario (profesional)
+    // Asumimos que la columna en la tabla servicios se llama 'usrId'
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usrId", nullable = false) 
     private Usuario profesional;
 
     public Servicio() {}
 
-    // Getters y Setters
+    // Getters y Setters...
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getTitulo() { return titulo; }
