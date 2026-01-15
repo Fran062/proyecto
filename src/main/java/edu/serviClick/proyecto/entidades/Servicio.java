@@ -23,8 +23,6 @@ public class Servicio {
     @Column(name = "serCategoria")
     private String categoria;
 
-    // Clave foránea apuntando al usuario (profesional)
-    // Asumimos que la columna en la tabla servicios se llama 'usrId'
     @ManyToOne
     @JoinColumn(name = "usrId", nullable = false) 
     private Usuario profesional;

@@ -9,7 +9,7 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "usrId") // <--- EL NOMBRE EN TU BBDD
+    @Column(name = "usrId")
     private Long id;
 
     @Column(name = "usrNombreCompleto", nullable = false)
@@ -44,7 +44,7 @@ public class Usuario {
 
     public Usuario() {}
 
-    // Getters y Setters (Java se queda igual, solo cambia el mapeo arriba)
+    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getNombreCompleto() { return nombreCompleto; }

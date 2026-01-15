@@ -27,7 +27,7 @@ public class Suscripcion {
     @Column(name = "susFechaInicio")
     private Date fechaInicio;
 
-    @Column(name = "susPrecioTotalMensual")
+    @Column(name = "suspreciototalmensual")
     private Double precioTotalMensual;
 
     @Column(name = "susActiva")
@@ -94,5 +94,13 @@ public class Suscripcion {
 
     public void setActiva(boolean activa) {
         this.activa = activa;
+    }
+
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
 }

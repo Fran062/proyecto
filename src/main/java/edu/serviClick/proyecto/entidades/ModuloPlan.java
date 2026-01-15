@@ -3,7 +3,7 @@ package edu.serviClick.proyecto.entidades;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "modulosplan") // He quitado el guion bajo del nombre de la tabla por si acaso
+@Table(name = "modulosplan")
 public class ModuloPlan {
 
     @Id
