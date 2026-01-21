@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Finalizar Compra</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .checkout-container {
+            background: white;
+            width: 800px;
+            display: flex;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* SECCIÓN IZQUIERDA: RESUMEN */
+        .summary-panel {
+            background-color: #1e293b;
+            color: white;
+            padding: 40px;
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .plan-name { font-size: 24px; font-weight: bold; margin-bottom: 5px; color: #60a5fa; }
+        .total-label { font-size: 14px; color: #94a3b8; margin-top: 30px; }
+        .total-price { font-size: 40px; font-weight: 800; }
+        .features-mini { margin-top: 20px; font-size: 14px; color: #cbd5e1; line-height: 1.6; }
+
+        /* SECCIÓN DERECHA: FORMULARIO */
+        .payment-panel {
+            padding: 40px;
+            width: 60%;
+        }
+
+        h2 { margin: 0 0 20px 0; color: #334155; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 12px; font-weight: bold; color: #64748b; margin-bottom: 5px; text-transform: uppercase; }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border 0.3s;
+        }
+        input:focus { border-color: #3b82f6; outline: none; }
+
+        .row { display: flex; gap: 15px; }
+        .col { flex: 1; }
+
+        .btn-pay {
+            width: 100%;
+            padding: 15px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        .btn-pay:hover { background-color: #2563eb; }
+
+        .secure-badge {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+    
+    <script>
+        function simularPago(event) {
+            event.preventDefault(); // Evita el envío real
+            const btn = document.querySelector('.btn-pay');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Procesando...';
+            btn.style.backgroundColor = '#4b5563';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert('¡Pago realizado con éxito!\nTu suscripción está activa.');
+                window.location.href = '/'; // Vuelve al inicio gestionado por Spring
+            }, 2000);
+        }
+    </script>
+</head>
+<body>
+
+    <div class="checkout-container">
+        
+        <div class="summary-panel">
+            <p style="margin: 0; color: #94a3b8; text-transform: uppercase; font-size: 12px;">Estás contratando</p>
+            
+            <div class="plan-name" th:text="${planSeleccionado}">Cargando plan...</div>
+            
+            <div class="features-mini">
+                <i class="fa-solid fa-check"></i> Renovación mensual<br>
+                <i class="fa-solid fa-check"></i> Cancela cuando quieras
+            </div>
+
+            <div class="total-label">TOTAL A PAGAR</div>
+            <div class="total-price">
+                <span th:text="${precioSeleccionado}">0.00</span>€
+            </div>
+        </div>
+
+        <div class="payment-panel">
+            <h2>Detalles del Pago</h2>
+            
+            <div style="margin-bottom: 20px; color: #64748b; font-size: 24px;">
+                <i class="fa-brands fa-cc-visa"></i>
+                <i class="fa-brands fa-cc-mastercard"></i>
+                <i class="fa-brands fa-cc-amex"></i>
+            </div>
+
+            <form onsubmit="simularPago(event)"> 
+                <div class="form-group">
+                    <label>Titular de la tarjeta</label>
+                    <input type="text" placeholder="Nombre Apellidos" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Número de tarjeta</label>
+                    <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" required>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Caducidad</label>
+                            <input type="text" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>CVC</label>
+                            <input type="text" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-pay">
+                    <i class="fa-solid fa-lock"></i> Pagar <span th:text="${precioSeleccionado}">0.00</span>€
+                </button>
+
+                <div class="secure-badge">
+                    <i class="fa-solid fa-shield-halved"></i> Pago 100% Seguro con encriptación SSL
+                </div>
+                
+                <div style="text-align: center; margin-top: 10px;">
+                    <a href="/web/planes" style="color: #64748b; text-decoration: none; font-size: 12px;">Cancelar y volver</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

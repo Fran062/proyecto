@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiClicks - Registro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="services.html">Buscar Servicios</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="login-box" style="max-width: 500px;"> <h2 style="text-align: center; margin-bottom: 0.5rem;">Crear Cuenta Nueva</h2>
+            <p style="text-align: center; color: var(--text-gray); margin-bottom: 1.5rem;">Únete a la comunidad de servicios</p>
+            
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="reg-nombre" placeholder="Ej. Ana García" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="reg-email" placeholder="usuario@ejemplo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo de Cuenta</label>
+                    <select id="reg-rol" required style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                        <option value="" disabled selected>Selecciona tu rol...</option>
+                        <option  id="tipo-cliente" value="CLIENTE">Quiero contratar servicios</option>
+                        <option id="tipo-cliente" value="PROFESIONAL">Quiero ofrecer mis servicios</option>
+                    </select>
+                </div>
+
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="reg-pass" placeholder="********" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmar Contraseña</label>
+                        <input type="password" id="reg-pass-confirm" placeholder="********" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Registrarse</button>
+                
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                    ¿Ya tienes cuenta? <a href="login.html" style="color: var(--primary); font-weight: 600;">Inicia Sesión aquí</a>
+                </p>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ServiClicks</p>
+    </footer>
+
+    <script th:src="@{/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiClicks - Detalle del Servicio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="listadoServicios.html">Buscar Servicios</a>
+                <a href="publicar.html">Publicar Servicio</a>
+            </div>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn-primary">Iniciar Sesión</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <a href="listadoServicios.html" class="btn-outline" style="margin-bottom: 1rem; border: none; padding-left: 0;">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+
+        <div class="detail-container">
+            
+            <div class="detail-header">
+                <div style="flex: 1;">
+                    <h1 style="font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.2;">Fontanería urgente 24h y reparaciones generales</h1>
+                    
+                    <div class="user-info" style="font-size: 1.1rem; margin-top: 1rem;">
+                        <div class="user-avatar" style="width: 45px; height: 45px; font-size: 1rem;">JP</div>
+                        <div>
+                            <span style="display: block; font-weight: 600;">Juan Pérez</span>
+                            <span style="font-size: 0.9rem; color: var(--text-gray);">Miembro desde 2021 • Sevilla</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: right; min-width: 150px;">
+                    <div style="font-size: 2.2rem; font-weight: 700; color: var(--primary);">35€<span style="font-size: 1rem; color: var(--text-gray);">/hora</span></div>
+                    <div style="color: var(--accent); margin-top: 5px;">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <span style="color: var(--text-dark); font-weight: 600;">4.8</span>
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--text-gray);">(45 opiniones)</div>
+                </div>
+            </div>
+
+            <div style="background-color: #e2e8f0; height: 300px; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; color: #94a3b8;">
+                <div style="text-align: center;">
+                    <i class="fas fa-image fa-4x"></i>
+                    <p style="margin-top: 1rem;">Foto del trabajo realizado</p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                
+                <div>
+                    <h3 style="margin-bottom: 1rem;">Sobre este servicio</h3>
+                    <p style="margin-bottom: 1rem; color: var(--text-dark);">
+                        ¡Hola! Soy fontanero autónomo con más de 10 años de experiencia en el sector. Ofrezco mis servicios para todo tipo de reparaciones en el hogar y locales comerciales. Garantizo limpieza y rapidez en todos mis trabajos.
+                    </p>
+                    <p style="margin-bottom: 1rem; color: var(--text-dark);">
+                        <strong>Incluye:</strong>
+                    </p>
+                    <ul style="margin-bottom: 2rem; margin-left: 1.5rem; color: var(--text-gray);">
+                        <li>Desatascos de fregaderos y duchas.</li>
+                        <li>Cambio de grifería y sanitarios.</li>
+                        <li>Reparación de fugas de agua.</li>
+                        <li>Instalación de termos eléctricos.</li>
+                        <li>Disponibilidad para urgencias (consultar precio).</li>
+                    </ul>
+
+                    <h3 style="margin-bottom: 1rem; border-top: 1px solid #e5e7eb; padding-top: 2rem;">Opiniones de clientes</h3>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <strong>Ana M.</strong>
+                            <span style="color: var(--accent); font-size: 0.9rem;"><i class="fas fa-star"></i> 5.0</span>
+                        </div>
+                        <p style="font-size: 0.95rem; color: var(--text-gray);">"Juan fue muy puntual y solucionó el problema del grifo en menos de una hora. Muy recomendable."</p>
+                    </div>
+
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <strong>Carlos R.</strong>
+                            <span style="color: var(--accent); font-size: 0.9rem;"><i class="fas fa-star"></i> 4.0</span>
+                        </div>
+                        <p style="font-size: 0.95rem; color: var(--text-gray);">"Buen trabajo, aunque tardó un poco en llegar por el tráfico. El precio es justo."</p>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; position: sticky; top: 100px;">
+                        <h4 style="margin-bottom: 1rem;">¿Te interesa?</h4>
+                        <div style="margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-gray);">
+                            <i class="fas fa-check-circle" style="color: green;"></i> Identidad verificada<br>
+                            <i class="fas fa-check-circle" style="color: green;"></i> Garantía de satisfacción
+                        </div>
+                        
+                        <button class="btn-primary" style="width: 100%; margin-bottom: 0.5rem; text-align: center;" onclick="contactProfessional()">
+                            Solicitar Presupuesto
+                        </button>
+                        <button class="btn-outline" style="width: 100%; text-align: center;" onclick="showBackendAlert()">
+                            <i class="far fa-heart"></i> Guardar en favoritos
+                        </button>
+
+                        <p style="text-align: center; font-size: 0.8rem; color: #9ca3af; margin-top: 1rem;">
+                            No se te cobrará nada hasta que el profesional acepte la solicitud.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ServiClicks</p>
+    </footer>
+
+    <script th:src="@{/main.js}"></script>
+</body>
+</html>

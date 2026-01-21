@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ServiClicks - Inicio</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="index.html" class="logo"
+          ><i class="fas fa-handshake"></i> ServiClicks</a
+        >
+        <div class="nav-links">
+          <a href="index.html">Inicio</a>
+          <a href="listadoServicios.html">Buscar Servicios</a>
+          <a href="publicar.html">Publicar Servicio</a>
+          <a href="/web/planes">Ver Planes</a>
+        </div>
+        <div class="auth-buttons flex-center">
+          <a href="login.html" class="btn-primary"
+            >Iniciar Sesión <i class="fa-solid fa-arrow-right-to-bracket"></i
+          ></a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <div class="hero">
+        <h1>Encuentra al profesional ideal</h1>
+        <p>
+          Desde fontaneros hasta desarrolladores web, todo en un solo lugar.
+        </p>
+        <br />
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="¿Qué servicio buscas? (ej. Limpieza)"
+          />
+          <a href="listadoServicios.html" class="btn-primary">Buscar</a>
+        </div>
+      </div>
+
+      <h3>Categorías Populares</h3>
+      <div class="categories">
+        <a href="listadoServicios.html" class="cat-card">
+          <i class="fas fa-wrench"></i>
+          <h4>Reparaciones</h4>
+        </a>
+        <a href="listadoServicios.html" class="cat-card">
+          <i class="fa-solid fa-hand-sparkles"></i>
+          <h4>Limpieza</h4>
+        </a>
+        <a href="listadoServicios.html" class="cat-card">
+          <i class="fas fa-laptop-code"></i>
+          <h4>Tecnología</h4>
+        </a>
+        <a href="listadoServicios.html" class="cat-card">
+          <i class="fas fa-graduation-cap"></i>
+          <h4>Clases</h4>
+        </a>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 ServiClicks</p>
+    </footer>
+
+    <script th:src="@{/main.js}"></script>
+  </body>
+</html>

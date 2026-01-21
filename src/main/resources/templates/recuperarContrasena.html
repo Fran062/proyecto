@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiClicks - Recuperar Contraseña</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="login-box" style="max-width: 450px;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-lock fa-3x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h2 id="titulo-pagina">Recuperar Contraseña</h2>
+                <p id="subtitulo-pagina" style="color: var(--text-gray);">Introduce tu correo para buscar tu cuenta.</p>
+            </div>
+
+            <form onsubmit="event.preventDefault();">
+                
+                <div id="step-email">
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" id="rec-email" placeholder="usuario@ejemplo.com" required>
+                    </div>
+                    <button onclick="enviarCodigo()" class="btn-primary" style="width: 100%;">Enviar Código</button>
+                </div>
+
+                <div id="step-code" style="display: none;">
+                    <div class="form-group">
+                        <label>Código de seguridad (4 dígitos)</label>
+                        <input type="number" id="rec-code-input" placeholder="Ej. 1234" style="letter-spacing: 5px; font-size: 1.2rem; text-align: center;">
+                        <small style="color: #6b7280; display: block; margin-top: 5px;">Hemos enviado un código a tu correo.</small>
+                    </div>
+                    <button onclick="verificarCodigo()" class="btn-primary" style="width: 100%;">Verificar Código</button>
+                    <button onclick="reiniciarRecuperacion()" class="btn-outline" style="width: 100%; margin-top: 10px; border: none;">Cambiar correo</button>
+                </div>
+
+                <div id="step-password" style="display: none;">
+                    <div class="form-group">
+                        <label>Nueva Contraseña</label>
+                        <input type="password" id="rec-new-pass" placeholder="********">
+                    </div>
+                    <div class="form-group">
+                        <label>Repetir Nueva Contraseña</label>
+                        <input type="password" id="rec-confirm-pass" placeholder="********">
+                    </div>
+                    <button onclick="guardarNuevaPassword()" class="btn-primary" style="width: 100%;">Cambiar Contraseña</button>
+                </div>
+
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <a href="login.html" class="btn-outline" style="border: none; font-size: 0.9rem;">
+                        <i class="fas fa-arrow-left"></i> Volver al Login
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ServiClicks</p>
+    </footer>
+
+    <script th:src="@{/main.js}"></script>
+</body>
+</html>
