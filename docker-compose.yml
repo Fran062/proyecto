@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  # 1. BASE DE DATOS
+  postgresdbserviclick:
+    image: "postgres:15-alpine"
+    container_name: postgresdb_serviclick_container
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # 2. PROYECTO API (BACKEND PURO)
+  serviclick-api:
+    build: ./api_serviclick  # <--- Ruta a la carpeta de tu API
+    container_name: springboot_serviclick_container
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresdbserviclick
+    environment:
+      # Conecta con la BBDD por el nombre del contenedor
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresdbserviclick:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+
+  # 3. PROYECTO WEB (TU FRONTEND/THYMELEAF)
+  serviclick-web:
+    build: ./backend-frontend-serviClick
+    container_name: serviclick_web_container
+    restart: on-failure
+    ports:
+      - "8081:8081" # Exponemos el 8081
+    depends_on:
+      - serviclick-api # Espera a que la API arranque
+    environment:
+      API_URL: http://springboot_serviclick_container:8080/api
+
+volumes:
+  postgres_data:

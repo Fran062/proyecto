@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Planes ServiClick</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 40px;
+        }
+
+        h1 { color: #1e293b; margin-bottom: 10px; }
+        p.subtitle { color: #64748b; margin-bottom: 40px; }
+
+        .pricing-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+        }
+
+        /* DISEÑO DE LA TARJETA */
+        .card {
+            background: white;
+            width: 300px;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+        }
+
+        /* PLAN DESTACADO (CENTRAL) */
+        .card.popular {
+            border: 2px solid #3b82f6;
+            transform: scale(1.05);
+        }
+        
+        .card.popular:hover {
+            transform: scale(1.08) translateY(-10px);
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #3b82f6;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .icon-box {
+            font-size: 40px;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .plan-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 36px;
+            font-weight: 800;
+            color: #0f172a;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .price span { font-size: 16px; color: #94a3b8; font-weight: normal; }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            flex-grow: 1; /* Empuja el botón al fondo */
+        }
+
+        .features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .features li i {
+            color: #10b981; /* Verde check */
+            margin-right: 10px;
+        }
+
+        .btn-select {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #1e293b;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-select:hover { background-color: #3b82f6; }
+        .card.popular .btn-select { background-color: #3b82f6; }
+        .card.popular .btn-select:hover { background-color: #2563eb; }
+
+        .btn-back { margin-top: 50px; color: #64748b; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <h1>Elige tu nivel de tranquilidad</h1>
+    <p class="subtitle">Cancela cuando quieras. Sin compromiso.</p>
+
+    <div class="pricing-container">
+        
+        <div class="card">
+            <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
+            <div class="plan-title">Pack Desplazamiento</div>
+            <div class="price">5.99€<span>/mes</span></div>
+            <ul class="features">
+                <li><i class="fa-solid fa-check"></i> Desplazamiento GRATIS siempre</li>
+                <li><i class="fa-solid fa-check"></i> Atención estándar</li>
+                <li><i class="fa-solid fa-check"></i> Presupuestos sin coste</li>
+            </ul>
+            <a th:href="@{/web/pago(plan='Pack Desplazamiento', precio='5.99')}" class="btn-select">Elegir Plan</a>
+        </div>
+
+        <div class="card popular">
+            <div class="badge">Más Popular</div>
+            <div class="icon-box"><i class="fa-solid fa-couch"></i></div>
+            <div class="plan-title">Pack Tranquilidad</div>
+            <div class="price">12.50€<span>/mes</span></div>
+            <ul class="features">
+                <li><i class="fa-solid fa-check"></i> <strong>Todo lo del Pack Básico</strong></li>
+                <li><i class="fa-solid fa-check"></i> 1h de Mano de Obra al mes</li>
+                <li><i class="fa-solid fa-check"></i> Las horas son acumulables</li>
+                <li><i class="fa-solid fa-check"></i> Prioridad en urgencias</li>
+            </ul>
+            <a th:href="@{/web/pago(plan='Pack Tranquilidad', precio='12.50')}" class="btn-select">Elegir Plan</a>
+        </div>
+
+        <div class="card">
+            <div class="icon-box"><i class="fa-solid fa-crown"></i></div>
+            <div class="plan-title">ServiClick VIP</div>
+            <div class="price">29.99€<span>/mes</span></div>
+            <ul class="features">
+                <li><i class="fa-solid fa-check"></i> Desplazamiento GRATIS</li>
+                <li><i class="fa-solid fa-check"></i> 3h de Mano de Obra al mes</li>
+                <li><i class="fa-solid fa-check"></i> Revisión anual de caldera</li>
+                <li><i class="fa-solid fa-check"></i> Atención en menos de 2h</li>
+            </ul>
+            <a th:href="@{/web/pago(plan='ServiClick VIP', precio='29.99')}" class="btn-select">Elegir Plan</a>
+        </div>
+
+    </div>
+
+    <a href="index.html" class="btn-back">← Volver al Inicio</a>
+
+</body>
+</html>
