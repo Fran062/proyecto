@@ -29,36 +29,8 @@ public class SuscripcionServicio {
         return suscripcionRepositorio.save(suscripcion);
     }
 
-    public Suscripcion crearSuscripcion(Suscripcion suscripcion) throws Exception {
-        
-        //Validar si ya existe
-        Long usuarioId = suscripcion.getUsuario().getId();
-        Suscripcion existente = suscripcionRepositorio.findByUsuarioId(usuarioId);
-        
-        if (existente != null && existente.isActiva()) {
-            throw new Exception("El usuario ya tiene una suscripción activa.");
-        }
-
-        //Calcular Precios
-        double precioCalculado = 0;
-        List<ModuloPlan> listaReales = new ArrayList<>();
-
-        if (suscripcion.getModulosContratados() != null) {
-            for (ModuloPlan m : suscripcion.getModulosContratados()) {
-                Optional<ModuloPlan> modDb = moduloRepositorio.findById(m.getId());
-                if (modDb.isPresent()) {
-                    ModuloPlan real = modDb.get();
-                    precioCalculado += real.getPrecioMensual();
-                    listaReales.add(real);
-                }
-            }
-        }
-
-        suscripcion.setModulosContratados(listaReales);
-        suscripcion.setPrecioTotalMensual(precioCalculado);
-        suscripcion.setFechaInicio(new Date());
-        suscripcion.setActiva(true);
-
+    public Suscripcion crearSuscripcion(Suscripcion suscripcion) {
+        // La API solo valida integridad de datos básicos y guarda
         return suscripcionRepositorio.save(suscripcion);
     }
     

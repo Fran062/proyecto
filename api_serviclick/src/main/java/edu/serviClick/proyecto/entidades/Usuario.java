@@ -31,7 +31,7 @@ public class Usuario {
     private String ubicacion;
 
     
-    // --- RELACIONES (No llevan @Column, llevan mappedBy) ---
+    //Relaciones
 
     @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL)
     private List<Servicio> serviciosOfrecidos;

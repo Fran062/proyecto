@@ -13,7 +13,6 @@ public class Suscripcion {
     @Column(name = "susId")
     private Long id;
 
-    // La columna en BBDD que guarda el ID del usuario (clave foránea)
     @OneToOne
     @JoinColumn(name = "usrId", nullable = false)
     private Usuario usuario;
