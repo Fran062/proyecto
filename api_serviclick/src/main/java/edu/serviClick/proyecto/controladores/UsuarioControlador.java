@@ -66,23 +66,28 @@ public class UsuarioControlador {
 
         if (usuario != null) {
             model.addAttribute("usuario", usuario);
-            return "perfil-usuario"; // Tu archivo HTML
+            return "perfil-usuario";
         } else {
-            return "error-404"; // O redirigir a inicio
+            return "error-404";
         }
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO datos) {
-
+        // Tu lógica de autenticación...
         Optional<Usuario> usuario = usuarioServicio.autenticarUsuario(datos);
 
         if (usuario.isPresent()) {
-            // Retorno Exitoso (200 OK)
-            return ResponseEntity.ok(usuario.get());
+            // IMPORTANTE: Devolver un JSON con "token"
+            // Si devuelves el Usuario entero, el frontend fallará al leer "token"
+            return ResponseEntity.ok(java.util.Collections.singletonMap("token", "token-simulado-123"));
         } else {
-            // Retorno de Fallo (401 Unauthorized o 403 Forbidden)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña incorrectos.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error");
         }
+    }
+
+    @GetMapping("/planes")
+    public String home() {
+        return "lista-planes"; 
     }
 }

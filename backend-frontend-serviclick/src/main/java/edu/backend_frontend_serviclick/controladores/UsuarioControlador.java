@@ -20,26 +20,39 @@ public class UsuarioControlador {
     @GetMapping("/")
     public String mostrarLogin(Model model) {
         model.addAttribute("loginDTO", new LoginDTO());
-        return "index"; 
+        return "login"; 
     }
 
     @PostMapping("/login")
     public String procesarLogin(@ModelAttribute LoginDTO datos, Model model) {
         
-        System.out.println("Intentando login...");
+        System.out.println("Procesando login para: " + datos.getCorreo());
+        
+        // Llamamos a la API
         LoginRespuestaDTO respuesta = usuarioServicio.realizarLogin(datos);
 
         if (respuesta != null && respuesta.getToken() != null) {
-            return "redirect:/pantallaInicio"; 
+            // --- ÉXITO ---
+            System.out.println("Login correcto. Token recibido.");
+            // Redirigimos a la lista de planes (o pantallaInicio)
+            return "redirect:/planes";
         } else {
-            model.addAttribute("error", "Usuario o contraseña incorrectos");
+            // --- ERROR ---
+            System.out.println("Login fallido.");
+            
+            // 1. Añadimos el mensaje de error al modelo
+            model.addAttribute("error", "Credenciales incorrectas. Verifica tu correo y contraseña.");
+            
+            // 2. Devolvemos el objeto loginDTO para que no tenga que escribir el correo de nuevo
             model.addAttribute("loginDTO", datos); 
-            return "index"; 
+            
+            // 3. IMPORTANTE: Volvemos a cargar el HTML de "login", no el "index"
+            return "login"; 
         }
     }
     
-    @GetMapping("/pantallaInicio")
+    @GetMapping("/planes")
     public String home() {
-        return "pantallaInicio"; 
+        return "lista-planes"; 
     }
 }

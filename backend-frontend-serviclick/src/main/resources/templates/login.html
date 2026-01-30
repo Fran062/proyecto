@@ -22,14 +22,14 @@
     <main>
         <div class="login-box">
             <h2 style="text-align: center; margin-bottom: 1.5rem;">Bienvenido de nuevo</h2>
-            <form onsubmit="handleLogin(event)">
+            <form th:action="@{/login}" th:object="${loginDTO}" method="post">
                 <div class="form-group">
                     <label>Correo Electrónico</label>
-                    <input type="email" placeholder="usuario@ejemplo.com" required>
+                    <input type="email" th:field="*{correo}" placeholder="usuario@ejemplo.com" required>
                 </div>
                 <div class="form-group">
                     <label>Contraseña</label>
-                    <input type="password" placeholder="********" required>
+                    <input type="password" th:field="*{contrasena}" placeholder="********" required>
                 </div>
                 <button type="submit" class="btn-primary" style="width: 100%;">Entrar</button>
                 <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
@@ -48,5 +48,14 @@
         <p>&copy; 2025 ServiClicks</p>
     </footer>
     <script th:src="@{/main.js}"></script>
+
+    <script th:if="${error != null}">
+        // Recogemos el mensaje de error enviado desde Java
+        let mensaje = "[[${error}]]"; 
+        alert("❌ " + mensaje);
+    </script>
+    
+</body>
+</html>
 </body>
 </html>

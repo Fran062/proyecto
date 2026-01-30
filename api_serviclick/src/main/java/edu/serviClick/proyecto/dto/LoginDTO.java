@@ -2,16 +2,7 @@ package edu.serviClick.proyecto.dto;
 
 public class LoginDTO {
     private String correo;
-    private String contraseña;
-    private String token;
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
+    private String contrasena;
 
     public String getCorreo() {
         return correo;
@@ -21,11 +12,11 @@ public class LoginDTO {
         this.correo = correo;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 }

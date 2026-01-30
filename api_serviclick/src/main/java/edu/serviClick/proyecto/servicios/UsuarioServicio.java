@@ -63,7 +63,7 @@ public class UsuarioServicio {
         Usuario usuario = usuarioOpt.get();
 
         boolean passwordMatch = encriptadorContrasena.matches(
-                datos.getContraseña(),
+                datos.getContrasena(),
                 usuario.getPassword());
 
         if (passwordMatch) {

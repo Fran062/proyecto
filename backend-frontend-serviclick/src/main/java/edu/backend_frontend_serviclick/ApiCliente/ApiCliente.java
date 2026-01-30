@@ -20,7 +20,7 @@ public class ApiCliente {
     public LoginRespuestaDTO login(LoginDTO loginDto) {
         try {
             return webClient.post()
-                    .uri("/usuarios/login") 
+                    .uri("/usuarios/login")
                     .bodyValue(loginDto)
                     .retrieve()
                     .bodyToMono(LoginRespuestaDTO.class)
