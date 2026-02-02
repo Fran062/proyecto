@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,36 +57,15 @@ public class UsuarioControlador {
         return ResponseEntity.ok(resultados); // Devuelve 200 y la lista de usuarios
     }
 
-    @GetMapping("/{id}")
-    public String verPerfil(@PathVariable Long id, Model model) {
+    // Endpoint simple: Dame el correo, te doy el usuario (con su hash de contraseña)
+    @PostMapping("/buscar-por-correo")
+    public ResponseEntity<Usuario> obtenerUsuarioPorCorreo(@RequestBody String correo) {
+        // Nota: @RequestBody String a veces trae comillas extra, mejor usar un objeto simple o limpiar el string
+        // Para simplificar, usaremos un DTO wrapper pequeño o asumimos que envías un objeto JSON
+        
+        Optional<Usuario> usuario = usuarioServicio.buscarUsuarioPorCorreo(correo);
 
-        // Llamamos al método del servicio
-        Usuario usuario = usuarioServicio.buscarPorId(id);
-
-        if (usuario != null) {
-            model.addAttribute("usuario", usuario);
-            return "perfil-usuario";
-        } else {
-            return "error-404";
-        }
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO datos) {
-        // Tu lógica de autenticación...
-        Optional<Usuario> usuario = usuarioServicio.autenticarUsuario(datos);
-
-        if (usuario.isPresent()) {
-            // IMPORTANTE: Devolver un JSON con "token"
-            // Si devuelves el Usuario entero, el frontend fallará al leer "token"
-            return ResponseEntity.ok(java.util.Collections.singletonMap("token", "token-simulado-123"));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error");
-        }
-    }
-
-    @GetMapping("/planes")
-    public String home() {
-        return "lista-planes"; 
+        return usuario.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

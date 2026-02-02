@@ -1,4 +1,4 @@
-package edu.serviClick.proyecto.controladores;
+package edu.backend_frontend_serviclick.controladores;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -6,18 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class PortalWebControlador {
+public class PortalControlador {
 
-    // Cuando entras a http://localhost:8080/, muestra index.html
+    // Cuando entras a http://localhost:8081/, muestra index.html
     @GetMapping("/")
     public String index() {
         return "index";
-    }
-
-    // 2. Para ver los planes
-    @GetMapping("/web/login")
-    public String verLogin() {
-        return "login";
     }
 
     // 2. Para ver los planes

@@ -1,16 +1,12 @@
 package edu.serviClick.proyecto.servicios;
 
-import edu.serviClick.proyecto.entidades.ModuloPlan;
 import edu.serviClick.proyecto.entidades.Suscripcion;
 import edu.serviClick.proyecto.repositorios.ModulosPlanRepositorio;
 import edu.serviClick.proyecto.repositorios.SuscripcionesRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SuscripcionServicio {

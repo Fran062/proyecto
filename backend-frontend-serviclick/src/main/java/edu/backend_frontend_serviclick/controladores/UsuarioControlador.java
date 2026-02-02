@@ -17,7 +17,7 @@ public class UsuarioControlador {
     @Autowired
     private UsuarioServicio usuarioServicio;
 
-    @GetMapping("/")
+    @GetMapping("/login")
     public String mostrarLogin(Model model) {
         model.addAttribute("loginDTO", new LoginDTO());
         return "login"; 
@@ -26,33 +26,43 @@ public class UsuarioControlador {
     @PostMapping("/login")
     public String procesarLogin(@ModelAttribute LoginDTO datos, Model model) {
         
-        System.out.println("Procesando login para: " + datos.getCorreo());
-        
-        // Llamamos a la API
-        LoginRespuestaDTO respuesta = usuarioServicio.realizarLogin(datos);
+        boolean loginCorrecto = usuarioServicio.realizarLogin(datos);
 
-        if (respuesta != null && respuesta.getToken() != null) {
-            // --- ÉXITO ---
-            System.out.println("Login correcto. Token recibido.");
-            // Redirigimos a la lista de planes (o pantallaInicio)
-            return "redirect:/planes";
+        if (loginCorrecto) {
+            return "redirect:/web/planes"; // Éxito
         } else {
-            // --- ERROR ---
-            System.out.println("Login fallido.");
-            
-            // 1. Añadimos el mensaje de error al modelo
-            model.addAttribute("error", "Credenciales incorrectas. Verifica tu correo y contraseña.");
-            
-            // 2. Devolvemos el objeto loginDTO para que no tenga que escribir el correo de nuevo
-            model.addAttribute("loginDTO", datos); 
-            
-            // 3. IMPORTANTE: Volvemos a cargar el HTML de "login", no el "index"
-            return "login"; 
+            model.addAttribute("error", "Credenciales incorrectas");
+            model.addAttribute("loginDTO", datos);
+            return "login"; // Fallo
         }
     }
     
-    @GetMapping("/planes")
-    public String home() {
-        return "lista-planes"; 
+    // El método home /planes se ha movido a PortalControlador generalmente, pero si se accede por aquí:
+    // Mejor lo quitamos para evitar duplicidad o lo dejamos si es específico de usuario.
+    // En el plan dijimos que PortalControlador lleva los planes.
+
+    @GetMapping("/perfil/{id}")
+    public String verPerfil(@PathVariable Long id, Model model) {
+        // Debemos buscar el usuario en la API
+        // Necesitamos un método en UsuarioServicio que llame a la API
+         try {
+             // Asumimos que tendremos este método o usamos un DTO
+             // Pero el servicio devuelve DTO o Entidad?
+             // En el Web (este proyecto), usamos DTOs preferiblemente o la entidad duplicada si existe.
+             // Vamos a ver qué devuelve el servicio.
+             // El servicio `realizarLogin` usaba `UsuarioDTO`.
+             // Usaremos UsuarioDTO para el perfil también.
+             
+             edu.backend_frontend_serviclick.dto.UsuarioDTO usuario = usuarioServicio.buscarPorId(id);
+             
+             if (usuario != null) {
+                 model.addAttribute("usuario", usuario);
+                 return "perfil-usuario"; // Asegurarse que el template se llame así
+             } else {
+                 return "error-404"; // O redirigir
+             }
+         } catch (Exception e) {
+             return "error-404";
+         }
     }
 }

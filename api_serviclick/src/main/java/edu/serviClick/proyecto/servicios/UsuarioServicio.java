@@ -53,6 +53,10 @@ public class UsuarioServicio {
         return usuarioRepositorio.findByNombreCompletoContainingIgnoreCase(termino);
     }
 
+    public Optional<Usuario> buscarUsuarioPorCorreo(String correo) {
+        return usuarioRepositorio.findByCorreo(correo);
+    }
+
     public Optional<Usuario> autenticarUsuario(LoginDTO datos) {
         Optional<Usuario> usuarioOpt = usuarioRepositorio.findByCorreo(datos.getCorreo());
 
