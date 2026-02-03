@@ -57,15 +57,64 @@ public class UsuarioControlador {
         return ResponseEntity.ok(resultados); // Devuelve 200 y la lista de usuarios
     }
 
-    // Endpoint simple: Dame el correo, te doy el usuario (con su hash de contraseña)
+    // Endpoint simple: Dame el correo, te doy el usuario (con su hash de
+    // contraseña)
     @PostMapping("/buscar-por-correo")
     public ResponseEntity<Usuario> obtenerUsuarioPorCorreo(@RequestBody String correo) {
-        // Nota: @RequestBody String a veces trae comillas extra, mejor usar un objeto simple o limpiar el string
-        // Para simplificar, usaremos un DTO wrapper pequeño o asumimos que envías un objeto JSON
-        
+        // Nota: @RequestBody String a veces trae comillas extra, mejor usar un objeto
+        // simple o limpiar el string
+        // Para simplificar, usaremos un DTO wrapper pequeño o asumimos que envías un
+        // objeto JSON
+
         Optional<Usuario> usuario = usuarioServicio.buscarUsuarioPorCorreo(correo);
 
         return usuario.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/recuperar-password/solicitar")
+    public ResponseEntity<Void> solicitarRecuperacion(@RequestBody String correo) {
+        try {
+            usuarioServicio.solicitarRecuperacionContrasena(correo);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/recuperar-password/verificar")
+    public ResponseEntity<Boolean> verificarCodigo(@RequestBody java.util.Map<String, String> payload) {
+        String correo = payload.get("correo");
+        String codigo = payload.get("codigo");
+        boolean valido = usuarioServicio.verificarCodigoRecuperacion(correo, codigo);
+        return ResponseEntity.ok(valido);
+    }
+
+    @PostMapping("/recuperar-password/cambiar")
+    public ResponseEntity<Void> cambiarPassword(@RequestBody java.util.Map<String, String> payload) {
+        try {
+            String correo = payload.get("correo");
+            String codigo = payload.get("codigo");
+            String nuevaPassword = payload.get("nuevaPassword");
+
+            System.out.println("DEBUG: Iniciando cambio de contraseña para " + correo);
+
+            usuarioServicio.cambiarContrasenaConCodigo(correo, codigo, nuevaPassword);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            System.err.println("ERROR en cambiarPassword: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @org.springframework.web.bind.annotation.PutMapping("/{id}")
+    public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioActualizado) {
+        try {
+            Usuario usuario = usuarioServicio.actualizarUsuario(id, usuarioActualizado);
+            return ResponseEntity.ok(usuario);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

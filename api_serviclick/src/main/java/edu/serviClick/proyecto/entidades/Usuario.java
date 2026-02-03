@@ -22,7 +22,7 @@ public class Usuario {
     private String password;
 
     @Column(name = "usrRol")
-    private String rol; 
+    private String rol;
 
     @Column(name = "usrTelefono")
     private String telefono;
@@ -30,8 +30,7 @@ public class Usuario {
     @Column(name = "usrUbicacion")
     private String ubicacion;
 
-    
-    //Relaciones
+    // Relaciones
 
     @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL)
     private List<Servicio> serviciosOfrecidos;
@@ -42,21 +41,93 @@ public class Usuario {
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Suscripcion suscripcion;
 
-    public Usuario() {}
+    public Usuario() {
+    }
 
     // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getNombreCompleto() { return nombreCompleto; }
-    public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
-    public String getCorreo() { return correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-    public String getRol() { return rol; }
-    public void setRol(String rol) { this.rol = rol; }
-    public String getTelefono() { return telefono; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
-    public String getUbicacion() { return ubicacion; }
-    public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    @Column(name = "usrCodigoRecuperacion")
+    private String codigoRecuperacion;
+
+    @Column(name = "usrFechaExpiracionCodigo")
+    private java.time.LocalDateTime fechaExpiracionCodigo;
+
+    public String getCodigoRecuperacion() {
+        return codigoRecuperacion;
+    }
+
+    public void setCodigoRecuperacion(String codigoRecuperacion) {
+        this.codigoRecuperacion = codigoRecuperacion;
+    }
+
+    public java.time.LocalDateTime getFechaExpiracionCodigo() {
+        return fechaExpiracionCodigo;
+    }
+
+    public void setFechaExpiracionCodigo(java.time.LocalDateTime fechaExpiracionCodigo) {
+        this.fechaExpiracionCodigo = fechaExpiracionCodigo;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public Suscripcion getSuscripcion() {
+        return suscripcion;
+    }
+
+    public void setSuscripcion(Suscripcion suscripcion) {
+        this.suscripcion = suscripcion;
+    }
 }

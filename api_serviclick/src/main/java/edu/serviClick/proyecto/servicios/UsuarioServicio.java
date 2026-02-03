@@ -76,4 +76,103 @@ public class UsuarioServicio {
             return Optional.empty();
         }
     }
+
+    public Usuario actualizarUsuario(Long id, Usuario usuarioActualizado) {
+        Optional<Usuario> usuarioExistenteOpt = usuarioRepositorio.findById(id);
+
+        if (usuarioExistenteOpt.isPresent()) {
+            Usuario usuarioExistente = usuarioExistenteOpt.get();
+
+            // Actualizar campos permitidos
+            if (usuarioActualizado.getNombreCompleto() != null) {
+                usuarioExistente.setNombreCompleto(usuarioActualizado.getNombreCompleto());
+            }
+            if (usuarioActualizado.getTelefono() != null) {
+                usuarioExistente.setTelefono(usuarioActualizado.getTelefono());
+            }
+
+            // Si la contraseña viene rellena, la actualizamos hasheada
+            if (usuarioActualizado.getPassword() != null && !usuarioActualizado.getPassword().isEmpty()) {
+                // Verificar si ya está haseada (esto es un poco hacky, mejor sería un flag en
+                // el DTO)
+                // Asumimos que si viene del frontend en texto plano, no empieza por $2a$
+                // Pero como el DTO del frontend es UsuarioDTO y aquí llega Usuario entity,
+                // asumiremos siempre que si viene algo es para cambiarla
+                String nuevaPass = encriptadorContrasena.encode(usuarioActualizado.getPassword());
+                usuarioExistente.setPassword(nuevaPass);
+            }
+
+            return usuarioRepositorio.save(usuarioExistente);
+        } else {
+            throw new RuntimeException("Usuario no encontrado con ID: " + id);
+        }
+    }
+
+    @Autowired
+    private EmailServicio emailServicio;
+
+    public void solicitarRecuperacionContrasena(String correo) {
+        Optional<Usuario> usuarioOpt = usuarioRepositorio.findByCorreo(correo);
+        if (usuarioOpt.isEmpty()) {
+            throw new RuntimeException("Usuario no encontrado con correo: " + correo);
+        }
+        Usuario usuario = usuarioOpt.get();
+        // Generar código de 4 dígitos
+        String codigo = String.valueOf((int) (Math.random() * 9000) + 1000);
+        usuario.setCodigoRecuperacion(codigo);
+        usuario.setFechaExpiracionCodigo(java.time.LocalDateTime.now().plusMinutes(15));
+        usuarioRepositorio.save(usuario);
+
+        emailServicio.enviarCodigoRecuperacion(correo, codigo);
+    }
+
+    public boolean verificarCodigoRecuperacion(String correo, String codigo) {
+        Optional<Usuario> usuarioOpt = usuarioRepositorio.findByCorreo(correo);
+        if (usuarioOpt.isEmpty()) {
+            System.out.println("DEBUG: Usuario no encontrado para correo: " + correo);
+            return false;
+        }
+        Usuario usuario = usuarioOpt.get();
+
+        System.out.println(
+                "DEBUG: Verificando código. DB Code: " + usuario.getCodigoRecuperacion() + ", Input Code: " + codigo);
+        System.out.println("DEBUG: Fecha Expiración: " + usuario.getFechaExpiracionCodigo() + ", Ahora: "
+                + java.time.LocalDateTime.now());
+
+        if (usuario.getCodigoRecuperacion() == null || usuario.getFechaExpiracionCodigo() == null) {
+            System.out.println("DEBUG: Código o fecha nulos.");
+            return false;
+        }
+        if (usuario.getFechaExpiracionCodigo().isBefore(java.time.LocalDateTime.now())) {
+            System.out.println("DEBUG: Código expirado.");
+            return false;
+        }
+
+        // Trim just in case
+        String dbCode = usuario.getCodigoRecuperacion().trim();
+        String inputCode = codigo != null ? codigo.trim() : "";
+
+        boolean match = dbCode.equals(inputCode);
+        if (!match)
+            System.out.println("DEBUG: Códigos no coinciden.");
+
+        return match;
+    }
+
+    public void cambiarContrasenaConCodigo(String correo, String codigo, String nuevaPassword) {
+        if (!verificarCodigoRecuperacion(correo, codigo)) {
+            // Logs ya están en verificarCodigoRecuperacion
+            throw new RuntimeException("Código inválido o expirado");
+        }
+        Optional<Usuario> usuarioOpt = usuarioRepositorio.findByCorreo(correo);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            String passHasheada = encriptadorContrasena.encode(nuevaPassword);
+            usuario.setPassword(passHasheada);
+            // Limpiar código
+            usuario.setCodigoRecuperacion(null);
+            usuario.setFechaExpiracionCodigo(null);
+            usuarioRepositorio.save(usuario);
+        }
+    }
 }

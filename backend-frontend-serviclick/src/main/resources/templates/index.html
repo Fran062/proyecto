@@ -1,91 +1,82 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ServiClicks - Inicio</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <header>
-      <nav>
-        <a th:href="@{/}" class="logo"
-          ><i class="fas fa-handshake"></i> ServiClicks</a
-        >
-        <div class="nav-links">
-          <a th:href="@{/}">Inicio</a>
-          <a th:href="@{/web/servicios}">Buscar Servicios</a>
-          <a th:href="@{/web/publicar}">Publicar Servicio</a>
-          <a th:href="@{/web/planes}">Ver Planes</a>
-        </div>
-        <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado == null}">
-          <a th:href="@{/login}" class="btn-primary"
-            >Iniciar Sesión <i class="fa-solid fa-arrow-right-to-bracket"></i
-          ></a>
-        </div>
-        
-        <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado != null}">
-            <a th:href="@{/web/perfil}" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1e293b;">
-                <div style="width: 40px; height: 40px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                    <span th:text="${#strings.substring(session.usuarioLogueado.nombreCompleto, 0, 1)}">U</span>
-                </div>
-                <span th:text="${session.usuarioLogueado.nombreCompleto}" style="font-weight: 600;">Usuario</span>
-            </a>
-        </div>
-      </nav>
-    </header>
 
-    <main>
-      <div class="hero">
-        <h1>Encuentra al profesional ideal</h1>
-        <p>
-          Desde fontaneros hasta desarrolladores web, todo en un solo lugar.
-        </p>
-        <br />
-        <br />
-        <form th:action="@{/web/servicios}" method="get" class="search-box">
-          <input
-            type="text"
-            name="keyword"
-            placeholder="¿Qué servicio buscas? (ej. Limpieza)"
-          />
-          <button type="submit" class="btn-primary">Buscar</button>
-        </form>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServiClicks - Inicio</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a th:href="@{/}" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
+      <div class="nav-links">
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/web/servicios}">Buscar Servicios</a>
+        <a th:href="@{/web/publicar}">Publicar Servicio</a>
+        <a th:href="@{/web/planes}">Ver Planes</a>
+      </div>
+      <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado == null}">
+        <a th:href="@{/login}" class="btn-primary">Iniciar Sesión <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
       </div>
 
-      <h3>Categorías Populares</h3>
-      <div class="categories">
-        <a th:href="@{/web/servicios(categoria='Hogar')}" class="cat-card">
-          <i class="fas fa-wrench"></i>
-          <h4>Reparaciones</h4>
-        </a>
-        <a th:href="@{/web/servicios(categoria='Limpieza')}" class="cat-card">
-          <i class="fa-solid fa-hand-sparkles"></i>
-          <h4>Limpieza</h4>
-        </a>
-        <a th:href="@{/web/servicios(categoria='Tecnología')}" class="cat-card">
-          <i class="fas fa-laptop-code"></i>
-          <h4>Tecnología</h4>
-        </a>
-        <a th:href="@{/web/servicios(categoria='Clases')}" class="cat-card">
-          <i class="fas fa-graduation-cap"></i>
-          <h4>Clases</h4>
+      <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado != null}">
+        <a th:href="@{/web/perfil}"
+          style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1e293b;">
+          <div
+            style="width: 40px; height: 40px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+            <span th:text="${#strings.substring(session.usuarioLogueado.nombreCompleto, 0, 1)}">U</span>
+          </div>
+
         </a>
       </div>
-    </main>
+    </nav>
+  </header>
 
-    <footer>
-      <p>&copy; 2025 ServiClicks</p>
-    </footer>
+  <main>
+    <div class="hero">
+      <h1>Encuentra al profesional ideal</h1>
+      <p>
+        Desde fontaneros hasta desarrolladores web, todo en un solo lugar.
+      </p>
+      <br />
+      <br />
+      <form th:action="@{/web/servicios}" method="get" class="search-box">
+        <input type="text" name="keyword" placeholder="¿Qué servicio buscas? (ej. Limpieza)" />
+        <button type="submit" class="btn-primary">Buscar</button>
+      </form>
+    </div>
 
-    <script th:src="@{/main.js}"></script>
-  </body>
+    <h3>Categorías Populares</h3>
+    <div class="categories">
+      <a th:href="@{/web/servicios(categoria='Hogar')}" class="cat-card">
+        <i class="fas fa-wrench"></i>
+        <h4>Reparaciones</h4>
+      </a>
+      <a th:href="@{/web/servicios(categoria='Limpieza')}" class="cat-card">
+        <i class="fa-solid fa-hand-sparkles"></i>
+        <h4>Limpieza</h4>
+      </a>
+      <a th:href="@{/web/servicios(categoria='Tecnología')}" class="cat-card">
+        <i class="fas fa-laptop-code"></i>
+        <h4>Tecnología</h4>
+      </a>
+      <a th:href="@{/web/servicios(categoria='Clases')}" class="cat-card">
+        <i class="fas fa-graduation-cap"></i>
+        <h4>Clases</h4>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ServiClicks</p>
+  </footer>
+
+  <script th:src="@{/main.js}"></script>
+</body>
+
 </html>

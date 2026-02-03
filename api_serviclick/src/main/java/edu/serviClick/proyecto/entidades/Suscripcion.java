@@ -15,6 +15,7 @@ public class Suscripcion {
 
     @OneToOne
     @JoinColumn(name = "usrId", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Usuario usuario;
 
     // TABLA INTERMEDIA
@@ -29,6 +30,9 @@ public class Suscripcion {
     @Column(name = "suspreciototalmensual")
     private Double precioTotalMensual;
 
+    @Column(name = "susNombrePlan")
+    private String nombrePlan;
+
     @Column(name = "susActiva")
     private boolean activa;
 
@@ -42,16 +46,15 @@ public class Suscripcion {
         this.calcularPrecio();
     }
 
-    
     public void calcularPrecio() {
         if (modulosContratados != null && !modulosContratados.isEmpty()) {
             this.precioTotalMensual = modulosContratados.stream()
                     .filter(m -> m.getPrecioMensual() != null)
                     .mapToDouble(ModuloPlan::getPrecioMensual)
                     .sum();
-        } else {
-            this.precioTotalMensual = 0.0;
         }
+        // No sobrescribir con 0.0 si es un plan predefinido (modulosContratados es
+        // null/empty)
     }
 
     // Getters y Setters
@@ -85,6 +88,14 @@ public class Suscripcion {
 
     public void setPrecioTotalMensual(Double precioTotalMensual) {
         this.precioTotalMensual = precioTotalMensual;
+    }
+
+    public String getNombrePlan() {
+        return nombrePlan;
+    }
+
+    public void setNombrePlan(String nombrePlan) {
+        this.nombrePlan = nombrePlan;
     }
 
     public boolean isActiva() {

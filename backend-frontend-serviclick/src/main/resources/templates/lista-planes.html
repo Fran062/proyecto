@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Planes ServiClick</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,8 +18,15 @@
             padding: 40px;
         }
 
-        h1 { color: #1e293b; margin-bottom: 10px; }
-        p.subtitle { color: #64748b; margin-bottom: 40px; }
+        h1 {
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: #64748b;
+            margin-bottom: 40px;
+        }
 
         .pricing-container {
             display: flex;
@@ -34,7 +42,7 @@
             width: 300px;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
             border: 1px solid #e2e8f0;
@@ -44,7 +52,7 @@
 
         .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
         }
 
         /* PLAN DESTACADO (CENTRAL) */
@@ -52,7 +60,7 @@
             border: 2px solid #3b82f6;
             transform: scale(1.05);
         }
-        
+
         .card.popular:hover {
             transform: scale(1.08) translateY(-10px);
         }
@@ -92,14 +100,19 @@
             text-align: center;
             margin: 15px 0;
         }
-        
-        .price span { font-size: 16px; color: #94a3b8; font-weight: normal; }
+
+        .price span {
+            font-size: 16px;
+            color: #94a3b8;
+            font-weight: normal;
+        }
 
         .features {
             list-style: none;
             padding: 0;
             margin: 20px 0;
-            flex-grow: 1; /* Empuja el botón al fondo */
+            flex-grow: 1;
+            /* Empuja el botón al fondo */
         }
 
         .features li {
@@ -110,7 +123,8 @@
         }
 
         .features li i {
-            color: #10b981; /* Verde check */
+            color: #10b981;
+            /* Verde check */
             margin-right: 10px;
         }
 
@@ -127,21 +141,44 @@
             transition: background 0.3s;
         }
 
-        .btn-select:hover { background-color: #3b82f6; }
-        .card.popular .btn-select { background-color: #3b82f6; }
-        .card.popular .btn-select:hover { background-color: #2563eb; }
+        .btn-select:hover {
+            background-color: #3b82f6;
+        }
 
-        .btn-back { margin-top: 50px; color: #64748b; text-decoration: none; }
+        .card.popular .btn-select {
+            background-color: #3b82f6;
+        }
+
+        .card.popular .btn-select:hover {
+            background-color: #2563eb;
+        }
+
+        .active-plan {
+            border: 3px solid #10b981 !important;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-back {
+            margin: 60px 0 40px 0;
+            /* More spacing */
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            position: relative;
+            z-index: 10;
+        }
     </style>
 </head>
+
 <body>
 
-    <h1>Elige tu nivel de tranquilidad</h1>
-    <p class="subtitle">Cancela cuando quieras. Sin compromiso.</p>
-
     <div class="pricing-container">
-        
-        <div class="card">
+
+        <!-- Pack Desplazamiento -->
+        <div class="card"
+            th:classappend="${usuario != null and usuario.suscripcion != null and usuario.suscripcion.nombrePlan == 'Pack Desplazamiento'} ? 'active-plan' : ''">
             <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
             <div class="plan-title">Pack Desplazamiento</div>
             <div class="price">5.99€<span>/mes</span></div>
@@ -150,10 +187,17 @@
                 <li><i class="fa-solid fa-check"></i> Atención estándar</li>
                 <li><i class="fa-solid fa-check"></i> Presupuestos sin coste</li>
             </ul>
-            <a th:href="@{/web/pago(plan='Pack Desplazamiento', precio='5.99')}" class="btn-select">Elegir Plan</a>
+            <a th:href="@{/web/pago(plan='Pack Desplazamiento', precio='5.99')}" class="btn-select"
+                th:if="${usuario == null or usuario.suscripcion == null or usuario.suscripcion.nombrePlan != 'Pack Desplazamiento'}">Elegir
+                Plan</a>
+            <button class="btn-select" style="background-color: #10b981; cursor: pointer;"
+                th:if="${usuario != null and usuario.suscripcion != null and usuario.suscripcion.nombrePlan == 'Pack Desplazamiento'}"
+                onclick="showPlanNotification()">Plan Actual</button>
         </div>
 
-        <div class="card popular">
+        <!-- Pack Tranquilidad -->
+        <div class="card popular"
+            th:classappend="${usuario != null and usuario.suscripcion != null and usuario.suscripcion.nombrePlan == 'Pack Tranquilidad'} ? 'active-plan' : ''">
             <div class="badge">Más Popular</div>
             <div class="icon-box"><i class="fa-solid fa-couch"></i></div>
             <div class="plan-title">Pack Tranquilidad</div>
@@ -164,10 +208,17 @@
                 <li><i class="fa-solid fa-check"></i> Las horas son acumulables</li>
                 <li><i class="fa-solid fa-check"></i> Prioridad en urgencias</li>
             </ul>
-            <a th:href="@{/web/pago(plan='Pack Tranquilidad', precio='12.50')}" class="btn-select">Elegir Plan</a>
+            <a th:href="@{/web/pago(plan='Pack Tranquilidad', precio='12.50')}" class="btn-select"
+                th:if="${usuario == null or usuario.suscripcion == null or usuario.suscripcion.nombrePlan != 'Pack Tranquilidad'}">Elegir
+                Plan</a>
+            <button class="btn-select" style="background-color: #10b981; cursor: pointer;"
+                th:if="${usuario != null and usuario.suscripcion != null and usuario.suscripcion.nombrePlan == 'Pack Tranquilidad'}"
+                onclick="showPlanNotification()">Plan Actual</button>
         </div>
 
-        <div class="card">
+        <!-- ServiClick VIP -->
+        <div class="card"
+            th:classappend="${usuario != null and usuario.suscripcion != null and usuario.suscripcion.nombrePlan == 'ServiClick VIP'} ? 'active-plan' : ''">
             <div class="icon-box"><i class="fa-solid fa-crown"></i></div>
             <div class="plan-title">ServiClick VIP</div>
             <div class="price">29.99€<span>/mes</span></div>
@@ -177,12 +228,42 @@
                 <li><i class="fa-solid fa-check"></i> Revisión anual de caldera</li>
                 <li><i class="fa-solid fa-check"></i> Atención en menos de 2h</li>
             </ul>
-            <a th:href="@{/web/pago(plan='ServiClick VIP', precio='29.99')}" class="btn-select">Elegir Plan</a>
+            <a th:href="@{/web/pago(plan='ServiClick VIP', precio='29.99')}" class="btn-select"
+                th:if="${usuario == null or usuario.suscripcion == null or usuario.suscripcion.nombrePlan != 'ServiClick VIP'}">Elegir
+                Plan</a>
+            <button class="btn-select" style="background-color: #10b981; cursor: pointer;"
+                th:if="${usuario != null and usuario.suscripcion != null and usuario.suscripcion.nombrePlan == 'ServiClick VIP'}"
+                onclick="showPlanNotification()">Plan Actual</button>
         </div>
 
     </div>
 
     <a th:href="@{/}" class="btn-back">← Volver al Inicio</a>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:src="@{/main.js}"></script>
+    <script>
+        function showPlanNotification() {
+            if (window.Toast) {
+                window.Toast.fire({
+                    icon: 'info',
+                    title: 'Ya tienes este plan',
+                    text: 'Disfruta de tus ventajas.'
+                });
+            } else if (typeof Swal !== 'undefined') {
+                // Fallback if main.js Toast not ready
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    icon: 'info',
+                    title: 'Ya tienes este plan'
+                });
+            }
+        }
+    </script>
+
 </body>
+
 </html>

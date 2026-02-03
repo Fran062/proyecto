@@ -5,11 +5,11 @@ public class UsuarioDTO {
     private Long id;
     private String nombreCompleto;
     private String correo;
-    
+
     // IMPORTANTE: Se debe llamar 'password' porque así viene en el JSON de tu API
     // Aquí se guardará el hash encriptado ($2a$10$...)
-    private String password; 
-    
+    private String password;
+
     private String rol;
     private String telefono;
     private String ubicacion;
@@ -74,5 +74,15 @@ public class UsuarioDTO {
 
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
+    }
+
+    private SuscripcionDTO suscripcion;
+
+    public SuscripcionDTO getSuscripcion() {
+        return suscripcion;
+    }
+
+    public void setSuscripcion(SuscripcionDTO suscripcion) {
+        this.suscripcion = suscripcion;
     }
 }

@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ServiJobs - Mi Perfil</title>
+    <title>ServiClick - Mi Perfil</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
+
 <body>
     <header>
         <nav>
-            <a th:href="@{/}" class="logo"><i class="fas fa-handshake"></i> ServiJobs</a>
+            <a th:href="@{/}" class="logo"><i class="fas fa-handshake"></i> ServiClick</a>
             <div class="nav-links">
                 <a th:href="@{/}">Inicio</a>
                 <a th:href="@{/web/servicios}">Buscar Servicios</a>
                 <a th:href="@{/web/publicar}">Publicar Servicio</a>
                 <a th:href="@{/web/planes}">Ver Planes</a>
             </div>
-            <div class="auth-buttons">
-                </div>
+            <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado == null}">
+                <a th:href="@{/login}" class="btn-primary">Iniciar Sesión <i
+                        class="fa-solid fa-arrow-right-to-bracket"></i></a>
+            </div>
+            <div class="auth-buttons" th:if="${session.usuarioLogueado != null}">
+                <a th:href="@{/web/perfil}"
+                    style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1e293b;">
+                    <div
+                        style="width: 40px; height: 40px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                        <span th:text="${#strings.substring(session.usuarioLogueado.nombreCompleto, 0, 1)}">U</span>
+                    </div>
+                </a>
+            </div>
         </nav>
     </header>
 
@@ -27,9 +40,12 @@
         <div style="max-width: 800px; margin: 0 auto;">
             <h1 style="margin-bottom: 2rem;">Ajustes de Cuenta</h1>
 
-            <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem;">
-                <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem;">
-                    <div style="width: 80px; height: 80px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+            <div
+                style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                <div
+                    style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem;">
+                    <div
+                        style="width: 80px; height: 80px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
                         <i class="fas fa-user"></i>
                     </div>
                     <div>
@@ -38,8 +54,10 @@
                     </div>
                 </div>
 
-                <form onsubmit="guardarPerfil(event)" th:object="${usuario}">
-                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                <form th:action="@{/web/perfil/guardar}" method="post" th:object="${usuario}">
+                    <input type="hidden" th:field="*{id}">
+                    <div class="form-row"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
                         <div class="form-group">
                             <label>Nombre Completo</label>
                             <input type="text" th:field="*{nombreCompleto}" required>
@@ -52,13 +70,14 @@
 
                     <div class="form-group">
                         <label>Correo Electrónico</label>
-                        <input type="email" th:field="*{correo}" disabled style="background-color: #f3f4f6; cursor: not-allowed;">
+                        <input type="email" th:field="*{correo}" required readonly
+                            style="background-color: #f3f4f6; cursor: not-allowed;">
                         <small style="color: #6b7280;">El correo no se puede cambiar.</small>
                     </div>
 
                     <div class="form-group">
                         <label>Nueva Contraseña (Dejar en blanco para mantener)</label>
-                        <input type="password" placeholder="********">
+                        <input type="password" name="nuevaPassword" placeholder="********">
                     </div>
 
                     <div style="text-align: right; margin-top: 1.5rem;">
@@ -67,17 +86,84 @@
                 </form>
             </div>
 
+            <div
+                style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                <h2 style="margin-bottom: 1rem;"><i class="fas fa-crown" style="color: #f59e0b;"></i> Tu Suscripción
+                </h2>
+                <div th:if="${usuario.suscripcion != null and usuario.suscripcion.activa}">
+                    <h3 style="color: #3b82f6; font-size: 1.5rem; margin-bottom: 0.5rem;"
+                        th:text="${usuario.suscripcion.nombrePlan}">Plan</h3>
+                    <p style="color: #64748b; margin-bottom: 1rem;">
+                        Precio: <strong th:text="${usuario.suscripcion.precioTotalMensual}">0.00</strong>€/mes
+                    </p>
+                    <a th:href="@{/web/planes}" class="btn-outline">Cambiar de Plan</a>
+                </div>
+                <div th:if="${usuario.suscripcion == null or !usuario.suscripcion.activa}">
+                    <p style="color: #64748b; margin-bottom: 1rem;">No tienes un plan activo actualmente. Contrata uno
+                        para disfrutar de ventajas exclusivas.</p>
+                    <a th:href="@{/web/planes}" class="btn-primary">Ver Planes Disponibles</a>
+                </div>
+            </div>
+
             <div style="background: #fef2f2; padding: 1.5rem; border-radius: 12px; border: 1px solid #fee2e2;">
                 <h3 style="color: #991b1b; margin-bottom: 0.5rem;">Zona de Sesión</h3>
                 <p style="color: #b91c1c; margin-bottom: 1rem; font-size: 0.9rem;">
                     Si cierras sesión tendrás que volver a introducir tus credenciales para acceder.
                 </p>
-                <a th:href="@{/logout}" class="btn-danger" style="display: inline-block; text-decoration: none; text-align: center;">
+                <a th:href="@{/logout}" class="btn-danger"
+                    style="display: inline-block; text-decoration: none; text-align: center;">
                     <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                 </a>
             </div>
         </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const telefonoInput = document.querySelector('input[name="telefono"]');
+        if (telefonoInput) {
+            telefonoInput.addEventListener('input', function (e) {
+                // Remove non-numeric chars
+                let value = e.target.value.replace(/\D/g, '');
+                // Check if starts with 34 (Spain code)
+                if (value.startsWith('34')) {
+                    // value is ok
+                }
+            });
+
+            // HTML5 validation handling
+            telefonoInput.setAttribute('pattern', '(\\+34|0034|34)?[6789]\\d{8}');
+            telefonoInput.setAttribute('title', 'Introduce un número español válido (empieza por 6, 7, 8, 9, con 9 dígitos)');
+
+            telefonoInput.addEventListener('invalid', function (e) {
+                e.target.setCustomValidity('Por favor, introduce un número de teléfono móvil o fijo español válido.');
+            });
+            telefonoInput.addEventListener('input', function (e) {
+                e.target.setCustomValidity('');
+            });
+        }
+
+        // Check for URI param 'exito'
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('exito')) {
+            if (typeof window.Toast !== 'undefined') {
+                window.Toast.fire({
+                    icon: 'success',
+                    title: 'Guardado',
+                    text: 'Tu perfil se ha actualizado correctamente.'
+                });
+            } else {
+                Swal.fire({
+                    title: '¡Guardado!',
+                    text: 'Tu perfil se ha actualizado correctamente.',
+                    icon: 'success',
+                    confirmButtonColor: '#3b82f6'
+                });
+            }
+            // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
 
     <footer>
         <p>&copy; 2025 ServClicks</p>
@@ -85,4 +171,5 @@
 
     <script th:src="@{/main.js}"></script>
 </body>
+
 </html>

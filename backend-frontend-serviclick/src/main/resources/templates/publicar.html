@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ServiJobs - Publicar Servicio</title>
+    <title>ServiClick - Publicar Servicio</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/style.css}">
-    
+
     <style>
         .publish-box {
             max-width: 800px;
@@ -15,9 +16,9 @@
             background: var(--white);
             padding: 2.5rem;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
-        
+
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -34,12 +35,12 @@
             transition: all 0.3s;
             position: relative;
         }
-        
+
         .file-upload:hover {
             border-color: var(--primary);
             background-color: #eff6ff;
         }
-        
+
         .file-upload input {
             position: absolute;
             width: 100%;
@@ -51,22 +52,26 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <nav>
-            <a th:href="@{/}" class="logo"><i class="fas fa-handshake"></i> ServiJobs</a>
+            <a th:href="@{/}" class="logo"><i class="fas fa-handshake"></i> ServiClick</a>
             <div class="nav-links">
                 <a th:href="@{/}">Inicio</a>
                 <a th:href="@{/web/servicios}">Buscar Servicios</a>
                 <a th:href="@{/web/publicar}">Publicar Servicio</a>
                 <a th:href="@{/web/planes}">Ver Planes</a>
             </div>
-            <div class="auth-buttons" th:if="${session.usuarioLogueado == null}">
-                <a th:href="@{/login}" class="btn-primary">Iniciar Sesión</a>
+            <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado == null}">
+                <a th:href="@{/login}" class="btn-primary">Iniciar Sesión <i
+                        class="fa-solid fa-arrow-right-to-bracket"></i></a>
             </div>
             <div class="auth-buttons" th:if="${session.usuarioLogueado != null}">
-                <a th:href="@{/web/perfil}" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1e293b;">
-                    <div style="width: 40px; height: 40px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                <a th:href="@{/web/perfil}"
+                    style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1e293b;">
+                    <div
+                        style="width: 40px; height: 40px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                         <span th:text="${#strings.substring(session.usuarioLogueado.nombreCompleto, 0, 1)}">U</span>
                     </div>
                 </a>
@@ -77,13 +82,15 @@
     <main>
         <div class="publish-box">
             <h1 style="margin-bottom: 0.5rem;">Publicar nuevo anuncio</h1>
-            <p style="color: var(--text-gray); margin-bottom: 2rem;">Rellena los detalles para ofrecer tus servicios a la comunidad.</p>
+            <p style="color: var(--text-gray); margin-bottom: 2rem;">Rellena los detalles para ofrecer tus servicios a
+                la comunidad.</p>
 
             <form th:action="@{/web/publicar}" method="post" enctype="multipart/form-data">
-                
+
                 <div class="form-group">
                     <label>Título del servicio (Sé breve y claro)</label>
-                    <input type="text" name="titulo" placeholder="Ej. Reparación de fugas de agua y grifos" required minlength="10" maxlength="50">
+                    <input type="text" name="titulo" placeholder="Ej. Reparación de fugas de agua y grifos" required
+                        minlength="10" maxlength="50">
                     <small style="color: #9ca3af;">Mínimo 10 caracteres, máximo 50.</small>
                 </div>
 
@@ -92,11 +99,17 @@
                         <label>Categoría</label>
                         <select name="categoria" required>
                             <option value="" disabled selected>Selecciona una...</option>
-                            <option value="Hogar">Hogar y Reparaciones</option>
-                            <option value="Limpieza">Limpieza</option>
-                            <option value="Tecnología">Informática y Tecnología</option>
-                            <option value="Clases">Clases Particulares</option>
-                            <option value="Mascotas">Cuidado de Mascotas</option>
+                            <option value="Hogar y Reformas">Hogar y Reformas</option>
+                            <option value="Limpieza y Mantenimiento">Limpieza y Mantenimiento</option>
+                            <option value="Informática y Tecnología">Informática y Tecnología</option>
+                            <option value="Clases y Formación">Clases y Formación</option>
+                            <option value="Salud y Bienestar">Salud y Bienestar</option>
+                            <option value="Cuidado de Personas">Cuidado de Personas</option>
+                            <option value="Mascotas">Mascotas</option>
+                            <option value="Eventos y Entretenimiento">Eventos y Entretenimiento</option>
+                            <option value="Transporte y Mudanzas">Transporte y Mudanzas</option>
+                            <option value="Mecánica">Mecánica</option>
+                            <option value="Otros">Otros</option>
                         </select>
                     </div>
 
@@ -108,13 +121,16 @@
 
                 <div class="form-group">
                     <label>Descripción detallada</label>
-                    <textarea name="descripcion" rows="5" placeholder="Explica tu experiencia, herramientas que incluyes, disponibilidad..." required style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; font-family: inherit;"></textarea>
+                    <textarea name="descripcion" rows="5"
+                        placeholder="Explica tu experiencia, herramientas que incluyes, disponibilidad..." required
+                        style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; font-family: inherit;"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label>Foto de portada</label>
                     <div class="file-upload" id="drop-zone">
-                        <i class="fas fa-cloud-upload-alt fa-2x" style="color: var(--primary); margin-bottom: 0.5rem;"></i>
+                        <i class="fas fa-cloud-upload-alt fa-2x"
+                            style="color: var(--primary); margin-bottom: 0.5rem;"></i>
                         <p style="color: var(--text-gray);">Haz clic para subir una imagen</p>
                         <input type="file" name="ficheroImagen" accept="image/*" onchange="previewFile(this)">
                     </div>
@@ -130,11 +146,11 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 ServiJobs - Proyecto Final de Grado</p>
+        <p>&copy; 2025 ServiClick</p>
     </footer>
 
     <script th:src="@{/main.js}"></script>
-    
+
     <script>
         function previewFile(input) {
             const fileName = document.getElementById('file-name');
@@ -147,4 +163,5 @@
         }
     </script>
 </body>
+
 </html>

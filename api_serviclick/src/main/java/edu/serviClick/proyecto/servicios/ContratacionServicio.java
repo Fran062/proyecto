@@ -18,7 +18,6 @@ public class ContratacionServicio {
         this.contratacionesRepositorio = contratacionesRepositorio;
     }
 
-
     public List<Contratacion> buscarTodasLasContrataciones() {
         return contratacionesRepositorio.findAll();
     }
@@ -27,5 +26,4 @@ public class ContratacionServicio {
         return contratacionesRepositorio.save(contratacion);
     }
 
-    
 }

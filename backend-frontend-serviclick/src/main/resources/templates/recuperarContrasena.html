@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
+
 <body>
     <header>
         <nav>
             <a th:href="@{/}" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
             <div class="nav-links">
                 <a th:href="@{/}">Inicio</a>
+                <a th:href="@{/web/servicios}">Buscar Servicios</a>
+                <a th:href="@{/web/planes}">Ver Planes</a>
             </div>
         </nav>
     </header>
@@ -27,7 +31,7 @@
             </div>
 
             <form onsubmit="event.preventDefault();">
-                
+
                 <div id="step-email">
                     <div class="form-group">
                         <label>Correo Electrónico</label>
@@ -39,11 +43,15 @@
                 <div id="step-code" style="display: none;">
                     <div class="form-group">
                         <label>Código de seguridad (4 dígitos)</label>
-                        <input type="number" id="rec-code-input" placeholder="Ej. 1234" style="letter-spacing: 5px; font-size: 1.2rem; text-align: center;">
-                        <small style="color: #6b7280; display: block; margin-top: 5px;">Hemos enviado un código a tu correo.</small>
+                        <input type="number" id="rec-code-input" placeholder="Ej. 1234"
+                            style="letter-spacing: 5px; font-size: 1.2rem; text-align: center;">
+                        <small style="color: #6b7280; display: block; margin-top: 5px;">Hemos enviado un código a tu
+                            correo.</small>
                     </div>
-                    <button onclick="verificarCodigo()" class="btn-primary" style="width: 100%;">Verificar Código</button>
-                    <button onclick="reiniciarRecuperacion()" class="btn-outline" style="width: 100%; margin-top: 10px; border: none;">Cambiar correo</button>
+                    <button onclick="verificarCodigo()" class="btn-primary" style="width: 100%;">Verificar
+                        Código</button>
+                    <button onclick="reiniciarRecuperacion()" class="btn-outline"
+                        style="width: 100%; margin-top: 10px; border: none;">Cambiar correo</button>
                 </div>
 
                 <div id="step-password" style="display: none;">
@@ -55,7 +63,8 @@
                         <label>Repetir Nueva Contraseña</label>
                         <input type="password" id="rec-confirm-pass" placeholder="********">
                     </div>
-                    <button onclick="guardarNuevaPassword()" class="btn-primary" style="width: 100%;">Cambiar Contraseña</button>
+                    <button onclick="guardarNuevaPassword()" class="btn-primary" style="width: 100%;">Cambiar
+                        Contraseña</button>
                 </div>
 
                 <div style="text-align: center; margin-top: 1.5rem;">
@@ -71,6 +80,141 @@
         <p>&copy; 2025 ServiClicks</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/main.js}"></script>
+
+    <script>
+        // Variables de estado
+        let correoUsuario = "";
+        let codigoVerificado = "";
+
+        // Referencias al DOM
+        const stepEmail = document.getElementById("step-email");
+        const stepCode = document.getElementById("step-code");
+        const stepPassword = document.getElementById("step-password");
+
+        const titulo = document.getElementById("titulo-pagina");
+        const subtitulo = document.getElementById("subtitulo-pagina");
+
+        async function enviarCodigo() {
+            const correoInput = document.getElementById("rec-email");
+            if (!correoInput.checkValidity()) {
+                window.Toast.fire({ icon: 'error', title: 'Error', text: "Por favor, introduce un correo válido." });
+                return;
+            }
+
+            correoUsuario = correoInput.value;
+
+            try {
+                const response = await fetch('/api/recuperar-password/solicitar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: correoUsuario
+                });
+
+                if (response.ok) {
+                    mostrarPaso2();
+                } else {
+                    window.Toast.fire({ icon: 'error', title: 'Error', text: "No se encontró el usuario o error al enviar." });
+                }
+            } catch (error) {
+                console.error(error);
+                window.Toast.fire({ icon: 'error', title: 'Error', text: "Error de conexión." });
+            }
+        }
+
+        function mostrarPaso2() {
+            stepEmail.style.display = "none";
+            stepCode.style.display = "block";
+            titulo.innerText = "Verificar Código";
+            subtitulo.innerText = "Introduce el código de 4 dígitos enviado a " + correoUsuario;
+        }
+
+        async function verificarCodigo() {
+            const codigoInput = document.getElementById("rec-code-input").value;
+            if (codigoInput.length < 4) {
+                window.Toast.fire({ icon: 'error', title: 'Error', text: "El código debe tener 4 dígitos." });
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/recuperar-password/verificar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ correo: correoUsuario, codigo: codigoInput })
+                });
+
+                const valido = await response.json();
+
+                if (valido) {
+                    codigoVerificado = codigoInput;
+                    mostrarPaso3();
+                } else {
+                    window.Toast.fire({ icon: 'error', title: 'Error', text: "Código incorrecto o expirado." });
+                }
+            } catch (error) {
+                console.error(error);
+                window.Toast.fire({ icon: 'error', title: 'Error', text: "Error verificando." });
+            }
+        }
+
+        function mostrarPaso3() {
+            stepCode.style.display = "none";
+            stepPassword.style.display = "block";
+            titulo.innerText = "Nueva Contraseña";
+            subtitulo.innerText = "Crea una contraseña segura.";
+        }
+
+        async function guardarNuevaPassword() {
+            const pass1 = document.getElementById("rec-new-pass").value;
+            const pass2 = document.getElementById("rec-confirm-pass").value;
+
+            if (pass1 !== pass2) {
+                window.Toast.fire({ icon: 'error', title: 'Error', text: "Las contraseñas no coinciden." });
+                return;
+            }
+            if (pass1.length < 6) {
+                window.Toast.fire({ icon: 'error', title: 'Error', text: "Mínimo 6 caracteres." });
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/recuperar-password/cambiar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        correo: correoUsuario,
+                        codigo: codigoVerificado,
+                        nuevaPassword: pass1
+                    })
+                });
+
+                if (response.ok) {
+                    window.Toast.fire({
+                        title: "¡Éxito!",
+                        text: "Contraseña restablecida.",
+                        icon: "success"
+                    });
+                    setTimeout(() => {
+                        window.location.href = "/login?mensaje=contrasena_restablecida";
+                    }, 2000);
+                } else {
+                    window.Toast.fire({ icon: 'error', title: 'Error', text: "Error al cambiar la contraseña." });
+                }
+            } catch (error) {
+                console.error(error);
+                window.Toast.fire({ icon: 'error', title: 'Error', text: "Error de conexión." });
+            }
+        }
+
+        function reiniciarRecuperacion() {
+            stepCode.style.display = "none";
+            stepEmail.style.display = "block";
+            titulo.innerText = "Recuperar Contraseña";
+            subtitulo.innerText = "Introduce tu correo para buscar tu cuenta.";
+            document.getElementById("rec-code-input").value = "";
+        }
+    </script>
 </body>
+
 </html>

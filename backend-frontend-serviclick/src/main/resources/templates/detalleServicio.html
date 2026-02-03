@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
+
 <body>
     <header>
         <nav>
@@ -18,12 +20,15 @@
                 <a th:href="@{/web/publicar}">Publicar Servicio</a>
                 <a th:href="@{/web/planes}">Ver Planes</a>
             </div>
-            <div class="auth-buttons" th:if="${session.usuarioLogueado == null}">
-                <a th:href="@{/login}" class="btn-primary">Iniciar Sesión</a>
+            <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado == null}">
+                <a th:href="@{/login}" class="btn-primary">Iniciar Sesión <i
+                        class="fa-solid fa-arrow-right-to-bracket"></i></a>
             </div>
             <div class="auth-buttons" th:if="${session.usuarioLogueado != null}">
-                <a th:href="@{/web/perfil}" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1e293b;">
-                    <div style="width: 40px; height: 40px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                <a th:href="@{/web/perfil}"
+                    style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1e293b;">
+                    <div
+                        style="width: 40px; height: 40px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                         <span th:text="${#strings.substring(session.usuarioLogueado.nombreCompleto, 0, 1)}">U</span>
                     </div>
                 </a>
@@ -37,18 +42,23 @@
         </a>
 
         <div class="detail-container" th:if="${servicio != null}">
-            
+
             <div class="detail-header">
                 <div style="flex: 1;">
-                    <h1 th:text="${servicio.titulo}" style="font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.2;">Título Servicio</h1>
-                    
+                    <h1 th:text="${servicio.titulo}" style="font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.2;">
+                        Título Servicio</h1>
+
                     <div class="user-info" style="font-size: 1.1rem; margin-top: 1rem;">
-                        <div class="user-avatar" style="width: 45px; height: 45px; font-size: 1rem;" 
-                             th:text="${servicio.profesional != null ? #strings.substring(servicio.profesional.nombreCompleto, 0, 1) : 'U'}">U</div>
+                        <div class="user-avatar" style="width: 45px; height: 45px; font-size: 1rem;"
+                            th:text="${servicio.profesional != null ? #strings.substring(servicio.profesional.nombreCompleto, 0, 1) : 'U'}">
+                            U</div>
                         <div>
-                            <span th:text="${servicio.profesional != null ? servicio.profesional.nombreCompleto : 'Usuario'}" style="display: block; font-weight: 600;">Nombre</span>
+                            <span
+                                th:text="${servicio.profesional != null ? servicio.profesional.nombreCompleto : 'Usuario'}"
+                                style="display: block; font-weight: 600;">Nombre</span>
                             <span style="font-size: 0.9rem; color: var(--text-gray);">
-                                Categoría: <strong th:text="${servicio.categoria}">General</strong> • <span th:text="${servicio.profesional != null ? servicio.profesional.ubicacion : 'España'}">Ubicación</span>
+                                Categoría: <strong th:text="${servicio.categoria}">General</strong> • <span
+                                    th:text="${servicio.profesional != null ? servicio.profesional.ubicacion : 'España'}">Ubicación</span>
                             </span>
                         </div>
                     </div>
@@ -56,67 +66,157 @@
 
                 <div style="text-align: right; min-width: 150px;">
                     <div style="font-size: 2.2rem; font-weight: 700; color: var(--primary);">
-                        <span th:text="${servicio.precioHora}">0</span>€<span style="font-size: 1rem; color: var(--text-gray);">/hora</span>
+                        <span th:text="${servicio.precioHora}">0</span>€<span
+                            style="font-size: 1rem; color: var(--text-gray);">/hora</span>
                     </div>
                     <div style="color: var(--accent); margin-top: 5px;">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <span style="color: var(--text-dark); font-weight: 600;">5.0</span>
+                        <span th:if="${promedio != null and promedio > 0}">
+                            <i th:each="i : ${#numbers.sequence(1, 5)}"
+                                th:class="${promedio >= i} ? 'fas fa-star' : (${promedio >= (i - 0.5)} ? 'fas fa-star-half-alt' : 'far fa-star')"
+                                style="color: var(--accent);">
+                            </i>
+                            <span th:text="${#numbers.formatDecimal(promedio, 1, 1)}"
+                                style="color: var(--text-dark); font-weight: 600; margin-left: 5px;">0.0</span>
+                        </span>
+                        <span th:if="${promedio == null or promedio == 0}"
+                            style="font-size: 0.9rem; color: var(--text-gray);">
+                            Sin valoraciones
+                        </span>
                     </div>
-                    <div style="font-size: 0.85rem; color: var(--text-gray);">(Nuevo)</div>
                 </div>
             </div>
 
-            <div style="background-color: #e2e8f0; height: 300px; border-radius: 8px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; color: #94a3b8; overflow: hidden;">
-                <img th:if="${servicio.imagen != null}" th:src="${servicio.imagen}" style="width: 100%; height: 100%; object-fit: cover;" alt="Imagen del servicio">
-                <div th:if="${servicio.imagen == null}" style="text-align: center;">
+            <div
+                style="background-color: #f8fafc; height: 500px; border-radius: 12px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; color: #94a3b8; overflow: hidden; border: 1px solid #e2e8f0;">
+                <img th:if="${servicio.imagen != null}" th:src="${servicio.imagen}"
+                    style="width: 100%; height: 100%; object-fit: contain; display: block;" alt="Imagen del servicio">
+                <div th:if="${servicio.imagen == null}" style="text-align: center; padding: 2rem;">
                     <i class="fas fa-image fa-4x"></i>
-                    <p style="margin-top: 1rem;">Imagen del servicio</p>
+                    <p style="margin-top: 1rem;">Imagen no disponible</p>
                 </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
-                
+
                 <div>
                     <h3 style="margin-bottom: 1rem;">Sobre este servicio</h3>
-                    <p th:text="${servicio.descripcion}" style="margin-bottom: 1rem; color: var(--text-dark); white-space: pre-line;">
+                    <p th:text="${servicio.descripcion}"
+                        style="margin-bottom: 1rem; color: var(--text-dark); white-space: pre-line;">
                         Descripción del servicio...
                     </p>
 
-                    <h3 style="margin-bottom: 1rem; border-top: 1px solid #e5e7eb; padding-top: 2rem;">Opiniones de clientes</h3>
-                    <p style="color: #666; font-style: italic;">Este servicio es nuevo y aún no tiene reseñas.</p>
-                </div>
+                    <h3 style="margin-bottom: 1rem; border-top: 1px solid #e5e7eb; padding-top: 2rem;">Opiniones de
+                        clientes</h3>
 
-                <div>
-                    <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; position: sticky; top: 100px;">
-                        <h4 style="margin-bottom: 1rem;">¿Te interesa?</h4>
-                        <div style="margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-gray);">
-                            <i class="fas fa-check-circle" style="color: green;"></i> Identidad verificada<br>
-                            <i class="fas fa-check-circle" style="color: green;"></i> Garantía de satisfacción
+                    <!-- Lista de Reseñas -->
+                    <div th:if="${not #lists.isEmpty(resenas)}" style="margin-bottom: 2rem;">
+                        <div th:each="resena : ${resenas}"
+                            style="border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <strong
+                                    th:text="${resena.usuario != null ? resena.usuario.nombreCompleto : 'Anónimo'}">Usuario</strong>
+                                <div
+                                    style="color: var(--accent); font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
+                                    <div style="color: var(--accent);">
+                                        <i th:each="i : ${#numbers.sequence(1, 5)}"
+                                            th:class="${resena.calificacion >= i} ? 'fas fa-star' : (${resena.calificacion >= (i - 0.5)} ? 'fas fa-star-half-alt' : 'far fa-star')"
+                                            style="color: var(--accent);"></i>
+                                    </div>
+                                    <form
+                                        th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id == resena.usuario.id}"
+                                        th:action="@{/web/resenar/eliminar}" method="post" style="margin: 0;">
+                                        <input type="hidden" name="resenaId" th:value="${resena.id}">
+                                        <input type="hidden" name="servicioId" th:value="${servicio.id}">
+                                        <button type="submit"
+                                            style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.8rem;"
+                                            onclick="return confirm('¿Borrar tu reseña?')">
+                                            <i class="fas fa-trash"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <p th:text="${resena.comentario}" style="color: var(--text); font-size: 0.95rem;"></p>
                         </div>
-                        
-                        <button class="btn-primary" style="width: 100%; margin-bottom: 0.5rem; text-align: center;" onclick="alert('Funcionalidad de contacto próximamente')">
-                            Solicitar Presupuesto
-                        </button>   
+                    </div>
+
+                    <p th:if="${#lists.isEmpty(resenas)}" style="color: #666; font-style: italic; margin-bottom: 2rem;">
+                        Este servicio aún no tiene reseñas. ¡Sé el primero en opinar!
+                    </p>
+
+                    <!-- Formulario de Reseña -->
+                    <div th:if="${session.usuarioLogueado != null}"
+                        style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin-bottom: 1rem;">Escribir una reseña</h4>
+                        <form th:action="@{/web/resenar}" method="post">
+                            <input type="hidden" name="servicioId" th:value="${servicio.id}">
+
+                            <div style="margin-bottom: 1rem;">
+                                <label
+                                    style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Calificación</label>
+                                <div class="rating-input">
+                                    <select name="calificacion" required
+                                        style="padding: 0.5rem; border-radius: 4px; border: 1px solid #cbd5e1;">
+                                        <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+                                        <option value="4">⭐⭐⭐⭐ Bueno</option>
+                                        <option value="3">⭐⭐⭐ Regular</option>
+                                        <option value="2">⭐⭐ Malo</option>
+                                        <option value="1">⭐ Muy malo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Tu
+                                    opinión</label>
+                                <textarea name="comentario" rows="3" required
+                                    style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #cbd5e1;"
+                                    placeholder="Comparte tu experiencia..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary"
+                                style="font-size: 0.9rem; padding: 0.5rem 1rem;">Publicar reseña</button>
+                        </form>
+                    </div>
+
+                    <div th:if="${session.usuarioLogueado == null}"
+                        style="margin-top: 1rem; padding: 1rem; background: #fff7ed; border-radius: 6px; border: 1px solid #fed7aa; color: #c2410c;">
+                        <a th:href="@{/login}"
+                            style="color: #c2410c; font-weight: bold; text-decoration: underline;">Inicia sesión</a>
+                        para dejar una reseña.
+                    </div>
+
+                    <div>
+                        <div
+                            style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; position: sticky; top: 100px;">
+                            <h4 style="margin-bottom: 1rem;">¿Te interesa?</h4>
+                            <div style="margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-gray);">
+                                <i class="fas fa-check-circle" style="color: green;"></i> Identidad verificada<br>
+                                <i class="fas fa-check-circle" style="color: green;"></i> Garantía de satisfacción
+                            </div>
+
+                            <button class="btn-primary" style="width: 100%; margin-bottom: 0.5rem; text-align: center;"
+                                onclick="contactProfessional()">
+                                Solicitar Presupuesto
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="detail-container" th:if="${servicio == null}" style="text-align: center; padding: 4rem;">
-            <h2>Servicio no encontrado</h2>
-            <p>El servicio que buscas no existe o ha sido eliminado.</p>
-            <a th:href="@{/web/servicios}" class="btn-primary" style="margin-top: 1rem; display: inline-block;">Ver otros servicios</a>
-        </div>
+            <div class="detail-container" th:if="${servicio == null}" style="text-align: center; padding: 4rem;">
+                <h2>Servicio no encontrado</h2>
+                <p>El servicio que buscas no existe o ha sido eliminado.</p>
+                <a th:href="@{/web/servicios}" class="btn-primary" style="margin-top: 1rem; display: inline-block;">Ver
+                    otros servicios</a>
+            </div>
     </main>
 
     <footer>
         <p>&copy; 2025 ServiClicks</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/main.js}"></script>
 </body>
+
 </html>

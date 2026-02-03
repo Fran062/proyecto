@@ -35,4 +35,9 @@ public class UsuarioServicio {
     public UsuarioDTO buscarPorId(Long id) {
         return apiCliente.buscarUsuarioPorId(id);
     }
+
+    public UsuarioDTO registrarUsuario(UsuarioDTO usuario) {
+        // La API se encarga de hashear la contraseña
+        return apiCliente.crearUsuario(usuario);
+    }
 }

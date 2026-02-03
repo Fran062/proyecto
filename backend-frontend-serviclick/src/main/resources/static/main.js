@@ -12,13 +12,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // --- FUNCIONES VISUALES ---
 
+// Configuración Global de Toast (si Swal está cargado)
+if (typeof Swal !== 'undefined') {
+  window.Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: false
+  });
+}
+
 function showBackendAlert() {
-  alert("Esta función requiere estar registrado.");
+  if (typeof window.Toast !== 'undefined') {
+    window.Toast.fire({
+      icon: 'warning',
+      title: 'Acceso Restringido',
+      text: 'Esta función requiere estar registrado.'
+    });
+  } else {
+    alert("Esta función requiere estar registrado.");
+  }
 }
 
 function contactProfessional() {
-  alert("Redirigiendo a la pasarela de pago...");
+  if (typeof window.Toast !== 'undefined') {
+    window.Toast.fire({
+      icon: 'info',
+      title: 'Redirigiendo...',
+      text: 'Conectando con la pasarela de pago.'
+    });
+  } else {
+    alert("Redirigiendo a la pasarela de pago...");
+  }
 }
-
-// Puedes mantener tus funciones de cargarServicios() y mostrarServiciosEnHTML()
-// pero asegúrate de que la URL del fetch apunte a tu API real (http://localhost:8080/api/servicios)

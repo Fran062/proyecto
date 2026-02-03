@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
+
 <body>
     <header>
         <nav>
@@ -15,6 +17,7 @@
             <div class="nav-links">
                 <a th:href="@{/}">Inicio</a>
                 <a th:href="@{/web/servicios}">Buscar Servicios</a>
+                <a th:href="@{/web/planes}">Ver Planes</a>
             </div>
         </nav>
     </header>
@@ -33,7 +36,7 @@
                 </div>
                 <button type="submit" class="btn-primary" style="width: 100%;">Entrar</button>
                 <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
-                    ¿No tienes cuenta? 
+                    ¿No tienes cuenta?
                     <a th:href="@{/registro}" style="color: var(--primary); font-weight: 600;">Regístrate
                     </a>
                 </p>
@@ -47,15 +50,39 @@
     <footer>
         <p>&copy; 2025 ServiClicks</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/main.js}"></script>
 
     <script th:if="${error != null}">
         // Recogemos el mensaje de error enviado desde Java
-        let mensaje = "[[${error}]]"; 
-        alert("❌ " + mensaje);
+        let mensaje = "[[${error}]]";
+        if (typeof window.Toast !== 'undefined') {
+            window.Toast.fire({
+                icon: 'error',
+                title: 'Error de acceso',
+                text: mensaje
+            });
+        } else {
+            Swal.fire({
+                title: 'Error de acceso',
+                text: mensaje,
+                icon: 'error',
+                confirmButtonColor: '#ef4444'
+            });
+        }
     </script>
-    
+
+    <script th:if="${param.mensaje != null and param.mensaje[0] == 'contrasena_restablecida'}">
+        if (typeof window.Toast !== 'undefined') {
+            window.Toast.fire({
+                icon: 'success',
+                title: '¡Contraseña Restablecida!',
+                text: 'Ya puedes iniciar sesión.'
+            });
+        } else {
+            Swal.fire('¡Contraseña Restablecida!', 'Ya puedes iniciar sesión.', 'success');
+        }
+    </script>
 </body>
-</html>
-</body>
+
 </html>

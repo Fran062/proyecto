@@ -8,7 +8,7 @@ public class ServicioDTO {
     private Double precioHora;
     private String categoria;
     private String imagen;
-    
+
     // El profesional que ofrece el servicio (UsuarioDTO ya existe)
     private UsuarioDTO profesional;
 
@@ -62,6 +62,22 @@ public class ServicioDTO {
     public void setProfesional(UsuarioDTO profesional) {
         this.profesional = profesional;
     }
-    public String getImagen() { return imagen; }
-    public void setImagen(String imagen) { this.imagen = imagen; }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    private Double promedio;
+
+    public Double getPromedio() {
+        return promedio;
+    }
+
+    public void setPromedio(Double promedio) {
+        this.promedio = promedio;
+    }
 }

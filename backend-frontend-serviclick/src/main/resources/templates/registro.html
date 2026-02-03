@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
+
 <body>
     <header>
         <nav>
@@ -15,49 +17,70 @@
             <div class="nav-links">
                 <a th:href="@{/}">Inicio</a>
                 <a th:href="@{/web/servicios}">Buscar Servicios</a>
+                <a th:href="@{/web/planes}">Ver Planes</a>
             </div>
         </nav>
     </header>
 
     <main>
-        <div class="login-box" style="max-width: 500px;"> <h2 style="text-align: center; margin-bottom: 0.5rem;">Crear Cuenta Nueva</h2>
-            <p style="text-align: center; color: var(--text-gray); margin-bottom: 1.5rem;">Únete a la comunidad de servicios</p>
-            
-            <form onsubmit="handleRegister(event)">
+        <div class="login-box" style="max-width: 500px;">
+            <h2 style="text-align: center; margin-bottom: 0.5rem;">Crear Cuenta Nueva</h2>
+            <p style="text-align: center; color: var(--text-gray); margin-bottom: 1.5rem;">Únete a la comunidad de
+                servicios</p>
+
+            <div th:if="${error}"
+                style="background-color: #fee2e2; color: #dc2626; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; text-align: center;">
+                <span th:text="${error}">Error message</span>
+            </div>
+
+            <form th:action="@{/registro}" th:object="${usuarioDTO}" method="post">
                 <div class="form-group">
                     <label>Nombre Completo</label>
-                    <input type="text" id="reg-nombre" placeholder="Ej. Ana García" required>
+                    <input type="text" th:field="*{nombreCompleto}" placeholder="Ej. Ana García" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Correo Electrónico</label>
-                    <input type="email" id="reg-email" placeholder="usuario@ejemplo.com" required>
+                    <input type="email" th:field="*{correo}" placeholder="usuario@ejemplo.com" required>
+                </div>
+
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="text" th:field="*{telefono}" placeholder="600123456" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ubicación</label>
+                        <input type="text" th:field="*{ubicacion}" placeholder="Ej. Madrid" required>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label>Tipo de Cuenta</label>
-                    <select id="reg-rol" required style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                    <select th:field="*{rol}" required
+                        style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px;">
                         <option value="" disabled selected>Selecciona tu rol...</option>
-                        <option  id="tipo-cliente" value="CLIENTE">Quiero contratar servicios</option>
-                        <option id="tipo-cliente" value="PROFESIONAL">Quiero ofrecer mis servicios</option>
+                        <option value="CLIENTE">Quiero contratar servicios</option>
+                        <option value="PROFESIONAL">Quiero ofrecer mis servicios</option>
                     </select>
                 </div>
 
                 <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="form-group">
                         <label>Contraseña</label>
-                        <input type="password" id="reg-pass" placeholder="********" required>
+                        <input type="password" th:field="*{password}" placeholder="********" required>
                     </div>
                     <div class="form-group">
                         <label>Confirmar Contraseña</label>
-                        <input type="password" id="reg-pass-confirm" placeholder="********" required>
+                        <input type="password" name="confirmPassword" placeholder="********" required>
                     </div>
                 </div>
-                
+
                 <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Registrarse</button>
-                
+
                 <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
-                    ¿Ya tienes cuenta? <a th:href="@{/login}" style="color: var(--primary); font-weight: 600;">Inicia Sesión aquí</a>
+                    ¿Ya tienes cuenta? <a th:href="@{/login}" style="color: var(--primary); font-weight: 600;">Inicia
+                        Sesión aquí</a>
                 </p>
             </form>
         </div>
@@ -68,5 +91,50 @@
     </footer>
 
     <script th:src="@{/main.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const telefonoInput = document.querySelector('input[name="telefono"]');
+
+        telefonoInput.addEventListener('input', function (e) {
+            // Remove non-numeric chars
+            const val = e.target.value.replace(/\D/g, '');
+            // Optional: Auto-format? No, just validate logic
+        });
+
+        // HTML5 validation
+        telefonoInput.setAttribute('pattern', '(\\+34|0034|34)?[6789]\\d{8}');
+        telefonoInput.setAttribute('title', 'Introduce un número de teléfono español válido (empieza por 6, 7, 8, 9, con 9 dígitos)');
+
+        telefonoInput.addEventListener('invalid', function (e) {
+            e.target.setCustomValidity('El número debe ser español y tener el formato correcto.');
+        });
+        telefonoInput.addEventListener('input', function (e) {
+            e.target.setCustomValidity('');
+        });
+
+        // Check for error messages from server rendered by Thymeleaf?
+        // Or if we have a URL param error?
+        // The HTML uses <div th:if="${error}"> so it renders serverside. 
+        // We can optionally use Swal to show it if present.
+
+        const errorDiv = document.querySelector('div[th\\:if="${error}"]') || document.querySelector('div[style*="#fee2e2"]');
+        if (errorDiv && errorDiv.innerText.trim().length > 0) {
+            if (typeof window.Toast !== 'undefined') {
+                window.Toast.fire({
+                    icon: 'error',
+                    title: 'Error de Registro',
+                    text: errorDiv.innerText.trim()
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error de Registro',
+                    text: errorDiv.innerText.trim(),
+                    icon: 'error'
+                });
+            }
+            errorDiv.style.display = 'none'; // Hide the ugly box if we show Swal
+        }
+    </script>
 </body>
+
 </html>

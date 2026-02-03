@@ -66,4 +66,19 @@ public class SuscripcionControlador {
         return ResponseEntity.ok(nueva);
     }
 
+    @PostMapping("/contratar")
+    public ResponseEntity<Suscripcion> contratarPlan(@RequestBody java.util.Map<String, Object> payload) {
+        try {
+            Long usuarioId = Long.valueOf(payload.get("usuarioId").toString());
+            String nombrePlan = payload.get("nombrePlan").toString();
+            Double precio = Double.valueOf(payload.get("precio").toString());
+
+            Suscripcion s = suscripcionServicio.contratarPlan(usuarioId, nombrePlan, precio);
+            return ResponseEntity.ok(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }
