@@ -11,9 +11,9 @@
 <body>
     <header>
         <nav>
-            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
+            <a th:href="@{/}" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
             <div class="nav-links">
-                <a href="index.html">Inicio</a>
+                <a th:href="@{/}">Inicio</a>
             </div>
         </nav>
     </header>
@@ -59,7 +59,7 @@
                 </div>
 
                 <div style="text-align: center; margin-top: 1.5rem;">
-                    <a href="login.html" class="btn-outline" style="border: none; font-size: 0.9rem;">
+                    <a th:href="@{/login}" class="btn-outline" style="border: none; font-size: 0.9rem;">
                         <i class="fas fa-arrow-left"></i> Volver al Login
                     </a>
                 </div>

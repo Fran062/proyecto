@@ -40,7 +40,7 @@ services:
     depends_on:
       - serviclick-api # Espera a que la API arranque
     environment:
-      API_URL: http://springboot_serviclick_container:8080/api
+      API_URL: http://serviclick-api:8080/api
 
 volumes:
   postgres_data:

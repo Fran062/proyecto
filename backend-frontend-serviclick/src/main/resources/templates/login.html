@@ -11,10 +11,10 @@
 <body>
     <header>
         <nav>
-            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
+            <a th:href="@{/}" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
             <div class="nav-links">
-                <a href="index.html">Inicio</a>
-                <a href="listadoServicios.html">Buscar Servicios</a>
+                <a th:href="@{/}">Inicio</a>
+                <a th:href="@{/web/servicios}">Buscar Servicios</a>
             </div>
         </nav>
     </header>
@@ -34,11 +34,11 @@
                 <button type="submit" class="btn-primary" style="width: 100%;">Entrar</button>
                 <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
                     ¿No tienes cuenta? 
-                    <a href="registro.html" style="color: var(--primary); font-weight: 600;">Regístrate
+                    <a th:href="@{/registro}" style="color: var(--primary); font-weight: 600;">Regístrate
                     </a>
                 </p>
                 <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
-                    <a href="recuperarContrasena.html" style="color: var(--primary);">¿Olvidaste tu contraseña?</a>
+                    <a th:href="@{/recuperar-contrasena}" style="color: var(--primary);">¿Olvidaste tu contraseña?</a>
                 </p>
             </form>
         </div>

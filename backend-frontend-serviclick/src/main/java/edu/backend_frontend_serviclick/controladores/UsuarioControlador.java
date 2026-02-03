@@ -25,12 +25,13 @@ public class UsuarioControlador {
     }
 
     @PostMapping("/login")
-    public String procesarLogin(@ModelAttribute LoginDTO datos, Model model) {
+    public String procesarLogin(@ModelAttribute LoginDTO datos, Model model, jakarta.servlet.http.HttpSession session) {
         
-        boolean loginCorrecto = usuarioServicio.realizarLogin(datos);
+        edu.backend_frontend_serviclick.dto.UsuarioDTO usuarioLogueado = usuarioServicio.realizarLogin(datos);
 
-        if (loginCorrecto) {
-            return "redirect:/web/planes"; // Éxito
+        if (usuarioLogueado != null) {
+            session.setAttribute("usuarioLogueado", usuarioLogueado);
+            return "redirect:/"; // Exito -> Inicio
         } else {
             model.addAttribute("error", "Credenciales incorrectas");
             model.addAttribute("loginDTO", datos);

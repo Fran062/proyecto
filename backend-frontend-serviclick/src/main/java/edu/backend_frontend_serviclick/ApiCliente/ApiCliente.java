@@ -12,7 +12,12 @@ public class ApiCliente {
     private final WebClient webClient;
 
     public ApiCliente(@Value("${api.base-url}") String apiUrl, WebClient.Builder builder) {
-        this.webClient = builder.baseUrl(apiUrl).build();
+        if (apiUrl == null || apiUrl.isBlank()) {
+            throw new IllegalStateException("FATAL: 'api.base-url' is not configured or is empty. Please check application.properties or environment variables.");
+        }
+        String cleanUrl = apiUrl.trim();
+        System.out.println(">>> ApiCliente initialized. Target API URL: [" + cleanUrl + "]");
+        this.webClient = builder.baseUrl(cleanUrl).build();
     }
 
     public UsuarioDTO buscarUsuarioPorCorreo(String correo) {
@@ -38,6 +43,42 @@ public class ApiCliente {
                     .block();
         } catch (Exception e) {
             System.out.println("Error buscando usuario por ID: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public java.util.List<edu.backend_frontend_serviclick.dto.ServicioDTO> listarServicios() {
+        try {
+            return webClient.get()
+                    .uri("/servicios") // GET /api/servicios
+                    .retrieve()
+                    .bodyToFlux(edu.backend_frontend_serviclick.dto.ServicioDTO.class)
+                    .collectList()
+                    .block();
+        } catch (Exception e) {
+            System.out.println("Error listando servicios: " + e.getMessage());
+            return java.util.Collections.emptyList();
+        }
+    }
+    public edu.backend_frontend_serviclick.dto.ServicioDTO buscarServicioPorId(Long id) {
+        try {
+           java.util.List<edu.backend_frontend_serviclick.dto.ServicioDTO> todos = listarServicios();
+           return todos.stream().filter(s -> s.getId().equals(id)).findFirst().orElse(null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public edu.backend_frontend_serviclick.dto.ServicioDTO crearServicio(edu.backend_frontend_serviclick.dto.ServicioDTO servicio) {
+        try {
+            return webClient.post()
+                    .uri("/servicios")
+                    .bodyValue(servicio)
+                    .retrieve()
+                    .bodyToMono(edu.backend_frontend_serviclick.dto.ServicioDTO.class)
+                    .block();
+        } catch (Exception e) {
+            System.out.println("Error creando servicio: " + e.getMessage());
             return null;
         }
     }

@@ -11,66 +11,86 @@
 <body>
     <header>
         <nav>
-            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
+            <a th:href="@{/}" class="logo"><i class="fas fa-handshake"></i> ServiClicks</a>
             <div class="nav-links">
-                <a href="index.html">Inicio</a>
-                <a href="listadoServicios.html">Buscar Servicios</a>
-                <a href="publicar.html">Publicar Servicio</a>
-                <a href="lista-planes.html">Ver Planes</a>
+                <a th:href="@{/}">Inicio</a>
+                <a th:href="@{/web/servicios}">Buscar Servicios</a>
+                <a th:href="@{/web/publicar}">Publicar Servicio</a>
+                <a th:href="@{/web/planes}">Ver Planes</a>
             </div>
-            <div class="auth-buttons">
-                <a href="login.html" class="btn-primary">Iniciar Sesión</a>
+            <div class="auth-buttons" th:if="${session.usuarioLogueado == null}">
+                <a th:href="@{/login}" class="btn-primary">Iniciar Sesión</a>
+            </div>
+            <div class="auth-buttons" th:if="${session.usuarioLogueado != null}">
+                <a th:href="@{/web/perfil}" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1e293b;">
+                    <div style="width: 40px; height: 40px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                        <span th:text="${#strings.substring(session.usuarioLogueado.nombreCompleto, 0, 1)}">U</span>
+                    </div>
+                </a>
             </div>
         </nav>
     </header>
 
     <main>
         <h2>Resultados de búsqueda</h2>
-        <div class="filters">
-            <select style="padding: 0.5rem;">
-                <option>Todas las categorías</option>
-                <option>Hogar</option>
-                <option>Tecnología</option>
+        <form th:action="@{/web/servicios}" method="get" class="filters" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            
+            <!-- Hidden input to keep search keyword (REMUEVE ESTO, YA QUE AHORA SERÁ VISIBLE) -->
+            <!-- <input type="hidden" name="keyword" th:value="${keyword}"> -->
+
+            <div class="search-box" style="margin: 0; padding: 0; box-shadow: none; max-width: 300px;">
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="Palabra clave..." style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 200px;">
+            </div>
+
+            <select name="categoria" style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">Todas las categorías</option>
+                <option value="Hogar" th:selected="${categoriaSeleccionada == 'Hogar'}">Hogar</option>
+                <option value="Limpieza" th:selected="${categoriaSeleccionada == 'Limpieza'}">Limpieza</option>
+                <option value="Tecnología" th:selected="${categoriaSeleccionada == 'Tecnología'}">Tecnología</option>
+                <option value="Clases" th:selected="${categoriaSeleccionada == 'Clases'}">Clases</option>
+                <option value="Mascotas" th:selected="${categoriaSeleccionada == 'Mascotas'}">Mascotas</option>
             </select>
-            <select style="padding: 0.5rem;">
-                <option>Ordenar por precio</option>
-                <option>Mejor valorados</option>
+            
+            <select name="orden" style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">Ordenar por...</option>
+                <option value="precio_asc" th:selected="${ordenSeleccionado == 'precio_asc'}">Precio: Menor a Mayor</option>
+                <option value="precio_desc" th:selected="${ordenSeleccionado == 'precio_desc'}">Precio: Mayor a Menor</option>
             </select>
-        </div>
+
+            <button type="submit" class="btn-primary" style="padding: 0.5rem 1rem; cursor: pointer;">
+                <i class="fas fa-filter"></i> Filtrar
+            </button>
+            
+            <a th:if="${keyword != null or categoriaSeleccionada != null}" th:href="@{/web/servicios}" style="color: #666; text-decoration: underline; font-size: 0.9rem;">
+                Limpiar filtros
+            </a>
+        </form>
 
         <div class="services-grid">
-            <a href="detalleServicio.html" class="service-card">
-                <div class="card-img"><i class="fas fa-tools fa-3x"></i></div>
-                <div class="card-body">
-                    <div class="user-info">
-                        <div class="user-avatar">JP</div>
-                        <span>Juan Pérez</span>
-                    </div>
-                    <div class="service-title">Fontanería urgente 24h</div>
-                    <div class="rating">
-                        <i class="fas fa-star"></i> 4.8 <span style="color: #666">(45 opiniones)</span>
-                    </div>
-                    <div class="price">
-                        35€ / hora
-                        <span class="badge">Hogar</span>
-                    </div>
+            <div th:if="${servicios == null or servicios.empty}" style="grid-column: 1/-1; text-align: center; color: #666; padding: 2rem;">
+                <p>No hay servicios publicados todavía.</p>
+            </div>
+
+            <a th:each="servicio : ${servicios}" th:href="@{/web/detalle-servicio(id=${servicio.id})}" class="service-card">
+                <div class="card-img">
+                    <i class="fas fa-3x" 
+                       th:classappend="${servicio.categoria == 'Tecnología' ? 'fa-laptop-code' : (servicio.categoria == 'Hogar' ? 'fa-tools' : 'fa-hand-sparkles')}"></i>
                 </div>
-            </a>
-            
-            <a href="detalleServicio.html" class="service-card">
-                <div class="card-img"><i class="fas fa-desktop fa-3x"></i></div>
                 <div class="card-body">
                     <div class="user-info">
-                        <div class="user-avatar">MG</div>
-                        <span>María García</span>
+                        <div class="user-avatar" 
+                             th:text="${servicio.profesional != null and servicio.profesional.nombreCompleto != null and !servicio.profesional.nombreCompleto.isEmpty() ? #strings.substring(servicio.profesional.nombreCompleto, 0, 1) : 'U'}">
+                             U
+                        </div>
+                        <span th:text="${servicio.profesional != null ? servicio.profesional.nombreCompleto : 'Usuario'}">Nombre</span>
                     </div>
-                    <div class="service-title">Reparación de Ordenadores</div>
+                    <div class="service-title" th:text="${servicio.titulo}">Título del Servicio</div>
                     <div class="rating">
-                        <i class="fas fa-star"></i> 4.5 <span style="color: #666">(12 opiniones)</span>
+                        <i class="fas fa-star"></i> 5.0 <span style="color: #666">(Nueva)</span>
                     </div>
                     <div class="price">
-                        20€ / hora
-                        <span class="badge">Informática</span>
+                        <span th:text="${servicio.precioHora}">0</span>€/hora
+                        <span class="badge" th:text="${servicio.categoria}">General</span>
                     </div>
                 </div>
             </a>

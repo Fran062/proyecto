@@ -11,11 +11,12 @@
 <body>
     <header>
         <nav>
-            <a href="index.html" class="logo"><i class="fas fa-handshake"></i> ServiJobs</a>
+            <a th:href="@{/}" class="logo"><i class="fas fa-handshake"></i> ServiJobs</a>
             <div class="nav-links">
-                <a href="index.html">Inicio</a>
-                <a href="listadoServicios.html">Buscar Servicios</a>
-                <a href="publicar.html">Publicar Servicio</a>
+                <a th:href="@{/}">Inicio</a>
+                <a th:href="@{/web/servicios}">Buscar Servicios</a>
+                <a th:href="@{/web/publicar}">Publicar Servicio</a>
+                <a th:href="@{/web/planes}">Ver Planes</a>
             </div>
             <div class="auth-buttons">
                 </div>
@@ -37,21 +38,21 @@
                     </div>
                 </div>
 
-                <form onsubmit="guardarPerfil(event)">
+                <form onsubmit="guardarPerfil(event)" th:object="${usuario}">
                     <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
                         <div class="form-group">
                             <label>Nombre Completo</label>
-                            <input type="text" value="Usuario de Prueba" required>
+                            <input type="text" th:field="*{nombreCompleto}" required>
                         </div>
                         <div class="form-group">
                             <label>Teléfono</label>
-                            <input type="tel" value="+34 600 000 000">
+                            <input type="tel" th:field="*{telefono}">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Correo Electrónico</label>
-                        <input type="email" value="usuario@ejemplo.com" disabled style="background-color: #f3f4f6; cursor: not-allowed;">
+                        <input type="email" th:field="*{correo}" disabled style="background-color: #f3f4f6; cursor: not-allowed;">
                         <small style="color: #6b7280;">El correo no se puede cambiar.</small>
                     </div>
 
@@ -71,9 +72,9 @@
                 <p style="color: #b91c1c; margin-bottom: 1rem; font-size: 0.9rem;">
                     Si cierras sesión tendrás que volver a introducir tus credenciales para acceder.
                 </p>
-                <button onclick="cerrarSesion()" class="btn-danger">
+                <a th:href="@{/logout}" class="btn-danger" style="display: inline-block; text-decoration: none; text-align: center;">
                     <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                </button>
+                </a>
             </div>
         </div>
     </main>

@@ -26,6 +26,9 @@ public class Servicio {
     @ManyToOne
     @JoinColumn(name = "usrId", nullable = false) 
     private Usuario profesional;
+    
+    @Column(name = "serImagen", columnDefinition = "TEXT")
+    private String imagen;
 
     public Servicio() {}
 
@@ -42,4 +45,6 @@ public class Servicio {
     public void setCategoria(String categoria) { this.categoria = categoria; }
     public Usuario getProfesional() { return profesional; }
     public void setProfesional(Usuario profesional) { this.profesional = profesional; }
+    public String getImagen() { return imagen; }
+    public void setImagen(String imagen) { this.imagen = imagen; }
 }

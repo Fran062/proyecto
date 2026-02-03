@@ -17,18 +17,19 @@ public class UsuarioServicio {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public boolean realizarLogin(LoginDTO datosLogin) {
+    public UsuarioDTO realizarLogin(LoginDTO datosLogin) {
         // 1. Pedir a la API el usuario por correo (solo datos, sin validar pass)
         UsuarioDTO usuarioDeBaseDatos = apiCliente.buscarUsuarioPorCorreo(datosLogin.getCorreo());
 
         if (usuarioDeBaseDatos == null) {
-            return false; // El usuario no existe
+            return null; // El usuario no existe
         }
 
         // 2. LA LÓGICA: Comparar la contraseña plana del login con el Hash de la BBDD
-        // datosLogin.getContrasena() -> "1234"
-        // usuarioDeBaseDatos.getPassword() -> "$2a$10$XyZ..."
-        return passwordEncoder.matches(datosLogin.getContrasena(), usuarioDeBaseDatos.getPassword());
+        if (passwordEncoder.matches(datosLogin.getContrasena(), usuarioDeBaseDatos.getPassword())) {
+            return usuarioDeBaseDatos;
+        }
+        return null;
     }
 
     public UsuarioDTO buscarPorId(Long id) {
