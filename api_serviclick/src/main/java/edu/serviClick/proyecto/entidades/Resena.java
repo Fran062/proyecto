@@ -9,21 +9,22 @@ public class Resena {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "resId")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "resCalificacion", nullable = false)
     private Integer calificacion; // 1 to 5
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "resComentario", columnDefinition = "TEXT")
     private String comentario;
 
     @ManyToOne
-    @JoinColumn(name = "servicio_id", nullable = false)
+    @JoinColumn(name = "serId", nullable = false)
     @JsonIgnoreProperties("resenas")
     private Servicio servicio;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usrId", nullable = false)
     // Avoid circular recursion or too much data
     @JsonIgnoreProperties({ "password", "roles" })
     private Usuario usuario;

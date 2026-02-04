@@ -1,7 +1,11 @@
 package edu.serviClick.proyecto.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
+
+import java.time.LocalDateTime;
+import edu.serviClick.proyecto.enums.Rol;
 
 @Entity
 @Table(name = "usuarios")
@@ -12,34 +16,62 @@ public class Usuario {
     @Column(name = "usrId")
     private Long id;
 
-    @Column(name = "usrNombreCompleto", nullable = false)
+    @Column(name = "usrNombreCompleto", nullable = false, length = 50)
+    @jakarta.validation.constraints.Size(max = 50, message = "El nombre no puede exceder 50 caracteres")
     private String nombreCompleto;
 
     @Column(name = "usrCorreo", unique = true, nullable = false)
+    @jakarta.validation.constraints.Email(message = "Debe ser un correo válido")
     private String correo;
 
     @Column(name = "usrPassword", nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "usrRol")
-    private String rol;
+    private Rol rol;
 
     @Column(name = "usrTelefono")
+    @jakarta.validation.constraints.Pattern(regexp = "^(\\+34|0034|34)?[6789]\\d{8}$", message = "Debe ser un teléfono español válido")
     private String telefono;
 
     @Column(name = "usrUbicacion")
     private String ubicacion;
 
+    @Column(name = "usrHabilitado")
+    private Boolean habilitado = false; // Default false for email confirmation
+
+    @Column(name = "usrFechaRegistro")
+    private LocalDateTime fechaRegistro;
+
+    @PrePersist
+    public void prePersist() {
+        if (fechaRegistro == null) {
+            fechaRegistro = LocalDateTime.now();
+        }
+    }
+
     // Relaciones
 
     @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Servicio> serviciosOfrecidos;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Contratacion> historialContrataciones;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Suscripcion suscripcion;
+
+    @Column(name = "usrCodigoRecuperacion")
+    private String codigoRecuperacion;
+
+    @Column(name = "usrTokenVerificacion")
+    private String tokenVerificacion;
+
+    @Column(name = "usrFechaExpiracionCodigo")
+    private java.time.LocalDateTime fechaExpiracionCodigo;
 
     public Usuario() {
     }
@@ -77,11 +109,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 
@@ -92,12 +124,6 @@ public class Usuario {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-
-    @Column(name = "usrCodigoRecuperacion")
-    private String codigoRecuperacion;
-
-    @Column(name = "usrFechaExpiracionCodigo")
-    private java.time.LocalDateTime fechaExpiracionCodigo;
 
     public String getCodigoRecuperacion() {
         return codigoRecuperacion;
@@ -129,5 +155,45 @@ public class Usuario {
 
     public void setSuscripcion(Suscripcion suscripcion) {
         this.suscripcion = suscripcion;
+    }
+
+    public Boolean getHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(Boolean habilitado) {
+        this.habilitado = habilitado;
+    }
+
+    public String getTokenVerificacion() {
+        return tokenVerificacion;
+    }
+
+    public void setTokenVerificacion(String tokenVerificacion) {
+        this.tokenVerificacion = tokenVerificacion;
+    }
+
+    public List<Contratacion> getHistorialContrataciones() {
+        return historialContrataciones;
+    }
+
+    public void setHistorialContrataciones(List<Contratacion> historialContrataciones) {
+        this.historialContrataciones = historialContrataciones;
+    }
+
+    public List<Servicio> getServiciosOfrecidos() {
+        return serviciosOfrecidos;
+    }
+
+    public void setServiciosOfrecidos(List<Servicio> serviciosOfrecidos) {
+        this.serviciosOfrecidos = serviciosOfrecidos;
+    }
+
+    public LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 }

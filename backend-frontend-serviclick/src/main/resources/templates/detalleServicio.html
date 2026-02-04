@@ -17,8 +17,14 @@
             <div class="nav-links">
                 <a th:href="@{/}">Inicio</a>
                 <a th:href="@{/web/servicios}">Buscar Servicios</a>
-                <a th:href="@{/web/publicar}">Publicar Servicio</a>
-                <a th:href="@{/web/planes}">Ver Planes</a>
+
+                <a th:href="@{/web/publicar}"
+                    th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.rol.toString() == 'PROFESIONAL' or session.usuarioLogueado.rol.toString() == 'ADMIN')}">Publicar
+                    Servicio</a>
+
+                <a th:href="@{/web/planes}"
+                    th:if="${session.usuarioLogueado == null or (session.usuarioLogueado != null and (session.usuarioLogueado.rol.toString() == 'CLIENTE' or session.usuarioLogueado.rol.toString() == 'ADMIN'))}">Ver
+                    Planes</a>
             </div>
             <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado == null}">
                 <a th:href="@{/login}" class="btn-primary">Iniciar Sesión <i
@@ -127,9 +133,9 @@
                                         th:action="@{/web/resenar/eliminar}" method="post" style="margin: 0;">
                                         <input type="hidden" name="resenaId" th:value="${resena.id}">
                                         <input type="hidden" name="servicioId" th:value="${servicio.id}">
-                                        <button type="submit"
+                                        <button type="button"
                                             style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.8rem;"
-                                            onclick="return confirm('¿Borrar tu reseña?')">
+                                            onclick="confirmarBorrado(this)">
                                             <i class="fas fa-trash"></i> Eliminar
                                         </button>
                                     </form>
@@ -194,10 +200,20 @@
                                 <i class="fas fa-check-circle" style="color: green;"></i> Garantía de satisfacción
                             </div>
 
-                            <button class="btn-primary" style="width: 100%; margin-bottom: 0.5rem; text-align: center;"
-                                onclick="contactProfessional()">
-                                Solicitar Presupuesto
-                            </button>
+                            <a th:if="${session.usuarioLogueado == null or (session.usuarioLogueado.id != servicio.profesional.id or session.usuarioLogueado.rol.toString() == 'ADMIN')}"
+                                th:href="@{/web/pago-servicio(servicioId=${servicio.id}, precio=${servicio.precioHora})}"
+                                class="btn-primary"
+                                style="width: 100%; margin-bottom: 0.5rem; text-align: center; display: block; text-decoration: none;">
+                                Contratar Servicio
+                            </a>
+
+                            <!-- Botón para EDITAR servicio -->
+                            <a th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == servicio.profesional.id or session.usuarioLogueado.rol.toString() == 'ADMIN')}"
+                                th:href="@{/web/editar-servicio(id=${servicio.id})}" class="btn-primary"
+                                style="width: 100%; margin-bottom: 0.5rem; text-align: center; display: block; text-decoration: none; background-color: #f59e0b;">
+                                <i class="fas fa-edit"></i> Editar servicio
+                            </a>
+
                         </div>
                     </div>
                 </div>
@@ -217,6 +233,73 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/main.js}"></script>
+    <script>
+        function confirmarBorrado(btn) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                html: "Esta acción no se puede deshacer.<br>Escribe <b>BORRAR</b> para confirmar:",
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
+                preConfirm: (texto) => {
+                    if (texto !== 'BORRAR') {
+                        Swal.showValidationMessage('Debes escribir BORRAR exactamente');
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    btn.closest('form').submit();
+                }
+            })
+            return false;
+        }
+
+        function confirmarBorradoServicio(btn) {
+            Swal.fire({
+                title: '¿Eliminar servicio?',
+                html: "Esta acción eliminará permanentemente tu servicio.<br>Escribe <b>ELIMINAR</b> para confirmar:",
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                preConfirm: (texto) => {
+                    if (texto !== 'ELIMINAR') {
+                        Swal.showValidationMessage('Debes escribir ELIMINAR exactamente');
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    btn.closest('form').submit();
+                }
+            })
+            return false;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('resenaExito') === 'true') {
+                if (typeof window.Toast !== 'undefined') window.Toast.fire({ icon: 'success', title: 'Publicada', text: 'Tu reseña se ha guardado.' });
+                window.history.replaceState({}, document.title, window.location.pathname + "?id=" + urlParams.get('id'));
+            }
+            if (urlParams.get('resenaEliminada') === 'true') {
+                if (typeof window.Toast !== 'undefined') window.Toast.fire({ icon: 'info', title: 'Eliminada', text: 'Tu reseña ha sido eliminada.' });
+                window.history.replaceState({}, document.title, window.location.pathname + "?id=" + urlParams.get('id'));
+            }
+        });
+    </script>
 </body>
 
 </html>

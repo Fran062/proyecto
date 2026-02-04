@@ -18,7 +18,10 @@ public class ApiCliente {
         }
         String cleanUrl = apiUrl.trim();
         System.out.println(">>> ApiCliente initialized. Target API URL: [" + cleanUrl + "]");
-        this.webClient = builder.baseUrl(cleanUrl).build();
+        this.webClient = builder
+                .baseUrl(cleanUrl)
+                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024))
+                .build();
     }
 
     public UsuarioDTO buscarUsuarioPorCorreo(String correo) {
@@ -235,4 +238,84 @@ public class ApiCliente {
             return null;
         }
     }
+
+    public boolean confirmarCuenta(String token) {
+        try {
+            webClient.post()
+                    .uri("/usuarios/confirmar")
+                    .bodyValue(token)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .block();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error confirmando cuenta: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public edu.backend_frontend_serviclick.dto.ServicioDTO obtenerServicioPorId(Long id) {
+        try {
+            return webClient.get()
+                    .uri("/servicios/" + id)
+                    .retrieve()
+                    .bodyToMono(edu.backend_frontend_serviclick.dto.ServicioDTO.class)
+                    .block();
+        } catch (Exception e) {
+            System.out.println("Error obteniendo servicio por ID: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public boolean contratarServicio(Long usuarioId, Long servicioId, Double precio) {
+        try {
+            java.util.Map<String, Object> payload = new java.util.HashMap<>();
+            payload.put("usuarioId", usuarioId);
+            payload.put("servicioId", servicioId);
+            payload.put("precio", precio);
+
+            webClient.post()
+                    .uri("/contrataciones/crear")
+                    .bodyValue(payload)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .block();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error contratando servicio: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void eliminarServicio(Long servicioId) throws Exception {
+        try {
+            webClient.delete()
+                    .uri("/servicios/" + servicioId)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .block();
+        } catch (org.springframework.web.reactive.function.client.WebClientResponseException e) {
+            // Intentar extraer mensaje del backend
+            throw new Exception(e.getResponseBodyAsString());
+        } catch (Exception e) {
+            System.out.println("Error eliminando servicio: " + e.getMessage());
+            throw new Exception("Error al conectar con el servidor.");
+        }
+    }
+
+    public edu.backend_frontend_serviclick.dto.ServicioDTO actualizarServicio(Long id,
+            edu.backend_frontend_serviclick.dto.ServicioDTO servicio) {
+        try {
+            return webClient.put()
+                    .uri("/servicios/" + id)
+                    .bodyValue(servicio)
+                    .retrieve()
+                    .bodyToMono(edu.backend_frontend_serviclick.dto.ServicioDTO.class)
+                    .block();
+        } catch (Exception e) {
+            System.out.println("Error actualizando servicio: " + e.getMessage());
+            return null;
+        }
+    }
+
 }

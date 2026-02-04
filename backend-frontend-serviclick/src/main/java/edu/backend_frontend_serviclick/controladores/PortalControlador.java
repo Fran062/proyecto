@@ -176,7 +176,7 @@ public class PortalControlador {
 
         apiCliente.crearServicio(nuevoServicio);
 
-        return "redirect:/web/servicios";
+        return "redirect:/web/servicios?publicado=true";
     }
 
     @GetMapping("/recuperar-contrasena")
@@ -197,7 +197,7 @@ public class PortalControlador {
     @GetMapping("/logout")
     public String cerrarSesion(jakarta.servlet.http.HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        return "redirect:/login?logout=true";
     }
 
     @GetMapping("/web/detalle-servicio")
@@ -230,8 +230,6 @@ public class PortalControlador {
 
         edu.backend_frontend_serviclick.dto.UsuarioDTO usuario = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueado;
 
-        // We need the service object to send it to the API (or at least the ID if the
-        // DTO structure allows it)
         edu.backend_frontend_serviclick.dto.ServicioDTO servicio = new edu.backend_frontend_serviclick.dto.ServicioDTO();
         servicio.setId(servicioId);
 
@@ -244,7 +242,7 @@ public class PortalControlador {
         apiCliente.crearResena(resena);
 
         // Redirect back to the service details
-        return "redirect:/web/detalle-servicio?id=" + servicioId;
+        return "redirect:/web/detalle-servicio?id=" + servicioId + "&resenaExito=true";
     }
 
     @org.springframework.web.bind.annotation.PostMapping("/web/resenar/eliminar")
@@ -254,7 +252,7 @@ public class PortalControlador {
             return "redirect:/login";
         }
         apiCliente.eliminarResena(resenaId);
-        return "redirect:/web/detalle-servicio?id=" + servicioId;
+        return "redirect:/web/detalle-servicio?id=" + servicioId + "&resenaEliminada=true";
     }
 
     @org.springframework.web.bind.annotation.PostMapping("/web/perfil/guardar")
@@ -301,6 +299,16 @@ public class PortalControlador {
         }
     }
 
+    @GetMapping("/confirmar")
+    public String confirmarCuenta(@RequestParam String token) {
+        boolean exito = apiCliente.confirmarCuenta(token);
+        if (exito) {
+            return "redirect:/login?verificado=true";
+        } else {
+            return "redirect:/login?errorVerificacion=true";
+        }
+    }
+
     // Endpoint para verificar el código (AJAX)
     @org.springframework.web.bind.annotation.PostMapping("/api/recuperar-password/verificar")
     @org.springframework.web.bind.annotation.ResponseBody
@@ -324,5 +332,122 @@ public class PortalControlador {
         } catch (Exception e) {
             return org.springframework.http.ResponseEntity.badRequest().build();
         }
+    }
+
+    // Endpoint para mostrar página de pago de servicio
+    @GetMapping("/web/pago-servicio")
+    public String mostrarPagoServicio(@RequestParam Long servicioId,
+            @RequestParam Double precio,
+            Model model,
+            jakarta.servlet.http.HttpSession session) {
+        if (session.getAttribute("usuarioLogueado") == null) {
+            return "redirect:/login";
+        }
+
+        // Obtener detalles del servicio
+        edu.backend_frontend_serviclick.dto.ServicioDTO servicio = apiCliente.obtenerServicioPorId(servicioId);
+        model.addAttribute("servicio", servicio);
+        model.addAttribute("servicioId", servicioId);
+        model.addAttribute("precio", precio);
+        return "pago-servicio";
+    }
+
+    // Endpoint para procesar el pago de servicio (AJAX)
+    @org.springframework.web.bind.annotation.PostMapping("/web/pago-servicio/procesar")
+    @org.springframework.web.bind.annotation.ResponseBody
+    public org.springframework.http.ResponseEntity<Void> procesarPagoServicio(
+            @org.springframework.web.bind.annotation.RequestBody java.util.Map<String, Object> payload,
+            jakarta.servlet.http.HttpSession session) {
+        Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueadoObj == null) {
+            return org.springframework.http.ResponseEntity.status(401).build();
+        }
+        edu.backend_frontend_serviclick.dto.UsuarioDTO u = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+
+        try {
+            Long servicioId = Long.valueOf(payload.get("servicioId").toString());
+            Double precio = Double.valueOf(payload.get("precio").toString());
+
+            // Llamar al API para crear la contratación
+            boolean exito = apiCliente.contratarServicio(u.getId(), servicioId, precio);
+
+            if (exito) {
+                return org.springframework.http.ResponseEntity.ok().build();
+            } else {
+                return org.springframework.http.ResponseEntity.badRequest().build();
+            }
+        } catch (Exception e) {
+            return org.springframework.http.ResponseEntity.badRequest().build();
+        }
+    }
+
+
+    @GetMapping("/web/editar-servicio")
+    public String editarServicio(@RequestParam Long id, Model model, jakarta.servlet.http.HttpSession session,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueadoObj == null) {
+            return "redirect:/login";
+        }
+        edu.backend_frontend_serviclick.dto.UsuarioDTO u = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+
+        edu.backend_frontend_serviclick.dto.ServicioDTO servicio = apiCliente.buscarServicioPorId(id);
+        if (servicio == null) {
+            redirectAttributes.addFlashAttribute("mensajeError", "Servicio no encontrado.");
+            return "redirect:/web/servicios";
+        }
+
+        // Verificar permisos: Solo el dueño o el admin pueden editar
+        if (servicio.getProfesional() == null || (!servicio.getProfesional().getId().equals(u.getId())
+                && !u.getRol().toString().equals("ADMIN"))) {
+            redirectAttributes.addFlashAttribute("mensajeError", "No tienes permisos para editar este servicio.");
+            return "redirect:/web/servicios";
+        }
+
+        model.addAttribute("servicio", servicio);
+        return "publicar"; // Reutilizamos la vista
+    }
+
+    @org.springframework.web.bind.annotation.PostMapping("/web/editar-servicio")
+    public String procesarEdicionServicio(@RequestParam Long id,
+            @RequestParam String titulo,
+            @RequestParam String categoria,
+            @RequestParam Double precioHora,
+            @RequestParam String descripcion,
+            @RequestParam(required = false) org.springframework.web.multipart.MultipartFile ficheroImagen,
+            jakarta.servlet.http.HttpSession session,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+
+        Object usuarioLogueado = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueado == null) {
+            return "redirect:/login";
+        }
+
+        // Recuperar servicio actual
+        edu.backend_frontend_serviclick.dto.ServicioDTO servicioActual = apiCliente.buscarServicioPorId(id);
+        if (servicioActual == null) {
+            redirectAttributes.addFlashAttribute("mensajeError", "El servicio no existe o fue eliminado.");
+            return "redirect:/web/servicios";
+        }
+
+        // Actualizar datos
+        servicioActual.setTitulo(titulo);
+        servicioActual.setCategoria(categoria);
+        servicioActual.setPrecioHora(precioHora);
+        servicioActual.setDescripcion(descripcion);
+
+        if (ficheroImagen != null && !ficheroImagen.isEmpty()) {
+            try {
+                String base64Image = "data:" + ficheroImagen.getContentType() + ";base64," +
+                        java.util.Base64.getEncoder().encodeToString(ficheroImagen.getBytes());
+                servicioActual.setImagen(base64Image);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        apiCliente.actualizarServicio(id, servicioActual);
+
+        return "redirect:/web/detalle-servicio?id=" + id + "&editado=true";
     }
 }

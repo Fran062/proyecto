@@ -17,5 +17,8 @@ public interface UsuariosRepositorio extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByCorreo(String correo);
 
+    Optional<Usuario> findByTokenVerificacion(String token);
+
+    long countByRol(edu.serviClick.proyecto.enums.Rol rol);
 
 }

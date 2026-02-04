@@ -24,6 +24,8 @@ services:
       - "8080:8080"
     depends_on:
       - postgresdbserviclick
+    volumes:
+      - ./logs:/logs  # <--- MAPEO DE LOGS: Carpeta local ./logs <-> Carpeta contenedora /logs
     environment:
       # Conecta con la BBDD por el nombre del contenedor
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgresdbserviclick:5432/${DB_NAME}
@@ -39,6 +41,8 @@ services:
       - "8081:8081" # Exponemos el 8081
     depends_on:
       - serviclick-api # Espera a que la API arranque
+    volumes:
+      - ./logs:/logs  # <--- MAPEO DE LOGS: Misma carpeta local ./logs
     environment:
       API_URL: http://serviclick-api:8080/api
 

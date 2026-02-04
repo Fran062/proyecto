@@ -30,8 +30,18 @@ function showBackendAlert() {
       title: 'Acceso Restringido',
       text: 'Esta función requiere estar registrado.'
     });
+  } else if (typeof Swal !== 'undefined') {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Acceso Restringido',
+      text: 'Esta función requiere estar registrado.',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
   } else {
-    alert("Esta función requiere estar registrado.");
+    console.warn("Esta función requiere estar registrado. (Swal not loaded)");
   }
 }
 
@@ -42,7 +52,17 @@ function contactProfessional() {
       title: 'Redirigiendo...',
       text: 'Conectando con la pasarela de pago.'
     });
+  } else if (typeof Swal !== 'undefined') {
+    Swal.fire({
+      icon: 'info',
+      title: 'Redirigiendo...',
+      text: 'Conectando con la pasarela de pago.',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
   } else {
-    alert("Redirigiendo a la pasarela de pago...");
+    console.log("Redirigiendo a la pasarela de pago...");
   }
 }

@@ -17,8 +17,14 @@
             <div class="nav-links">
                 <a th:href="@{/}">Inicio</a>
                 <a th:href="@{/web/servicios}">Buscar Servicios</a>
-                <a th:href="@{/web/publicar}">Publicar Servicio</a>
-                <a th:href="@{/web/planes}">Ver Planes</a>
+
+                <a th:href="@{/web/publicar}"
+                    th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.rol.toString() == 'PROFESIONAL' or session.usuarioLogueado.rol.toString() == 'ADMIN')}">Publicar
+                    Servicio</a>
+
+                <a th:href="@{/web/planes}"
+                    th:if="${session.usuarioLogueado == null or (session.usuarioLogueado != null and (session.usuarioLogueado.rol.toString() == 'CLIENTE' or session.usuarioLogueado.rol.toString() == 'ADMIN'))}">Ver
+                    Planes</a>
             </div>
             <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado == null}">
                 <a th:href="@{/login}" class="btn-primary">Iniciar Sesión <i
@@ -103,6 +109,19 @@
                         para disfrutar de ventajas exclusivas.</p>
                     <a th:href="@{/web/planes}" class="btn-primary">Ver Planes Disponibles</a>
                 </div>
+            </div>
+
+            <div
+                style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                <h2 style="margin-bottom: 1rem;"><i class="fas fa-file-invoice" style="color: #6366f1;"></i> Facturación
+                    e Historial</h2>
+                <p style="color: #64748b; margin-bottom: 1rem;">Descarga un informe detallado con tus servicios
+                    contratados y plan activo.</p>
+                <a th:href="@{'http://localhost:8080/api/reportes/factura/' + ${session.usuarioLogueado.id}}"
+                    target="_blank" class="btn-primary"
+                    style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+                    <i class="fas fa-file-pdf"></i> Descargar Factura Completa
+                </a>
             </div>
 
             <div style="background: #fef2f2; padding: 1.5rem; border-radius: 12px; border: 1px solid #fee2e2;">

@@ -7,5 +7,5 @@ import edu.serviClick.proyecto.entidades.Contratacion;
 
 @Repository
 public interface ContratacionesRepositorio extends JpaRepository<Contratacion, Long> {
-
+    long countByServicioId(Long servicioId);
 }

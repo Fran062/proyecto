@@ -17,8 +17,14 @@
             <div class="nav-links">
                 <a th:href="@{/}">Inicio</a>
                 <a th:href="@{/web/servicios}">Buscar Servicios</a>
-                <a th:href="@{/web/publicar}">Publicar Servicio</a>
-                <a th:href="@{/web/planes}">Ver Planes</a>
+
+                <a th:href="@{/web/publicar}"
+                    th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.rol.toString() == 'PROFESIONAL' or session.usuarioLogueado.rol.toString() == 'ADMIN')}">Publicar
+                    Servicio</a>
+
+                <a th:href="@{/web/planes}"
+                    th:if="${session.usuarioLogueado == null or (session.usuarioLogueado != null and (session.usuarioLogueado.rol.toString() == 'CLIENTE' or session.usuarioLogueado.rol.toString() == 'ADMIN'))}">Ver
+                    Planes</a>
             </div>
             <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado == null}">
                 <a th:href="@{/login}" class="btn-primary">Iniciar Sesión <i
@@ -140,7 +146,38 @@
     <footer>
         <p>&copy; 2025 ServiClicks</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/main.js}"></script>
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Mensajes por URL (Para compatibilidad con los que ya existen)
+            if (urlParams.get('publicado') === 'true') {
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Publicado', text: 'Tu servicio ha sido publicado.', showConfirmButton: false, timer: 3000 });
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            // Mensajes FLASH (URL Limpia - Los que usaremos de ahora en adelante)
+            /*[# th:if="${mensajeError != null}"]*/
+            Swal.fire({
+                icon: 'error',
+                title: 'No se puede realizar la acción',
+                text: /*[[${mensajeError}]]*/ 'Ha ocurrido un error',
+                confirmButtonColor: '#3b82f6'
+            });
+            /*[/]*/
+
+            /*[# th:if="${mensajeExito != null}"]*/
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: /*[[${mensajeExito}]]*/ 'Operación completada',
+                confirmButtonColor: '#3b82f6'
+            });
+            /*[/]*/
+        });
+    </script>
 </body>
 
 </html>

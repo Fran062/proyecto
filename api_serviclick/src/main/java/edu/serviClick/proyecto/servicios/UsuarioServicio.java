@@ -11,14 +11,22 @@ import edu.serviClick.proyecto.dto.LoginDTO;
 import edu.serviClick.proyecto.entidades.Usuario;
 import edu.serviClick.proyecto.repositorios.UsuariosRepositorio;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class UsuarioServicio {
+
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioServicio.class);
 
     @Autowired
     private UsuariosRepositorio usuarioRepositorio;
 
     @Autowired
     private BCryptPasswordEncoder encriptadorContrasena;
+
+    @Autowired
+    private EmailServicio emailServicio;
 
     public UsuarioServicio(UsuariosRepositorio usuarioRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
@@ -29,12 +37,27 @@ public class UsuarioServicio {
     }
 
     public Usuario guardarUsuario(Usuario usuario) {
+        logger.info("Iniciando registro de nuevo usuario: {}", usuario.getCorreo());
 
         String contrasenaTextoPlano = usuario.getPassword();
         String contrasenaHasheada = encriptadorContrasena.encode(contrasenaTextoPlano);
         usuario.setPassword(contrasenaHasheada);
 
-        return usuarioRepositorio.save(usuario);
+        // Verification logic
+        usuario.setHabilitado(false);
+        String token = java.util.UUID.randomUUID().toString();
+        usuario.setTokenVerificacion(token);
+
+        Usuario guardado = usuarioRepositorio.save(usuario);
+        logger.info("Usuario registrado exitosamente en BD (Pendiente de activación): {}", guardado.getId());
+
+        try {
+            emailServicio.enviarConfirmacion(guardado.getCorreo(), token);
+            logger.info("Correo de confirmación enviado a: {}", guardado.getCorreo());
+        } catch (Exception e) {
+            logger.error("Error enviando correo de confirmación a {}: {}", guardado.getCorreo(), e.getMessage());
+        }
+        return guardado;
     }
 
     public Optional<Usuario> buscarUsuarioPorNombre(String nombre) {
@@ -71,13 +94,31 @@ public class UsuarioServicio {
                 usuario.getPassword());
 
         if (passwordMatch) {
+            if (!Boolean.TRUE.equals(usuario.getHabilitado())) {
+                System.out.println("Usuario no habilitado. Debe confirmar su correo.");
+                return Optional.empty();
+            }
             return Optional.of(usuario);
         } else {
             return Optional.empty();
         }
     }
 
+    public boolean confirmarCuenta(String token) {
+        Optional<Usuario> userOpt = usuarioRepositorio.findByTokenVerificacion(token);
+        if (userOpt.isPresent()) {
+            Usuario usuario = userOpt.get();
+            usuario.setHabilitado(true);
+            usuario.setTokenVerificacion(null);
+            usuarioRepositorio.save(usuario);
+            return true;
+        }
+        return false;
+    }
+
     public Usuario actualizarUsuario(Long id, Usuario usuarioActualizado) {
+        logger.info("Intento de actualización de perfil para usuario ID: {}", id);
+
         Optional<Usuario> usuarioExistenteOpt = usuarioRepositorio.findById(id);
 
         if (usuarioExistenteOpt.isPresent()) {
@@ -102,14 +143,14 @@ public class UsuarioServicio {
                 usuarioExistente.setPassword(nuevaPass);
             }
 
-            return usuarioRepositorio.save(usuarioExistente);
+            Usuario actualizado = usuarioRepositorio.save(usuarioExistente);
+            logger.info("Perfil actualizado exitosamente para usuario ID: {}", id);
+            return actualizado;
         } else {
+            logger.error("Error al actualizar perfil: Usuario no encontrado con ID: {}", id);
             throw new RuntimeException("Usuario no encontrado con ID: " + id);
         }
     }
-
-    @Autowired
-    private EmailServicio emailServicio;
 
     public void solicitarRecuperacionContrasena(String correo) {
         Optional<Usuario> usuarioOpt = usuarioRepositorio.findByCorreo(correo);
@@ -174,5 +215,21 @@ public class UsuarioServicio {
             usuario.setFechaExpiracionCodigo(null);
             usuarioRepositorio.save(usuario);
         }
+    }
+
+    public void eliminarUsuario(Long id) {
+        Usuario usuario = usuarioRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (usuario.getRol() == edu.serviClick.proyecto.enums.Rol.ADMIN) {
+            long adminCount = usuarioRepositorio.countByRol(edu.serviClick.proyecto.enums.Rol.ADMIN);
+            if (adminCount <= 1) {
+                throw new RuntimeException(
+                        "Operación denegada: No se puede eliminar al único administrador del sistema.");
+            }
+        }
+
+        usuarioRepositorio.deleteById(id);
+        logger.info("Usuario con ID {} eliminado exitosamente.", id);
     }
 }

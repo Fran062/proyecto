@@ -1,5 +1,6 @@
 package edu.serviClick.proyecto.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -25,6 +26,8 @@ public class Servicio {
 
     @ManyToOne
     @JoinColumn(name = "usrId", nullable = false)
+    @JsonIgnoreProperties({ "password", "serviciosOfrecidos", "historialContrataciones", "suscripcion",
+            "codigoRecuperacion", "fechaExpiracionCodigo", "tokenVerificacion", "habilitado" })
     private Usuario profesional;
 
     @Column(name = "serImagen", columnDefinition = "TEXT")

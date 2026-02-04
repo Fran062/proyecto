@@ -17,7 +17,14 @@
             <div class="nav-links">
                 <a th:href="@{/}">Inicio</a>
                 <a th:href="@{/web/servicios}">Buscar Servicios</a>
-                <a th:href="@{/web/planes}">Ver Planes</a>
+
+                <a th:href="@{/web/publicar}"
+                    th:if="${session.usuarioLogueado != null and session.usuarioLogueado.rol.toString() == 'PROFESIONAL'}">Publicar
+                    Servicio</a>
+
+                <a th:href="@{/web/planes}"
+                    th:if="${session.usuarioLogueado == null or (session.usuarioLogueado != null and session.usuarioLogueado.rol.toString() == 'CLIENTE')}">Ver
+                    Planes</a>
             </div>
         </nav>
     </header>
@@ -79,9 +86,19 @@
                 title: '¡Contraseña Restablecida!',
                 text: 'Ya puedes iniciar sesión.'
             });
-        } else {
-            Swal.fire('¡Contraseña Restablecida!', 'Ya puedes iniciar sesión.', 'success');
         }
+    </script>
+
+    <script th:if="${param.verificado != null}">
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.Toast !== 'undefined') window.Toast.fire({ icon: 'success', title: 'Cuenta verificada', text: 'Ya puedes iniciar sesión.' });
+        });
+    </script>
+
+    <script th:if="${param.errorVerificacion != null}">
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.Toast !== 'undefined') window.Toast.fire({ icon: 'error', title: 'Error', text: 'El enlace de confirmación es inválido o ha expirado.' });
+        });
     </script>
 </body>
 

@@ -17,8 +17,16 @@
       <div class="nav-links">
         <a th:href="@{/}">Inicio</a>
         <a th:href="@{/web/servicios}">Buscar Servicios</a>
-        <a th:href="@{/web/publicar}">Publicar Servicio</a>
-        <a th:href="@{/web/planes}">Ver Planes</a>
+
+        <!-- Publicar Servicio: PARA PROFESIONALES Y ADMIN -->
+        <a th:href="@{/web/publicar}"
+          th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.rol.toString() == 'PROFESIONAL' or session.usuarioLogueado.rol.toString() == 'ADMIN')}">Publicar
+          Servicio</a>
+
+        <!-- Ver Planes: PARA CLIENTES, ADMIN O ANÓNIMOS -->
+        <a th:href="@{/web/planes}"
+          th:if="${session.usuarioLogueado == null or (session.usuarioLogueado != null and (session.usuarioLogueado.rol.toString() == 'CLIENTE' or session.usuarioLogueado.rol.toString() == 'ADMIN'))}">Ver
+          Planes</a>
       </div>
       <div class="auth-buttons flex-center" th:if="${session.usuarioLogueado == null}">
         <a th:href="@{/login}" class="btn-primary">Iniciar Sesión <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
@@ -76,7 +84,21 @@
     <p>&copy; 2025 ServiClicks</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script th:src="@{/main.js}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('logout') === 'true') {
+        if (typeof window.Toast !== 'undefined') {
+          window.Toast.fire({ icon: 'info', title: 'Sesión Cerrada', text: 'Has cerrado sesión correctamente.' });
+        } else {
+          Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'Sesión Cerrada', text: 'Has cerrado sesión correctamente.', showConfirmButton: false, timer: 3000 });
+        }
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    });
+  </script>
 </body>
 
 </html>

@@ -36,7 +36,6 @@
             max-width: 1200px;
         }
 
-        /* DISEÑO DE LA TARJETA */
         .card {
             background: white;
             width: 300px;
@@ -55,7 +54,6 @@
             box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
         }
 
-        /* PLAN DESTACADO (CENTRAL) */
         .card.popular {
             border: 2px solid #3b82f6;
             transform: scale(1.05);
@@ -112,7 +110,6 @@
             padding: 0;
             margin: 20px 0;
             flex-grow: 1;
-            /* Empuja el botón al fondo */
         }
 
         .features li {
@@ -124,7 +121,6 @@
 
         .features li i {
             color: #10b981;
-            /* Verde check */
             margin-right: 10px;
         }
 
@@ -161,7 +157,6 @@
 
         .btn-back {
             margin: 60px 0 40px 0;
-            /* More spacing */
             color: #64748b;
             text-decoration: none;
             font-weight: 600;
@@ -180,12 +175,11 @@
         <div class="card"
             th:classappend="${usuario != null and usuario.suscripcion != null and usuario.suscripcion.nombrePlan == 'Pack Desplazamiento'} ? 'active-plan' : ''">
             <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
-            <div class="plan-title">Pack Desplazamiento</div>
+            <div class="plan-title">Pack Básico</div>
             <div class="price">5.99€<span>/mes</span></div>
             <ul class="features">
                 <li><i class="fa-solid fa-check"></i> Desplazamiento GRATIS siempre</li>
                 <li><i class="fa-solid fa-check"></i> Atención estándar</li>
-                <li><i class="fa-solid fa-check"></i> Presupuestos sin coste</li>
             </ul>
             <a th:href="@{/web/pago(plan='Pack Desplazamiento', precio='5.99')}" class="btn-select"
                 th:if="${usuario == null or usuario.suscripcion == null or usuario.suscripcion.nombrePlan != 'Pack Desplazamiento'}">Elegir
@@ -225,7 +219,7 @@
             <ul class="features">
                 <li><i class="fa-solid fa-check"></i> Desplazamiento GRATIS</li>
                 <li><i class="fa-solid fa-check"></i> 3h de Mano de Obra al mes</li>
-                <li><i class="fa-solid fa-check"></i> Revisión anual de caldera</li>
+                <li><i class="fa-solid fa-check"></i> Revisión anual de algún electrodoméstico</li>
                 <li><i class="fa-solid fa-check"></i> Atención en menos de 2h</li>
             </ul>
             <a th:href="@{/web/pago(plan='ServiClick VIP', precio='29.99')}" class="btn-select"
@@ -251,7 +245,6 @@
                     text: 'Disfruta de tus ventajas.'
                 });
             } else if (typeof Swal !== 'undefined') {
-                // Fallback if main.js Toast not ready
                 Swal.fire({
                     toast: true,
                     position: 'top-end',

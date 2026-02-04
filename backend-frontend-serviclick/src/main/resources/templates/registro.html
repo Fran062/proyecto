@@ -17,7 +17,14 @@
             <div class="nav-links">
                 <a th:href="@{/}">Inicio</a>
                 <a th:href="@{/web/servicios}">Buscar Servicios</a>
-                <a th:href="@{/web/planes}">Ver Planes</a>
+
+                <a th:href="@{/web/publicar}"
+                    th:if="${session.usuarioLogueado != null and session.usuarioLogueado.rol.toString() == 'PROFESIONAL'}">Publicar
+                    Servicio</a>
+
+                <a th:href="@{/web/planes}"
+                    th:if="${session.usuarioLogueado == null or (session.usuarioLogueado != null and session.usuarioLogueado.rol.toString() == 'CLIENTE')}">Ver
+                    Planes</a>
             </div>
         </nav>
     </header>

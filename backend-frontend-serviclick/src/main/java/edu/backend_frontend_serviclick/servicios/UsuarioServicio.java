@@ -25,7 +25,13 @@ public class UsuarioServicio {
             return null; // El usuario no existe
         }
 
-        // 2. LA LÓGICA: Comparar la contraseña plana del login con el Hash de la BBDD
+        // 2. Verificar si la cuenta está habilitada
+        if (!Boolean.TRUE.equals(usuarioDeBaseDatos.getHabilitado())) {
+            System.out.println("Usuario no habilitado. Debe confirmar su correo.");
+            return null; // Cuenta no activada
+        }
+
+        // 3. LA LÓGICA: Comparar la contraseña plana del login con el Hash de la BBDD
         if (passwordEncoder.matches(datosLogin.getContrasena(), usuarioDeBaseDatos.getPassword())) {
             return usuarioDeBaseDatos;
         }

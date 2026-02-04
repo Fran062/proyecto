@@ -1,21 +1,22 @@
 package edu.serviClick.proyecto.servicios;
 
 import edu.serviClick.proyecto.entidades.Suscripcion;
-import edu.serviClick.proyecto.repositorios.ModulosPlanRepositorio;
 import edu.serviClick.proyecto.repositorios.SuscripcionesRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class SuscripcionServicio {
 
-    @Autowired
-    private SuscripcionesRepositorio suscripcionRepositorio;
+    private static final Logger logger = LoggerFactory.getLogger(SuscripcionServicio.class);
 
     @Autowired
-    private ModulosPlanRepositorio moduloRepositorio;
+    private SuscripcionesRepositorio suscripcionRepositorio;
 
     @Autowired
     private edu.serviClick.proyecto.repositorios.UsuariosRepositorio usuarioRepositorio;
@@ -39,23 +40,33 @@ public class SuscripcionServicio {
     }
 
     public Suscripcion contratarPlan(Long usuarioId, String nombrePlan, Double precio) {
+        logger.info("Usuario ID: {} iniciando contratación/cambio de plan a: {}", usuarioId, nombrePlan);
+
         edu.serviClick.proyecto.entidades.Usuario usuario = usuarioRepositorio.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> {
+                    logger.error("Error al contratar plan: Usuario no encontrado con ID {}", usuarioId);
+                    return new RuntimeException("Usuario no encontrado");
+                });
 
         Suscripcion suscripcion = suscripcionRepositorio.findByUsuarioId(usuarioId);
 
+        String accion = "Nueva contratación";
         if (suscripcion == null) {
             suscripcion = new Suscripcion();
             suscripcion.setUsuario(usuario);
+        } else {
+            accion = "Cambio de plan";
+            logger.info("Usuario ID: {} cambiando plan actual ({}) a {}", usuarioId, suscripcion.getNombrePlan(),
+                    nombrePlan);
         }
 
         suscripcion.setNombrePlan(nombrePlan);
         suscripcion.setPrecioTotalMensual(precio);
         suscripcion.setFechaInicio(new java.util.Date());
         suscripcion.setActiva(true);
-        // Limpiamos módulos antiguos si los hubiera, ya que ahora usamos modo Plan
-        suscripcion.setModulosContratados(null);
 
-        return suscripcionRepositorio.save(suscripcion);
+        Suscripcion guardada = suscripcionRepositorio.save(suscripcion);
+        logger.info("Éxito: {} completada para usuario ID: {}. Plan: {}", accion, usuarioId, nombrePlan);
+        return guardada;
     }
 }

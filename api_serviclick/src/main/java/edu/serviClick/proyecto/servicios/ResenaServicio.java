@@ -7,8 +7,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class ResenaServicio {
+
+    private static final Logger logger = LoggerFactory.getLogger(ResenaServicio.class);
 
     @Autowired
     private ResenaRepositorio resenaRepositorio;
@@ -18,7 +23,16 @@ public class ResenaServicio {
     }
 
     public Resena guardarResena(Resena resena) {
-        return resenaRepositorio.save(resena);
+        boolean esNueva = (resena.getId() == null);
+        Resena guardada = resenaRepositorio.save(resena);
+
+        if (esNueva) {
+            logger.info("Nueva reseña creada (ID: {}) para Servicio ID: {} por Usuario: {}",
+                    guardada.getId(), // Asumiendo que Resena tiene getServicio() y getAutor()/getUsuario()
+                    (resena.getServicio() != null ? resena.getServicio().getId() : "N/A"),
+                    (resena.getUsuario() != null ? resena.getUsuario().getCorreo() : "Anónimo"));
+        }
+        return guardada;
     }
 
     public Double calcularPromedioCalificacion(Long servicioId) {
@@ -34,6 +48,7 @@ public class ResenaServicio {
     }
 
     public void eliminarResena(Long id) {
+        logger.info("Eliminando reseña con ID: {}", id);
         resenaRepositorio.deleteById(id);
     }
 }

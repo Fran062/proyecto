@@ -13,6 +13,7 @@ public class UsuarioDTO {
     private String rol;
     private String telefono;
     private String ubicacion;
+    private Boolean habilitado;
 
     // Constructor vacío (Obligatorio para que Spring pueda crear el objeto)
     public UsuarioDTO() {
@@ -74,6 +75,14 @@ public class UsuarioDTO {
 
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
+    }
+
+    public Boolean getHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(Boolean habilitado) {
+        this.habilitado = habilitado;
     }
 
     private SuscripcionDTO suscripcion;
