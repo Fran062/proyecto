@@ -24,12 +24,21 @@ public class UsuarioControlador {
     @Autowired
     private edu.backend_frontend_serviclick.ApiCliente.ApiCliente apiCliente;
 
+    /**
+     * Muestra la vista de login.
+     * @param model Modelo.
+     * @return Vista login.
+     */
     @GetMapping("/login")
     public String mostrarLogin(Model model) {
         model.addAttribute("loginDTO", new LoginDTO());
         return "login";
     }
 
+    /**
+     * Procesa el formulario de login.
+     * @param datos Credenciales.
+     */
     @PostMapping("/login")
     public String procesarLogin(@ModelAttribute LoginDTO datos, Model model, jakarta.servlet.http.HttpSession session) {
 
@@ -63,12 +72,18 @@ public class UsuarioControlador {
         }
     }
 
+    /**
+     * Muestra la vista de registro.
+     */
     @GetMapping("/registro")
     public String mostrarRegistro(Model model) {
         model.addAttribute("usuarioDTO", new edu.backend_frontend_serviclick.dto.UsuarioDTO());
         return "registro";
     }
 
+    /**
+     * Procesa el registro de un usuario.
+     */
     @PostMapping("/registro")
     public String procesarRegistro(@ModelAttribute edu.backend_frontend_serviclick.dto.UsuarioDTO usuarioDTO,
             Model model) {
@@ -99,6 +114,9 @@ public class UsuarioControlador {
         }
     }
 
+    /**
+     * Muestra el perfil público de un usuario por ID.
+     */
     @GetMapping("/perfil/{id}")
     public String verPerfil(@PathVariable Long id, Model model) {
         try {

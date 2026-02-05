@@ -8,18 +8,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class PortalControlador {
 
-    // Cuando entras a http://localhost:8081/, muestra index.html
+    /**
+     * Muestra la página de inicio.
+     */
     @GetMapping("/")
     public String index() {
         return "index";
     }
 
     // 2. Para ver los planes
+    /**
+     * Muestra la página de planes de suscripción.
+     * @param model Modelo para la vista.
+     * @param session Sesión HTTP.
+     * @return Vista lista-planes.
+     */
     @GetMapping("/web/planes")
     public String verPlanes(Model model, jakarta.servlet.http.HttpSession session) {
         Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
         if (usuarioLogueadoObj != null) {
             edu.backend_frontend_serviclick.dto.UsuarioDTO u = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+
+            if (!"CLIENTE".equalsIgnoreCase(u.getRol()) || !"ADMIN".equalsIgnoreCase(u.getRol())) {
+                return "redirect:/";
+            }
+
             // Refrescar datos
             edu.backend_frontend_serviclick.dto.UsuarioDTO fresco = apiCliente.buscarUsuarioPorId(u.getId());
             if (fresco != null) {
@@ -32,7 +45,12 @@ public class PortalControlador {
         return "lista-planes";
     }
 
-    // Endpoint para procesar el pago
+    /**
+     * Procesa el pago de una suscripción.
+     * @param payload Datos del pago.
+     * @param session Sesión HTTP.
+     * @return 200 OK si correcto.
+     */
     @org.springframework.web.bind.annotation.PostMapping("/web/pago/procesar")
     @org.springframework.web.bind.annotation.ResponseBody
     public org.springframework.http.ResponseEntity<Void> procesarPago(
@@ -66,6 +84,12 @@ public class PortalControlador {
     }
 
     // 3. Para la pantalla de pago
+    /**
+     * Muestra la página de pago para un plan específico.
+     * @param plan Nombre del plan.
+     * @param precio Precio del plan.
+     * @return Vista vista-pago.
+     */
     @GetMapping("/web/pago")
     public String irAPagar(@RequestParam String plan,
             @RequestParam String precio,
@@ -82,6 +106,14 @@ public class PortalControlador {
     @org.springframework.beans.factory.annotation.Autowired
     private edu.backend_frontend_serviclick.ApiCliente.ApiCliente apiCliente;
 
+    /**
+     * Lista los servicios disponibles con filtros.
+     * @param keyword Palabra clave de búsqueda.
+     * @param categoria Categoría filtro.
+     * @param orden Ordenamiento.
+     * @param model Modelo.
+     * @return Vista listadoServicios.
+     */
     @GetMapping("/web/servicios")
     public String listarServicios(@RequestParam(required = false) String keyword,
             @RequestParam(required = false) String categoria,
@@ -133,14 +165,32 @@ public class PortalControlador {
         return "listadoServicios";
     }
 
+    /**
+     * Muestra el formulario para publicar un nuevo servicio.
+     */
     @GetMapping("/web/publicar")
     public String publicar(jakarta.servlet.http.HttpSession session) {
-        if (session.getAttribute("usuarioLogueado") == null) {
+        Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueadoObj == null) {
             return "redirect:/login";
+        }
+        edu.backend_frontend_serviclick.dto.UsuarioDTO usuario = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+        if (!"PROFESIONAL".equalsIgnoreCase(usuario.getRol()) && !"ADMIN".equalsIgnoreCase(usuario.getRol())) {
+            return "redirect:/";
         }
         return "publicar";
     }
 
+    /**
+     * Procesa la publicación de un nuevo servicio.
+     * @param titulo Título.
+     * @param categoria Categoría.
+     * @param precioHora Precio.
+     * @param descripcion Descripción.
+     * @param ficheroImagen Archivo de imagen opcional.
+     * @param session Sesión.
+     * @return Redirección a listado de servicios.
+     */
     @org.springframework.web.bind.annotation.PostMapping("/web/publicar")
     public String procesarPublicacion(@RequestParam String titulo,
             @RequestParam String categoria,
@@ -155,6 +205,9 @@ public class PortalControlador {
         }
 
         edu.backend_frontend_serviclick.dto.UsuarioDTO usuario = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueado;
+        if (!"PROFESIONAL".equalsIgnoreCase(usuario.getRol()) && !"ADMIN".equalsIgnoreCase(usuario.getRol())) {
+            return "redirect:/";
+        }
 
         edu.backend_frontend_serviclick.dto.ServicioDTO nuevoServicio = new edu.backend_frontend_serviclick.dto.ServicioDTO();
         nuevoServicio.setTitulo(titulo);
@@ -178,11 +231,17 @@ public class PortalControlador {
         return "redirect:/web/servicios?publicado=true";
     }
 
+    /**
+     * Muestra la vista de recuperación de contraseña.
+     */
     @GetMapping("/recuperar-contrasena")
     public String recuperarContrasena() {
         return "recuperarContrasena";
     }
 
+    /**
+     * Muestra el perfil del usuario logueado.
+     */
     @GetMapping("/web/perfil")
     public String perfilUsuario(org.springframework.ui.Model model, jakarta.servlet.http.HttpSession session) {
         Object usuarioLogueado = session.getAttribute("usuarioLogueado");
@@ -193,12 +252,19 @@ public class PortalControlador {
         return "perfil";
     }
 
+    /**
+     * Cierra la sesión del usuario.
+     */
     @GetMapping("/logout")
     public String cerrarSesion(jakarta.servlet.http.HttpSession session) {
         session.invalidate();
         return "redirect:/login?logout=true";
     }
 
+    /**
+     * Muestra el detalle completo de un servicio.
+     * @param id ID del servicio.
+     */
     @GetMapping("/web/detalle-servicio")
     public String detalleServicio(@RequestParam Long id, Model model) {
         edu.backend_frontend_serviclick.dto.ServicioDTO servicio = apiCliente.buscarServicioPorId(id);
@@ -216,6 +282,9 @@ public class PortalControlador {
         return "detalleServicio";
     }
 
+    /**
+     * Publica una reseña para un servicio.
+     */
     @org.springframework.web.bind.annotation.PostMapping("/web/resenar")
     public String publicarResena(@RequestParam Long servicioId,
             @RequestParam Integer calificacion,
@@ -243,6 +312,9 @@ public class PortalControlador {
         return "redirect:/web/detalle-servicio?id=" + servicioId + "&resenaExito=true";
     }
 
+    /**
+     * Elimina una reseña propia.
+     */
     @org.springframework.web.bind.annotation.PostMapping("/web/resenar/eliminar")
     public String eliminarResena(@RequestParam Long resenaId, @RequestParam Long servicioId,
             jakarta.servlet.http.HttpSession session) {
@@ -253,33 +325,43 @@ public class PortalControlador {
         return "redirect:/web/detalle-servicio?id=" + servicioId + "&resenaEliminada=true";
     }
 
+    /**
+     * Guarda los cambios del perfil de usuario.
+     */
     @org.springframework.web.bind.annotation.PostMapping("/web/perfil/guardar")
     public String guardarPerfil(
             @org.springframework.web.bind.annotation.ModelAttribute("usuario") edu.backend_frontend_serviclick.dto.UsuarioDTO usuarioDTO,
             @RequestParam(required = false) String nuevaPassword,
             jakarta.servlet.http.HttpSession session) {
 
+        // Asegurar que el usuario está logueado
         Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
         if (usuarioLogueadoObj == null) {
             return "redirect:/login";
         }
         edu.backend_frontend_serviclick.dto.UsuarioDTO usuarioLogueado = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
 
+        // Actualizar campos (excepto email que suele ser de solo lectura, o ID)
         usuarioLogueado.setNombreCompleto(usuarioDTO.getNombreCompleto());
         usuarioLogueado.setTelefono(usuarioDTO.getTelefono());
 
+        // Pasar contraseña solo si está establecida
         if (nuevaPassword != null && !nuevaPassword.isBlank()) {
             usuarioLogueado.setPassword(nuevaPassword);
         }
 
+        // Llamada a la API para actualizar el usuario
         apiCliente.actualizarUsuario(usuarioLogueado.getId(), usuarioLogueado);
 
+        // Actualizar sesión
         session.setAttribute("usuarioLogueado", usuarioLogueado);
 
         return "redirect:/web/perfil?exito=true";
     }
 
-    // Endpoint para solicitar el código
+    /**
+     * Solicita código de recuperación (AJAX).
+     */
     @org.springframework.web.bind.annotation.PostMapping("/api/recuperar-password/solicitar")
     @org.springframework.web.bind.annotation.ResponseBody
     public org.springframework.http.ResponseEntity<Void> solicitarCodigo(
@@ -292,6 +374,9 @@ public class PortalControlador {
         }
     }
 
+    /**
+     * Confirma la cuenta con el token.
+     */
     @GetMapping("/confirmar")
     public String confirmarCuenta(@RequestParam String token) {
         boolean exito = apiCliente.confirmarCuenta(token);
@@ -302,7 +387,9 @@ public class PortalControlador {
         }
     }
 
-    // Endpoint para verificar el código
+    /**
+     * Verifica código de recuperación (AJAX).
+     */
     @org.springframework.web.bind.annotation.PostMapping("/api/recuperar-password/verificar")
     @org.springframework.web.bind.annotation.ResponseBody
     public org.springframework.http.ResponseEntity<Boolean> verificarCodigo(
@@ -313,7 +400,9 @@ public class PortalControlador {
         return org.springframework.http.ResponseEntity.ok(valido);
     }
 
-    // Endpoint para cambiar la contraseña
+    /**
+     * Cambia la contraseña (AJAX).
+     */
     @org.springframework.web.bind.annotation.PostMapping("/api/recuperar-password/cambiar")
     @org.springframework.web.bind.annotation.ResponseBody
     public org.springframework.http.ResponseEntity<Void> cambiarPassword(
@@ -327,7 +416,9 @@ public class PortalControlador {
         }
     }
 
-    // Endpoint para mostrar página de pago de servicio
+    /**
+     * Muestra la vista de pago de un servicio.
+     */
     @GetMapping("/web/pago-servicio")
     public String mostrarPagoServicio(@RequestParam Long servicioId,
             @RequestParam Double precio,
@@ -345,7 +436,9 @@ public class PortalControlador {
         return "pago-servicio";
     }
 
-    // Endpoint para procesar el pago de servicio
+    /**
+     * Procesa el pago de un servicio contratado (AJAX).
+     */
     @org.springframework.web.bind.annotation.PostMapping("/web/pago-servicio/procesar")
     @org.springframework.web.bind.annotation.ResponseBody
     public org.springframework.http.ResponseEntity<Void> procesarPagoServicio(
@@ -375,6 +468,9 @@ public class PortalControlador {
     }
 
 
+    /**
+     * Muestra el formulario para editar un servicio existente.
+     */
     @GetMapping("/web/editar-servicio")
     public String editarServicio(@RequestParam Long id, Model model, jakarta.servlet.http.HttpSession session,
             org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
@@ -401,6 +497,9 @@ public class PortalControlador {
         return "publicar"; // Reutilizamos la vista
     }
 
+    /**
+     * Procesa la edición de un servicio.
+     */
     @org.springframework.web.bind.annotation.PostMapping("/web/editar-servicio")
     public String procesarEdicionServicio(@RequestParam Long id,
             @RequestParam String titulo,
@@ -442,5 +541,107 @@ public class PortalControlador {
         apiCliente.actualizarServicio(id, servicioActual);
 
         return "redirect:/web/detalle-servicio?id=" + id + "&editado=true";
+    }
+    /**
+     * Busca un usuario por correo para eliminar (Solo ADMIN).
+     */
+    @org.springframework.web.bind.annotation.PostMapping("/web/admin/buscar-usuario-borrar")
+    public String buscarUsuarioParaBorrar(@RequestParam String emailBusqueda,
+            Model model,
+            jakarta.servlet.http.HttpSession session,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+
+        Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueadoObj == null) {
+            return "redirect:/login";
+        }
+        edu.backend_frontend_serviclick.dto.UsuarioDTO admin = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+
+        // Security check
+        if (!"ADMIN".equalsIgnoreCase(admin.getRol())) {
+            return "redirect:/";
+        }
+
+        // Add admin info to model (needed for the layout)
+        model.addAttribute("usuario", admin);
+
+        edu.backend_frontend_serviclick.dto.UsuarioDTO usuarioEncontrado = apiCliente
+                .buscarUsuarioPorCorreo(emailBusqueda);
+
+        if (usuarioEncontrado != null) {
+            model.addAttribute("usuarioParaBorrar", usuarioEncontrado);
+        } else {
+            model.addAttribute("errorBusqueda", "No se encontró ningún usuario con ese correo.");
+        }
+
+        return "perfil";
+    }
+
+    /**
+     * Confirma y ejecuta el borrado de un usuario (Solo ADMIN).
+     */
+    @org.springframework.web.bind.annotation.PostMapping("/web/admin/borrar-usuario-confirmado")
+    public String borrarUsuarioConfirmado(@RequestParam Long idUsuarioParaBorrar,
+            @RequestParam String confirmacion,
+            jakarta.servlet.http.HttpSession session,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+
+        Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueadoObj == null) {
+            return "redirect:/login";
+        }
+        edu.backend_frontend_serviclick.dto.UsuarioDTO admin = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+
+        if (!"ADMIN".equalsIgnoreCase(admin.getRol())) {
+            return "redirect:/";
+        }
+
+        if (!"borrar".equalsIgnoreCase(confirmacion)) {
+            redirectAttributes.addFlashAttribute("errorBorrado", "La palabra de confirmación no es correcta.");
+            return "redirect:/web/perfil";
+        }
+
+        // Prevent self-deletion
+        if (admin.getId().equals(idUsuarioParaBorrar)) {
+            redirectAttributes.addFlashAttribute("errorBorrado", "No puedes borrarte a ti mismo.");
+            return "redirect:/web/perfil";
+        }
+
+        // Delete
+        apiCliente.eliminarUsuario(idUsuarioParaBorrar);
+
+        redirectAttributes.addFlashAttribute("mensajeExitoAdmin", "Usuario eliminado correctamente.");
+        return "redirect:/web/perfil?exitoBorrado=true";
+    }
+
+    /**
+     * Descarga la factura en PDF de un usuario (Proxy a API).
+     */
+    @GetMapping("/web/reportes/factura/{usuarioId}")
+    public org.springframework.http.ResponseEntity<byte[]> descargarFactura(
+            @org.springframework.web.bind.annotation.PathVariable Long usuarioId,
+            jakarta.servlet.http.HttpSession session) {
+
+        Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueadoObj == null) {
+            return org.springframework.http.ResponseEntity.status(401).build();
+        }
+        edu.backend_frontend_serviclick.dto.UsuarioDTO u = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+
+        // Security check: Only allow downloading own invoice or Admin
+        if (!u.getId().equals(usuarioId) && !"ADMIN".equalsIgnoreCase(u.getRol())) {
+            return org.springframework.http.ResponseEntity.status(403).build();
+        }
+
+        byte[] pdfBytes = apiCliente.obtenerFacturaPDF(usuarioId);
+
+        if (pdfBytes != null) {
+            return org.springframework.http.ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=factura_" + usuarioId + ".pdf")
+                    .contentType(org.springframework.http.MediaType.APPLICATION_PDF)
+                    .body(pdfBytes);
+        } else {
+            return org.springframework.http.ResponseEntity.notFound().build();
+        }
     }
 }

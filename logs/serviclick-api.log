@@ -1,6 +1,0 @@
-2026-02-05 17:57:20.958 [main] INFO  e.s.proyecto.ProyectoAplicacion - Starting ProyectoAplicacion v0.0.1-SNAPSHOT using Java 25.0.1 with PID 1 (/app/app.jar started by root in /app)
-2026-02-05 17:57:20.992 [main] INFO  e.s.proyecto.ProyectoAplicacion - No active profile set, falling back to 1 default profile: "default"
-2026-02-05 17:57:27.247 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-02-05 17:57:27.620 [main] WARN  org.hibernate.orm.deprecation - HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at edu.serviClick.proyecto.entidades.Suscripcion.fechaInicio.
-2026-02-05 17:57:30.193 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-02-05 17:57:30.936 [main] INFO  e.s.proyecto.ProyectoAplicacion - Started ProyectoAplicacion in 11.535 seconds (process running for 13.889)

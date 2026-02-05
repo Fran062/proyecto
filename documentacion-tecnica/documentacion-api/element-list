@@ -1,0 +1,9 @@
+edu.serviClick.proyecto
+edu.serviClick.proyecto.config
+edu.serviClick.proyecto.controladores
+edu.serviClick.proyecto.dto
+edu.serviClick.proyecto.entidades
+edu.serviClick.proyecto.enums
+edu.serviClick.proyecto.excepciones
+edu.serviClick.proyecto.repositorios
+edu.serviClick.proyecto.servicios

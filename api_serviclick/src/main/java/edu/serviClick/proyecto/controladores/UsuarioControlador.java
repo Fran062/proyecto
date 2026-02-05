@@ -22,17 +22,31 @@ public class UsuarioControlador {
     @Autowired
     private UsuarioServicio usuarioServicio;
 
+    /**
+     * Obtiene una lista con todos los usuarios registrados.
+     * @return Lista de usuarios.
+     */
     @GetMapping
     public List<Usuario> obtenerTodosLosUsuarios() {
 
         return usuarioServicio.buscarTodosLosUsuarios();
     }
 
+    /**
+     * Crea un nuevo usuario en el sistema.
+     * @param usuario Objeto Usuario a crear.
+     * @return Usuario creado y guardado.
+     */
     @PostMapping
     public Usuario crearUsuario(@RequestBody Usuario usuario) {
         return usuarioServicio.guardarUsuario(usuario);
     }
 
+    /**
+     * Busca un usuario por su nombre de usuario/completo exacto.
+     * @param nombre Nombre del usuario.
+     * @return ResponseEntity con el usuario si existe, o 404 si no.
+     */
     @GetMapping("/buscarNombreCompleto/{nombre}")
     public ResponseEntity<Usuario> obtenerUsuarioPorNombreUsuario(@PathVariable String nombre) {
 
@@ -43,6 +57,11 @@ public class UsuarioControlador {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * Realiza una búsqueda flexible de usuarios que contengan el término dado en su nombre.
+     * @param termino Término de búsqueda.
+     * @return Lista de usuarios coincidentes o 204 No Content si está vacía.
+     */
     @GetMapping("/buscar/{termino}")
     public ResponseEntity<List<Usuario>> buscarPorNombreFlexible(@PathVariable String termino) {
 
@@ -55,6 +74,13 @@ public class UsuarioControlador {
         return ResponseEntity.ok(resultados); // Devuelve 200 y la lista de usuarios
     }
 
+    // Endpoint simple: Dame el correo, te doy el usuario (con su hash de
+    // contraseña)
+    /**
+     * Busca un usuario dado su correo electrónico.
+     * @param correo Correo electrónico del usuario.
+     * @return ResponseEntity con el usuario si existe, o 404 si no.
+     */
     @PostMapping("/buscar-por-correo")
     public ResponseEntity<Usuario> obtenerUsuarioPorCorreo(@RequestBody String correo) {
 
@@ -64,6 +90,11 @@ public class UsuarioControlador {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * Solicita el inicio del proceso de recuperación de contraseña enviando un código al correo.
+     * @param correo Correo electrónico del usuario.
+     * @return 200 OK si se procesó (incluso si el correo no existe por seguridad), o 400 en error.
+     */
     @PostMapping("/recuperar-password/solicitar")
     public ResponseEntity<Void> solicitarRecuperacion(@RequestBody String correo) {
         try {
@@ -74,6 +105,11 @@ public class UsuarioControlador {
         }
     }
 
+    /**
+     * Verifica si el código de recuperación proporcionado es válido para el correo.
+     * @param payload Mapa con "correo" y "codigo".
+     * @return true si es válido, false en caso contrario.
+     */
     @PostMapping("/recuperar-password/verificar")
     public ResponseEntity<Boolean> verificarCodigo(@RequestBody java.util.Map<String, String> payload) {
         String correo = payload.get("correo");
@@ -82,6 +118,11 @@ public class UsuarioControlador {
         return ResponseEntity.ok(valido);
     }
 
+    /**
+     * Cambia la contraseña del usuario utilizando un código de recuperación válido.
+     * @param payload Mapa con "correo", "codigo" y "nuevaPassword".
+     * @return 200 OK si se cambió con éxito, 400 Bad Request si falla.
+     */
     @PostMapping("/recuperar-password/cambiar")
     public ResponseEntity<Void> cambiarPassword(@RequestBody java.util.Map<String, String> payload) {
         try {
@@ -100,6 +141,12 @@ public class UsuarioControlador {
         }
     }
 
+    /**
+     * Actualiza los datos de un usuario existente.
+     * @param id ID del usuario a actualizar.
+     * @param usuarioActualizado Objeto con los nuevos datos.
+     * @return Usuario actualizado.
+     */
     @org.springframework.web.bind.annotation.PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioActualizado) {
         try {
@@ -110,6 +157,11 @@ public class UsuarioControlador {
         }
     }
 
+    /**
+     * Confirma la cuenta de usuario mediante un token de verificación.
+     * @param token Token de confirmación.
+     * @return 200 OK si se confirmó, 400 Bad Request si falló.
+     */
     @PostMapping("/confirmar")
     public ResponseEntity<Void> confirmarCuenta(@RequestBody String token) {
         if (usuarioServicio.confirmarCuenta(token)) {
@@ -119,6 +171,11 @@ public class UsuarioControlador {
         }
     }
 
+    /**
+     * Elimina un usuario del sistema por su ID.
+     * @param id ID del usuario a eliminar.
+     * @return 200 OK si se eliminó, 400 Bad Request si hubo error (ej. es el último admin).
+     */
     @org.springframework.web.bind.annotation.DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable Long id) {
         try {
