@@ -28,6 +28,11 @@ public class PortalControlador {
         Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
         if (usuarioLogueadoObj != null) {
             edu.backend_frontend_serviclick.dto.UsuarioDTO u = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+
+            if (!"CLIENTE".equalsIgnoreCase(u.getRol()) || !"ADMIN".equalsIgnoreCase(u.getRol())) {
+                return "redirect:/";
+            }
+
             // Refrescar datos
             edu.backend_frontend_serviclick.dto.UsuarioDTO fresco = apiCliente.buscarUsuarioPorId(u.getId());
             if (fresco != null) {

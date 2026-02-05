@@ -186,3 +186,9 @@
 2026-02-05 09:11:52.174 [http-nio-8080-exec-8] INFO  e.s.p.servicios.UsuarioServicio - Usuario registrado exitosamente en BD (Pendiente de activación): 4
 2026-02-05 09:11:53.958 [http-nio-8080-exec-8] INFO  e.s.p.servicios.UsuarioServicio - Correo de confirmación enviado a: fdomnez53@gmail.com
 2026-02-05 09:13:21.386 [http-nio-8080-exec-9] INFO  e.s.p.servicios.UsuarioServicio - Usuario con ID 4 eliminado exitosamente.
+2026-02-05 09:39:39.569 [main] INFO  e.s.proyecto.ProyectoAplicacion - Starting ProyectoAplicacion v0.0.1-SNAPSHOT using Java 25.0.1 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 09:39:39.578 [main] INFO  e.s.proyecto.ProyectoAplicacion - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 09:39:45.740 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-05 09:39:46.184 [main] WARN  org.hibernate.orm.deprecation - HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at edu.serviClick.proyecto.entidades.Suscripcion.fechaInicio.
+2026-02-05 09:39:49.291 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05 09:39:50.006 [main] INFO  e.s.proyecto.ProyectoAplicacion - Started ProyectoAplicacion in 12.42 seconds (process running for 15.063)
