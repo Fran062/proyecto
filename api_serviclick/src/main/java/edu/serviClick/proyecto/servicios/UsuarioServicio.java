@@ -32,10 +32,19 @@ public class UsuarioServicio {
         this.usuarioRepositorio = usuarioRepositorio;
     }
 
+    /**
+     * Recupera todos los usuarios de la base de datos.
+     * @return Lista de entidades Usuario.
+     */
     public List<Usuario> buscarTodosLosUsuarios() {
         return usuarioRepositorio.findAll();
     }
 
+    /**
+     * Registra un nuevo usuario, encriptando su contraseña y generando topken de validación.
+     * @param usuario Datos del usuario a registrar.
+     * @return El usuario guardado.
+     */
     public Usuario guardarUsuario(Usuario usuario) {
         logger.info("Iniciando registro de nuevo usuario: {}", usuario.getCorreo());
 
@@ -60,10 +69,20 @@ public class UsuarioServicio {
         return guardado;
     }
 
+    /**
+     * Busca un usuario por coincidencia exacta de nombre completo (ignore case).
+     * @param nombre Nombre completo a buscar.
+     * @return Optional con el usuario si existe.
+     */
     public Optional<Usuario> buscarUsuarioPorNombre(String nombre) {
         return usuarioRepositorio.findByNombreCompletoIgnoreCase(nombre);
     }
 
+    /**
+     * Busca un usuario por su ID.
+     * @param id ID del usuario.
+     * @return El usuario encontrado o null.
+     */
     public Usuario buscarPorId(Long id) {
         // Buscamos en la BBDD
         Optional<Usuario> usuario = usuarioRepositorio.findById(id);
@@ -72,14 +91,29 @@ public class UsuarioServicio {
         return usuario.orElse(null);
     }
 
+    /**
+     * Busca usuarios cuyo nombre contenga el término proporcionado.
+     * @param termino Término de búsqueda.
+     * @return Lista de usuarios coincidentes.
+     */
     public List<Usuario> buscarUsuariosFlexible(String termino) {
         return usuarioRepositorio.findByNombreCompletoContainingIgnoreCase(termino);
     }
 
+    /**
+     * Busca un usuario por su correo electrónico.
+     * @param correo Correo del usuario.
+     * @return Optional con el usuario si existe.
+     */
     public Optional<Usuario> buscarUsuarioPorCorreo(String correo) {
         return usuarioRepositorio.findByCorreo(correo);
     }
 
+    /**
+     * Autentica a un usuario verificando correo y contraseña.
+     * @param datos DTO con credenciales (correo y password).
+     * @return Optional con el usuario si la autenticación es exitosa y está habilitado.
+     */
     public Optional<Usuario> autenticarUsuario(LoginDTO datos) {
         Optional<Usuario> usuarioOpt = usuarioRepositorio.findByCorreo(datos.getCorreo());
 
@@ -104,6 +138,11 @@ public class UsuarioServicio {
         }
     }
 
+    /**
+     * Activa la cuenta de un usuario mediante el token de verificación.
+     * @param token Token enviado por correo.
+     * @return true si la activación fue exitosa.
+     */
     public boolean confirmarCuenta(String token) {
         Optional<Usuario> userOpt = usuarioRepositorio.findByTokenVerificacion(token);
         if (userOpt.isPresent()) {
@@ -116,6 +155,12 @@ public class UsuarioServicio {
         return false;
     }
 
+    /**
+     * Actualiza la información de perfil de un usuario.
+     * @param id ID del usuario.
+     * @param usuarioActualizado Objeto con los nuevos datos (nombre, telefono, password).
+     * @return El usuario actualizado.
+     */
     public Usuario actualizarUsuario(Long id, Usuario usuarioActualizado) {
         logger.info("Intento de actualización de perfil para usuario ID: {}", id);
 
@@ -152,6 +197,10 @@ public class UsuarioServicio {
         }
     }
 
+    /**
+     * Inicia el flujo de recuperación de contraseña generando un código temporal.
+     * @param correo Correo del usuario.
+     */
     public void solicitarRecuperacionContrasena(String correo) {
         Optional<Usuario> usuarioOpt = usuarioRepositorio.findByCorreo(correo);
         if (usuarioOpt.isEmpty()) {
@@ -167,6 +216,12 @@ public class UsuarioServicio {
         emailServicio.enviarCodigoRecuperacion(correo, codigo);
     }
 
+    /**
+     * Verifica la validez de un código de recuperación.
+     * @param correo Correo del usuario.
+     * @param codigo Código de 4 dígitos.
+     * @return true si es válido y no ha expirado.
+     */
     public boolean verificarCodigoRecuperacion(String correo, String codigo) {
         Optional<Usuario> usuarioOpt = usuarioRepositorio.findByCorreo(correo);
         if (usuarioOpt.isEmpty()) {
@@ -200,6 +255,12 @@ public class UsuarioServicio {
         return match;
     }
 
+    /**
+     * Establece una nueva contraseña tras validar el código de recuperación.
+     * @param correo Correo del usuario.
+     * @param codigo Código de verificación.
+     * @param nuevaPassword Nueva contraseña en texto plano.
+     */
     public void cambiarContrasenaConCodigo(String correo, String codigo, String nuevaPassword) {
         if (!verificarCodigoRecuperacion(correo, codigo)) {
             // Logs ya están en verificarCodigoRecuperacion
@@ -217,6 +278,10 @@ public class UsuarioServicio {
         }
     }
 
+    /**
+     * Elimina un usuario por ID, con validaciones de seguridad (ej. no borrar último admin).
+     * @param id ID del usuario.
+     */
     public void eliminarUsuario(Long id) {
         Usuario usuario = usuarioRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));

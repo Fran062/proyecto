@@ -86,3 +86,46 @@
 2026-02-04 21:31:10.201 [main] WARN  org.hibernate.orm.jdbc.warn - constraint "uk2uukwjdkbxrtwaobguca9tcpa" of relation "usuarios" does not exist, skipping
 2026-02-04 21:31:10.813 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2026-02-04 21:31:11.643 [main] INFO  e.s.proyecto.ProyectoAplicacion - Started ProyectoAplicacion in 9.162 seconds (process running for 10.245)
+2026-02-05 07:23:00.977 [main] INFO  e.s.proyecto.ProyectoAplicacion - Starting ProyectoAplicacion v0.0.1-SNAPSHOT using Java 25.0.1 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 07:23:01.001 [main] INFO  e.s.proyecto.ProyectoAplicacion - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 07:23:06.153 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-05 07:23:06.434 [main] WARN  org.hibernate.orm.deprecation - HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at edu.serviClick.proyecto.entidades.Suscripcion.fechaInicio.
+2026-02-05 07:23:08.994 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05 07:23:09.501 [main] INFO  e.s.proyecto.ProyectoAplicacion - Started ProyectoAplicacion in 9.615 seconds (process running for 11.116)
+2026-02-05 07:24:47.171 [main] INFO  e.s.proyecto.ProyectoAplicacion - Starting ProyectoAplicacion v0.0.1-SNAPSHOT using Java 25.0.1 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 07:24:47.185 [main] INFO  e.s.proyecto.ProyectoAplicacion - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 07:24:52.560 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-05 07:24:52.822 [main] WARN  org.hibernate.orm.deprecation - HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at edu.serviClick.proyecto.entidades.Suscripcion.fechaInicio.
+2026-02-05 07:24:54.926 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05 07:24:55.866 [main] INFO  e.s.proyecto.ProyectoAplicacion - Started ProyectoAplicacion in 10.233 seconds (process running for 11.248)
+2026-02-05 07:28:21.767 [main] INFO  e.s.proyecto.ProyectoAplicacion - Starting ProyectoAplicacion v0.0.1-SNAPSHOT using Java 25.0.1 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 07:28:21.782 [main] INFO  e.s.proyecto.ProyectoAplicacion - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 07:28:27.178 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-05 07:28:27.484 [main] WARN  org.hibernate.orm.deprecation - HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at edu.serviClick.proyecto.entidades.Suscripcion.fechaInicio.
+2026-02-05 07:28:29.153 [main] WARN  org.hibernate.orm.jdbc.warn - HHH000247: ErrorCode: 0, SQLState: 00000
+2026-02-05 07:28:29.165 [main] WARN  org.hibernate.orm.jdbc.warn - constraint "uk9yu9860k3cjx0jpqom7q3eba6" of relation "suscripciones" does not exist, skipping
+2026-02-05 07:28:29.202 [main] WARN  org.hibernate.orm.jdbc.warn - HHH000247: ErrorCode: 0, SQLState: 00000
+2026-02-05 07:28:29.212 [main] WARN  org.hibernate.orm.jdbc.warn - constraint "uk2uukwjdkbxrtwaobguca9tcpa" of relation "usuarios" does not exist, skipping
+2026-02-05 07:28:30.101 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05 07:28:30.703 [main] INFO  e.s.proyecto.ProyectoAplicacion - Started ProyectoAplicacion in 10.645 seconds (process running for 11.933)
+2026-02-05 07:29:20.389 [http-nio-8080-exec-9] INFO  e.s.p.servicios.ServiciosService - Servicio actualizado: 'Reparaciones de Fontanería Express' (ID: 1)
+2026-02-05 07:29:49.406 [http-nio-8080-exec-4] INFO  e.s.p.servicios.ResenaServicio - Nueva reseña creada (ID: 2) para Servicio ID: 1 por Usuario: profesional@ejemplo.com
+2026-02-05 07:30:11.713 [http-nio-8080-exec-8] INFO  e.s.p.servicios.ResenaServicio - Nueva reseña creada (ID: 3) para Servicio ID: 1 por Usuario: profesional@ejemplo.com
+2026-02-05 07:30:43.023 [http-nio-8080-exec-2] INFO  e.s.p.servicios.ResenaServicio - Nueva reseña creada (ID: 4) para Servicio ID: 1 por Usuario: profesional@ejemplo.com
+2026-02-05 07:31:37.655 [http-nio-8080-exec-1] INFO  e.s.p.servicios.ResenaServicio - Eliminando reseña con ID: 2
+2026-02-05 07:31:43.717 [http-nio-8080-exec-5] INFO  e.s.p.servicios.ResenaServicio - Eliminando reseña con ID: 3
+2026-02-05 07:31:47.462 [http-nio-8080-exec-9] INFO  e.s.p.servicios.ResenaServicio - Eliminando reseña con ID: 4
+2026-02-05 07:32:24.429 [http-nio-8080-exec-6] INFO  e.s.p.servicios.SuscripcionServicio - Usuario ID: 2 iniciando contratación/cambio de plan a: Pack Desplazamiento
+2026-02-05 07:32:24.442 [http-nio-8080-exec-6] INFO  e.s.p.servicios.SuscripcionServicio - Usuario ID: 2 cambiando plan actual (PROFESIONAL) a Pack Desplazamiento
+2026-02-05 07:32:24.451 [http-nio-8080-exec-6] INFO  e.s.p.servicios.SuscripcionServicio - Éxito: Cambio de plan completada para usuario ID: 2. Plan: Pack Desplazamiento
+2026-02-05 07:48:22.786 [http-nio-8080-exec-8] INFO  e.s.p.servicios.UsuarioServicio - Iniciando registro de nuevo usuario: fdomnez53@gmail.com
+2026-02-05 07:48:22.883 [http-nio-8080-exec-8] INFO  e.s.p.servicios.UsuarioServicio - Usuario registrado exitosamente en BD (Pendiente de activación): 4
+2026-02-05 07:48:25.517 [http-nio-8080-exec-8] INFO  e.s.p.servicios.UsuarioServicio - Correo de confirmación enviado a: fdomnez53@gmail.com
+2026-02-05 07:49:45.078 [http-nio-8080-exec-9] INFO  e.s.p.c.ContratacionControlador - Solicitud de nueva contratación. ClienteID: 4, ServicioID: 3
+2026-02-05 07:49:45.089 [http-nio-8080-exec-9] INFO  e.s.p.c.ContratacionControlador - Contratación creada exitosamente con ID: 2
+2026-02-05 07:52:10.675 [http-nio-8080-exec-4] INFO  e.s.p.servicios.UsuarioServicio - Intento de actualización de perfil para usuario ID: 4
+2026-02-05 07:52:10.768 [http-nio-8080-exec-4] INFO  e.s.p.servicios.UsuarioServicio - Perfil actualizado exitosamente para usuario ID: 4
+2026-02-05 07:52:22.704 [http-nio-8080-exec-5] INFO  e.s.p.servicios.UsuarioServicio - Intento de actualización de perfil para usuario ID: 4
+2026-02-05 07:52:22.801 [http-nio-8080-exec-5] INFO  e.s.p.servicios.UsuarioServicio - Perfil actualizado exitosamente para usuario ID: 4
+2026-02-05 07:52:54.955 [http-nio-8080-exec-1] INFO  e.s.p.servicios.SuscripcionServicio - Usuario ID: 4 iniciando contratación/cambio de plan a: Pack Desplazamiento
+2026-02-05 07:52:54.989 [http-nio-8080-exec-1] INFO  e.s.p.servicios.SuscripcionServicio - Éxito: Nueva contratación completada para usuario ID: 4. Plan: Pack Desplazamiento

@@ -27,6 +27,10 @@ public class ServiciosService {
         this.serviciosRepositorio = serviciosRepositorio;
     }
 
+    /**
+     * Recupera todos los servicios y calcula su calificación promedio.
+     * @return Lista de servicios con promedio.
+     */
     public List<Servicio> buscarTodosLosServicios() {
         List<Servicio> servicios = serviciosRepositorio.findAll();
         for (Servicio s : servicios) {
@@ -36,6 +40,11 @@ public class ServiciosService {
         return servicios;
     }
 
+    /**
+     * Calcula el promedio de calificaciones de las reseñas de un servicio.
+     * @param servicioId ID del servicio.
+     * @return Promedio.
+     */
     private Double calcularPromedio(Long servicioId) {
         java.util.List<edu.serviClick.proyecto.entidades.Resena> resenas = resenaRepositorio
                 .findByServicioId(servicioId);
@@ -48,6 +57,11 @@ public class ServiciosService {
         return suma / resenas.size();
     }
 
+    /**
+     * Guarda un servicio (creación o actualización).
+     * @param servicio Entidad servicio.
+     * @return Servicio guardado.
+     */
     public Servicio guardarServicio(Servicio servicio) {
         boolean esNuevo = (servicio.getId() == null);
         Servicio guardado = serviciosRepositorio.save(servicio);
@@ -62,6 +76,11 @@ public class ServiciosService {
         return guardado;
     }
 
+    /**
+     * Busca un servicio por ID.
+     * @param id ID del servicio.
+     * @return El servicio o null.
+     */
     public Servicio buscarPorId(Long id) {
         return serviciosRepositorio.findById(id).orElse(null);
     }
@@ -69,6 +88,10 @@ public class ServiciosService {
     @Autowired
     private edu.serviClick.proyecto.repositorios.ContratacionesRepositorio contratacionesRepositorio;
 
+    /**
+     * Elimina un servicio si no tiene contrataciones activas.
+     * @param id ID del servicio.
+     */
     public void eliminarServicio(Long id) {
         // Verificar integridad referencial: Contrataciones
         long count = contratacionesRepositorio.countByServicioId(id);

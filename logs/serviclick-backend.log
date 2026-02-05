@@ -60,3 +60,34 @@
 2026-02-04 21:31:04.353 [main] INFO  e.b.BackendFrontendServiclickApplication - Starting BackendFrontendServiclickApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
 2026-02-04 21:31:04.370 [main] INFO  e.b.BackendFrontendServiclickApplication - No active profile set, falling back to 1 default profile: "default"
 2026-02-04 21:31:07.865 [main] INFO  e.b.BackendFrontendServiclickApplication - Started BackendFrontendServiclickApplication in 4.985 seconds (process running for 6.127)
+2026-02-05 07:23:01.853 [main] INFO  e.b.BackendFrontendServiclickApplication - Starting BackendFrontendServiclickApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 07:23:01.867 [main] INFO  e.b.BackendFrontendServiclickApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 07:23:05.472 [main] INFO  e.b.BackendFrontendServiclickApplication - Started BackendFrontendServiclickApplication in 4.885 seconds (process running for 6.332)
+2026-02-05 07:23:35.142 [http-nio-8081-exec-10] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: cliente@ejemplo.com
+2026-02-05 07:23:36.104 [http-nio-8081-exec-10] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: cliente@ejemplo.com (ID: 6, Rol: CLIENTE)
+2026-02-05 07:24:47.734 [main] INFO  e.b.BackendFrontendServiclickApplication - Starting BackendFrontendServiclickApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 07:24:47.752 [main] INFO  e.b.BackendFrontendServiclickApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 07:24:51.812 [main] INFO  e.b.BackendFrontendServiclickApplication - Started BackendFrontendServiclickApplication in 5.225 seconds (process running for 6.865)
+2026-02-05 07:28:22.459 [main] INFO  e.b.BackendFrontendServiclickApplication - Starting BackendFrontendServiclickApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 07:28:22.485 [main] INFO  e.b.BackendFrontendServiclickApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 07:28:26.401 [main] INFO  e.b.BackendFrontendServiclickApplication - Started BackendFrontendServiclickApplication in 5.492 seconds (process running for 7.25)
+2026-02-05 07:29:11.250 [http-nio-8081-exec-9] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: profesional@ejemplo.com
+2026-02-05 07:29:11.400 [http-nio-8081-exec-9] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: profesional@ejemplo.com (ID: 2, Rol: PROFESIONAL)
+2026-02-05 07:49:18.375 [http-nio-8081-exec-2] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: fdomnez53@gmail.com
+2026-02-05 07:49:18.387 [http-nio-8081-exec-2] WARN  e.b.controladores.UsuarioControlador - Login fallido: Cuenta no activada para fdomnez53@gmail.com
+2026-02-05 07:49:24.707 [http-nio-8081-exec-4] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: fdomnez53@gmail.com
+2026-02-05 07:49:24.718 [http-nio-8081-exec-4] WARN  e.b.controladores.UsuarioControlador - Login fallido: Cuenta no activada para fdomnez53@gmail.com
+2026-02-05 07:49:36.387 [http-nio-8081-exec-9] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: fdomnez53@gmail.com
+2026-02-05 07:49:36.505 [http-nio-8081-exec-9] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: fdomnez53@gmail.com (ID: 4, Rol: CLIENTE)
+2026-02-05 07:51:59.474 [http-nio-8081-exec-9] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: fdomnez53@gmail.com
+2026-02-05 07:51:59.575 [http-nio-8081-exec-9] WARN  e.b.controladores.UsuarioControlador - Login fallido: Credenciales incorrectas para fdomnez53@gmail.com
+2026-02-05 07:52:03.603 [http-nio-8081-exec-7] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: fdomnez53@gmail.com
+2026-02-05 07:52:03.703 [http-nio-8081-exec-7] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: fdomnez53@gmail.com (ID: 4, Rol: CLIENTE)
+2026-02-05 07:52:44.692 [http-nio-8081-exec-1] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: fdomnez53@gmail.com
+2026-02-05 07:52:44.797 [http-nio-8081-exec-1] WARN  e.b.controladores.UsuarioControlador - Login fallido: Credenciales incorrectas para fdomnez53@gmail.com
+2026-02-05 07:52:47.221 [http-nio-8081-exec-2] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: fdomnez53@gmail.com
+2026-02-05 07:52:47.328 [http-nio-8081-exec-2] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: fdomnez53@gmail.com (ID: 4, Rol: CLIENTE)
+2026-02-05 07:53:39.425 [http-nio-8081-exec-6] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: profesional@ejemplo.com
+2026-02-05 07:53:39.532 [http-nio-8081-exec-6] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: profesional@ejemplo.com (ID: 2, Rol: PROFESIONAL)
+2026-02-05 07:54:06.469 [http-nio-8081-exec-2] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: cliente@ejemplo.com
+2026-02-05 07:54:06.573 [http-nio-8081-exec-2] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: cliente@ejemplo.com (ID: 3, Rol: CLIENTE)

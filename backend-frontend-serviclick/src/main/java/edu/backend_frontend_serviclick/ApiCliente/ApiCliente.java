@@ -24,6 +24,11 @@ public class ApiCliente {
                 .build();
     }
 
+    /**
+     * Busca un usuario por correo electrónico llamando a la API.
+     * @param correo Correo del usuario.
+     * @return DTO del usuario encontrado o null.
+     */
     public UsuarioDTO buscarUsuarioPorCorreo(String correo) {
         try {
             return webClient.post()
@@ -38,6 +43,11 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Busca un usuario por ID llamando a la API.
+     * @param id ID del usuario.
+     * @return DTO del usuario o null.
+     */
     public UsuarioDTO buscarUsuarioPorId(Long id) {
         try {
             return webClient.get()
@@ -51,6 +61,10 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Recupera el listado completo de servicios desde la API.
+     * @return Lista de ServiciosDTO.
+     */
     public java.util.List<edu.backend_frontend_serviclick.dto.ServicioDTO> listarServicios() {
         try {
             return webClient.get()
@@ -65,6 +79,11 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Busca un servicio específico por su ID.
+     * @param id ID del servicio.
+     * @return DTO del servicio o null.
+     */
     public edu.backend_frontend_serviclick.dto.ServicioDTO buscarServicioPorId(Long id) {
         try {
             java.util.List<edu.backend_frontend_serviclick.dto.ServicioDTO> todos = listarServicios();
@@ -74,6 +93,11 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Envía una solicitud para crear un nuevo servicio.
+     * @param servicio Datos del nuevo servicio.
+     * @return DTO del servicio creado.
+     */
     public edu.backend_frontend_serviclick.dto.ServicioDTO crearServicio(
             edu.backend_frontend_serviclick.dto.ServicioDTO servicio) {
         try {
@@ -89,6 +113,11 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Registra un nuevo usuario en la API.
+     * @param usuario Datos del usuario.
+     * @return DTO del usuario creado.
+     */
     public UsuarioDTO crearUsuario(UsuarioDTO usuario) {
         try {
             return webClient.post()
@@ -103,6 +132,11 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Obtiene las reseñas de un servicio específico.
+     * @param servicioId ID del servicio.
+     * @return Lista de reseñas.
+     */
     public java.util.List<edu.backend_frontend_serviclick.dto.ResenaDTO> obtenerResenasPorServicio(Long servicioId) {
         try {
             return webClient.get()
@@ -117,6 +151,11 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Obtiene el promedio de calificación de un servicio.
+     * @param servicioId ID del servicio.
+     * @return Valor promedio.
+     */
     public Double obtenerPromedioServicio(Long servicioId) {
         try {
             return webClient.get()
@@ -129,6 +168,11 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Crea una nueva reseña para un servicio.
+     * @param resena Datos de la reseña.
+     * @return DTO de la reseña creada.
+     */
     public edu.backend_frontend_serviclick.dto.ResenaDTO crearResena(
             edu.backend_frontend_serviclick.dto.ResenaDTO resena) {
         try {
@@ -144,6 +188,10 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Elimina una reseña por su ID.
+     * @param resenaId ID de la reseña.
+     */
     public void eliminarResena(Long resenaId) {
         try {
             webClient.delete()
@@ -156,6 +204,12 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Actualiza la información de un usuario.
+     * @param id ID del usuario.
+     * @param usuario Datos actualizados.
+     * @return DTO del usuario actualizado.
+     */
     public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuario) {
         try {
             return webClient.put()
@@ -170,6 +224,10 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Solicita la recuperación de contraseña.
+     * @param correo Correo electrónico.
+     */
     public void solicitarRecuperacionPass(String correo) {
         try {
             webClient.post()
@@ -184,6 +242,12 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Verifica el código de recuperación.
+     * @param correo Correo electrónico.
+     * @param codigo Código.
+     * @return true si es válido.
+     */
     public boolean verificarCodigoRecuperacion(String correo, String codigo) {
         try {
             java.util.Map<String, String> payload = new java.util.HashMap<>();
@@ -201,6 +265,12 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Cambia la contraseña con el código de verificación.
+     * @param correo Correo electrónico.
+     * @param codigo Código.
+     * @param nuevaPassword Nueva contraseña.
+     */
     public void cambiarPasswordConCodigo(String correo, String codigo, String nuevaPassword) {
         try {
             java.util.Map<String, String> payload = new java.util.HashMap<>();
@@ -219,6 +289,13 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Contrata un plan de suscripción para un usuario.
+     * @param usuarioId ID del usuario.
+     * @param nombrePlan Nombre del plan.
+     * @param precio Precio del plan.
+     * @return DTO de la suscripción.
+     */
     public edu.backend_frontend_serviclick.dto.SuscripcionDTO contratarPlan(Long usuarioId, String nombrePlan,
             Double precio) {
         try {
@@ -239,6 +316,11 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Confirma la cuenta de usuario.
+     * @param token Token de confirmación.
+     * @return true si se confirmó.
+     */
     public boolean confirmarCuenta(String token) {
         try {
             webClient.post()
@@ -254,6 +336,11 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Obtiene un servicio por ID (Método duplicado por conveniencia de nombrado).
+     * @param id ID del servicio.
+     * @return DTO del servicio.
+     */
     public edu.backend_frontend_serviclick.dto.ServicioDTO obtenerServicioPorId(Long id) {
         try {
             return webClient.get()
@@ -267,6 +354,13 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Contrata un servicio específico.
+     * @param usuarioId ID del usuario contratante.
+     * @param servicioId ID del servicio.
+     * @param precio Precio acordado.
+     * @return true si la contratación fue exitosa.
+     */
     public boolean contratarServicio(Long usuarioId, Long servicioId, Double precio) {
         try {
             java.util.Map<String, Object> payload = new java.util.HashMap<>();
@@ -287,6 +381,11 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Elimina un servicio.
+     * @param servicioId ID del servicio.
+     * @throws Exception Si hay error en la eliminación.
+     */
     public void eliminarServicio(Long servicioId) throws Exception {
         try {
             webClient.delete()
@@ -303,6 +402,12 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Actualiza un servicio existente.
+     * @param id ID del servicio.
+     * @param servicio Datos actualizados.
+     * @return DTO del servicio actualizado.
+     */
     public edu.backend_frontend_serviclick.dto.ServicioDTO actualizarServicio(Long id,
             edu.backend_frontend_serviclick.dto.ServicioDTO servicio) {
         try {

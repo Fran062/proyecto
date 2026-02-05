@@ -21,17 +21,31 @@ public class ServicioControlador {
     @Autowired
     private ServiciosService serviciosService;
 
+    /**
+     * Obtiene todos los servicios disponibles.
+     * @return Lista de servicios.
+     */
     @GetMapping
     public List<Servicio> obtenerTodosLosServicios() {
 
         return serviciosService.buscarTodosLosServicios();
     }
 
+    /**
+     * Crea un nuevo servicio publicado por un profesional.
+     * @param servicio Datos del servicio.
+     * @return Servicio creado.
+     */
     @PostMapping
     public Servicio crearServicio(@RequestBody Servicio servicio) {
         return serviciosService.guardarServicio(servicio);
     }
 
+    /**
+     * Obtiene los detalles de un servicio por su ID.
+     * @param id ID del servicio.
+     * @return ResponseEntity con el servicio o 404.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Servicio> obtenerServicioPorId(@PathVariable Long id) {
         Servicio servicio = serviciosService.buscarPorId(id);
@@ -42,6 +56,11 @@ public class ServicioControlador {
         }
     }
 
+    /**
+     * Elimina un servicio por su ID.
+     * @param id ID del servicio.
+     * @return ResponseEntity OK o Bad Request.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarServicio(@PathVariable Long id) {
         try {
@@ -52,6 +71,12 @@ public class ServicioControlador {
         }
     }
 
+    /**
+     * Actualiza la información de un servicio.
+     * @param id ID del servicio.
+     * @param servicio Datos a actualizar.
+     * @return Servicio actualizado.
+     */
     @org.springframework.web.bind.annotation.PutMapping("/{id}")
     public ResponseEntity<Servicio> actualizarServicio(@PathVariable Long id, @RequestBody Servicio servicio) {
         Servicio existente = serviciosService.buscarPorId(id);
