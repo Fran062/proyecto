@@ -171,7 +171,7 @@ public class PortalControlador {
             return "redirect:/login";
         }
         edu.backend_frontend_serviclick.dto.UsuarioDTO usuario = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
-        if (!"PROFESIONAL".equalsIgnoreCase(usuario.getRol())) {
+        if (!"PROFESIONAL".equalsIgnoreCase(usuario.getRol()) && !"ADMIN".equalsIgnoreCase(usuario.getRol())) {
             return "redirect:/";
         }
         return "publicar";
@@ -201,7 +201,7 @@ public class PortalControlador {
         }
 
         edu.backend_frontend_serviclick.dto.UsuarioDTO usuario = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueado;
-        if (!"PROFESIONAL".equalsIgnoreCase(usuario.getRol())) {
+        if (!"PROFESIONAL".equalsIgnoreCase(usuario.getRol()) && !"ADMIN".equalsIgnoreCase(usuario.getRol())) {
             return "redirect:/";
         }
 
@@ -537,5 +537,76 @@ public class PortalControlador {
         apiCliente.actualizarServicio(id, servicioActual);
 
         return "redirect:/web/detalle-servicio?id=" + id + "&editado=true";
+    }
+    /**
+     * Busca un usuario por correo para eliminar (Solo ADMIN).
+     */
+    @org.springframework.web.bind.annotation.PostMapping("/web/admin/buscar-usuario-borrar")
+    public String buscarUsuarioParaBorrar(@RequestParam String emailBusqueda,
+            Model model,
+            jakarta.servlet.http.HttpSession session,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+
+        Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueadoObj == null) {
+            return "redirect:/login";
+        }
+        edu.backend_frontend_serviclick.dto.UsuarioDTO admin = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+
+        // Security check
+        if (!"ADMIN".equalsIgnoreCase(admin.getRol())) {
+            return "redirect:/";
+        }
+
+        // Add admin info to model (needed for the layout)
+        model.addAttribute("usuario", admin);
+
+        edu.backend_frontend_serviclick.dto.UsuarioDTO usuarioEncontrado = apiCliente
+                .buscarUsuarioPorCorreo(emailBusqueda);
+
+        if (usuarioEncontrado != null) {
+            model.addAttribute("usuarioParaBorrar", usuarioEncontrado);
+        } else {
+            model.addAttribute("errorBusqueda", "No se encontró ningún usuario con ese correo.");
+        }
+
+        return "perfil";
+    }
+
+    /**
+     * Confirma y ejecuta el borrado de un usuario (Solo ADMIN).
+     */
+    @org.springframework.web.bind.annotation.PostMapping("/web/admin/borrar-usuario-confirmado")
+    public String borrarUsuarioConfirmado(@RequestParam Long idUsuarioParaBorrar,
+            @RequestParam String confirmacion,
+            jakarta.servlet.http.HttpSession session,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+
+        Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueadoObj == null) {
+            return "redirect:/login";
+        }
+        edu.backend_frontend_serviclick.dto.UsuarioDTO admin = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+
+        if (!"ADMIN".equalsIgnoreCase(admin.getRol())) {
+            return "redirect:/";
+        }
+
+        if (!"borrar".equalsIgnoreCase(confirmacion)) {
+            redirectAttributes.addFlashAttribute("errorBorrado", "La palabra de confirmación no es correcta.");
+            return "redirect:/web/perfil";
+        }
+
+        // Prevent self-deletion
+        if (admin.getId().equals(idUsuarioParaBorrar)) {
+            redirectAttributes.addFlashAttribute("errorBorrado", "No puedes borrarte a ti mismo.");
+            return "redirect:/web/perfil";
+        }
+
+        // Delete
+        apiCliente.eliminarUsuario(idUsuarioParaBorrar);
+
+        redirectAttributes.addFlashAttribute("mensajeExitoAdmin", "Usuario eliminado correctamente.");
+        return "redirect:/web/perfil?exitoBorrado=true";
     }
 }

@@ -423,4 +423,20 @@ public class ApiCliente {
         }
     }
 
+    /**
+     * Elimina un usuario por su ID.
+     * @param id ID del usuario a eliminar.
+     */
+    public void eliminarUsuario(Long id) {
+        try {
+            webClient.delete()
+                    .uri("/usuarios/" + id)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .block();
+        } catch (Exception e) {
+            System.out.println("Error eliminando usuario: " + e.getMessage());
+        }
+    }
+
 }

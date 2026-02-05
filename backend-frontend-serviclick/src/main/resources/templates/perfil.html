@@ -44,6 +44,58 @@
 
     <main>
         <div style="max-width: 800px; margin: 0 auto;">
+            <!-- Panel de Administración (Solo ADMIN) -->
+            <div th:if="${usuario.rol == 'ADMIN'}" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2rem; border-left: 5px solid #ef4444;">
+                <h2 style="margin-bottom: 1.5rem; color: #ef4444;"><i class="fas fa-user-shield"></i> Panel de Administración</h2>
+
+                <!-- Mensajes de Error/Éxito Admin -->
+                <div th:if="${errorBusqueda}" style="background-color: #fee2e2; color: #b91c1c; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <i class="fas fa-exclamation-circle"></i> <span th:text="${errorBusqueda}">Error</span>
+                </div>
+                <div th:if="${errorBorrado}" style="background-color: #fee2e2; color: #b91c1c; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <i class="fas fa-exclamation-circle"></i> <span th:text="${errorBorrado}">Error</span>
+                </div>
+                <div th:if="${mensajeExitoAdmin}" style="background-color: #dcfce7; color: #15803d; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <i class="fas fa-check-circle"></i> <span th:text="${mensajeExitoAdmin}">Éxito</span>
+                </div>
+
+                <!-- Formulario de Búsqueda -->
+                <form th:action="@{/web/admin/buscar-usuario-borrar}" method="post" style="margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label style="color: #374151; font-weight: 600;">Buscar usuario para eliminar (por correo)</label>
+                        <div style="display: flex; gap: 10px; margin-top: 0.5rem;">
+                            <input type="email" name="emailBusqueda" placeholder="usuario@ejemplo.com" required style="flex: 1;">
+                            <button type="submit" class="btn-primary" style="background-color: #ef4444; border-color: #ef4444;">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Confirmación de Borrado -->
+                <div th:if="${usuarioParaBorrar != null}" style="background-color: #fff1f2; border: 1px solid #fecaca; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #991b1b; margin-bottom: 1rem;">¿Estás seguro de que deseas eliminar este usuario?</h3>
+                    <div style="margin-bottom: 1.5rem;">
+                        <p><strong>Nombre:</strong> <span th:text="${usuarioParaBorrar.nombreCompleto}">Nombre</span></p>
+                        <p><strong>Correo:</strong> <span th:text="${usuarioParaBorrar.correo}">Correo</span></p>
+                        <p><strong>Rol:</strong> <span th:text="${usuarioParaBorrar.rol}">Rol</span></p>
+                    </div>
+
+                    <form th:action="@{/web/admin/borrar-usuario-confirmado}" method="post">
+                        <input type="hidden" name="idUsuarioParaBorrar" th:value="${usuarioParaBorrar.id}">
+                        <div class="form-group">
+                            <label style="color: #7f1d1d;">Escribe "borrar" para confirmar:</label>
+                            <input type="text" name="confirmacion" placeholder="borrar" required
+                                style="border-color: #fca5a5; margin-top: 0.5rem;">
+                        </div>
+                        <div style="text-align: right; margin-top: 1rem;">
+                            <a th:href="@{/web/perfil}" class="btn-outline" style="margin-right: 10px; border-color: #991b1b; color: #991b1b;">Cancelar</a>
+                            <button type="submit" class="btn-danger">Confirmar Eliminación</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <h1 style="margin-bottom: 2rem;">Ajustes de Cuenta</h1>
 
             <div

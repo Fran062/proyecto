@@ -106,3 +106,36 @@
 2026-02-05 08:42:50.171 [main] INFO  e.b.BackendFrontendServiclickApplication - Started BackendFrontendServiclickApplication in 5.47 seconds (process running for 7.23)
 2026-02-05 08:44:35.565 [http-nio-8081-exec-3] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: cliente@ejemplo.com
 2026-02-05 08:44:35.724 [http-nio-8081-exec-3] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: cliente@ejemplo.com (ID: 3, Rol: CLIENTE)
+2026-02-05 08:47:58.068 [main] INFO  e.b.BackendFrontendServiclickApplication - Starting BackendFrontendServiclickApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 08:47:58.085 [main] INFO  e.b.BackendFrontendServiclickApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 08:48:03.020 [main] INFO  e.b.BackendFrontendServiclickApplication - Started BackendFrontendServiclickApplication in 6.582 seconds (process running for 8.839)
+2026-02-05 08:48:46.492 [http-nio-8081-exec-7] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: cliente@ejemplo.com
+2026-02-05 08:48:47.311 [http-nio-8081-exec-7] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: cliente@ejemplo.com (ID: 3, Rol: CLIENTE)
+2026-02-05 08:49:26.026 [http-nio-8081-exec-1] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: serviclicksoporte@gmail.com
+2026-02-05 08:49:26.136 [http-nio-8081-exec-1] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: serviclicksoporte@gmail.com (ID: 1, Rol: ADMIN)
+2026-02-05 08:52:16.292 [main] INFO  e.b.BackendFrontendServiclickApplication - Starting BackendFrontendServiclickApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 08:52:16.319 [main] INFO  e.b.BackendFrontendServiclickApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 08:52:20.569 [main] INFO  e.b.BackendFrontendServiclickApplication - Started BackendFrontendServiclickApplication in 5.623 seconds (process running for 7.346)
+2026-02-05 08:52:40.773 [http-nio-8081-exec-6] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: serviclicksoporte@gmail.com
+2026-02-05 08:52:41.854 [http-nio-8081-exec-6] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: serviclicksoporte@gmail.com (ID: 1, Rol: ADMIN)
+2026-02-05 08:54:09.332 [main] INFO  e.b.BackendFrontendServiclickApplication - Starting BackendFrontendServiclickApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 08:54:09.365 [main] INFO  e.b.BackendFrontendServiclickApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 08:54:13.517 [main] INFO  e.b.BackendFrontendServiclickApplication - Started BackendFrontendServiclickApplication in 5.746 seconds (process running for 7.378)
+2026-02-05 08:55:55.808 [http-nio-8081-exec-8] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: serviclicksoporte@gmail.com
+2026-02-05 08:55:56.976 [http-nio-8081-exec-8] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: serviclicksoporte@gmail.com (ID: 1, Rol: ADMIN)
+2026-02-05 08:59:28.308 [main] INFO  e.b.BackendFrontendServiclickApplication - Starting BackendFrontendServiclickApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 08:59:28.316 [main] INFO  e.b.BackendFrontendServiclickApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 08:59:32.222 [main] INFO  e.b.BackendFrontendServiclickApplication - Started BackendFrontendServiclickApplication in 5.601 seconds (process running for 7.494)
+2026-02-05 09:00:41.837 [http-nio-8081-exec-2] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: serviclicksoporte@gmail.com
+2026-02-05 09:00:42.921 [http-nio-8081-exec-2] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: serviclicksoporte@gmail.com (ID: 1, Rol: ADMIN)
+2026-02-05 09:09:29.068 [main] INFO  e.b.BackendFrontendServiclickApplication - Starting BackendFrontendServiclickApplication v0.0.1-SNAPSHOT using Java 21.0.9 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 09:09:29.096 [main] INFO  e.b.BackendFrontendServiclickApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 09:09:33.180 [main] INFO  e.b.BackendFrontendServiclickApplication - Started BackendFrontendServiclickApplication in 5.317 seconds (process running for 7.065)
+2026-02-05 09:10:03.007 [http-nio-8081-exec-6] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: serviclicksoporte@gmail.com
+2026-02-05 09:10:04.032 [http-nio-8081-exec-6] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: serviclicksoporte@gmail.com (ID: 1, Rol: ADMIN)
+2026-02-05 09:12:03.182 [http-nio-8081-exec-5] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: fdomnez53@gmail.com
+2026-02-05 09:12:03.195 [http-nio-8081-exec-5] WARN  e.b.controladores.UsuarioControlador - Login fallido: Cuenta no activada para fdomnez53@gmail.com
+2026-02-05 09:12:25.859 [http-nio-8081-exec-10] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: fdomnez53@gmail.com
+2026-02-05 09:12:25.967 [http-nio-8081-exec-10] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: fdomnez53@gmail.com (ID: 4, Rol: CLIENTE)
+2026-02-05 09:13:05.082 [http-nio-8081-exec-10] INFO  e.b.controladores.UsuarioControlador - Intento de login para usuario: serviclicksoporte@gmail.com
+2026-02-05 09:13:05.192 [http-nio-8081-exec-10] INFO  e.b.controladores.UsuarioControlador - Login EXITOSO para usuario: serviclicksoporte@gmail.com (ID: 1, Rol: ADMIN)
