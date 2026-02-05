@@ -27,8 +27,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", "Ha ocurrido un error inesperado en el servidor.");
-
-        // Log the exception
         ex.printStackTrace();
 
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);

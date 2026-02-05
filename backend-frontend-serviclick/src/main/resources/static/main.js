@@ -1,18 +1,14 @@
-// main.js - Versión limpia para Spring Boot
-
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Frontend cargado.");
 
   // Inicializar buscador si existe
   const inputBuscador = document.getElementById("buscador-servicios");
   if (inputBuscador) {
-    cargarServicios(); // Llama a tu función de carga (asegúrate de que esa función apunte a tu API)
+    cargarServicios(); // Llama a tu función de carga
   }
 });
 
-// --- FUNCIONES VISUALES ---
-
-// Configuración Global de Toast (si Swal está cargado)
+// Configuración Global de Toast
 if (typeof Swal !== 'undefined') {
   window.Toast = Swal.mixin({
     toast: true,

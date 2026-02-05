@@ -28,7 +28,7 @@ public class ResenaServicio {
 
         if (esNueva) {
             logger.info("Nueva reseña creada (ID: {}) para Servicio ID: {} por Usuario: {}",
-                    guardada.getId(), // Asumiendo que Resena tiene getServicio() y getAutor()/getUsuario()
+                    guardada.getId(),
                     (resena.getServicio() != null ? resena.getServicio().getId() : "N/A"),
                     (resena.getUsuario() != null ? resena.getUsuario().getCorreo() : "Anónimo"));
         }

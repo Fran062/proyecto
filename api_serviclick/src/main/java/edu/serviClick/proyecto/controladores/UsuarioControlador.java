@@ -55,14 +55,8 @@ public class UsuarioControlador {
         return ResponseEntity.ok(resultados); // Devuelve 200 y la lista de usuarios
     }
 
-    // Endpoint simple: Dame el correo, te doy el usuario (con su hash de
-    // contraseña)
     @PostMapping("/buscar-por-correo")
     public ResponseEntity<Usuario> obtenerUsuarioPorCorreo(@RequestBody String correo) {
-        // Nota: @RequestBody String a veces trae comillas extra, mejor usar un objeto
-        // simple o limpiar el string
-        // Para simplificar, usaremos un DTO wrapper pequeño o asumimos que envías un
-        // objeto JSON
 
         Optional<Usuario> usuario = usuarioServicio.buscarUsuarioPorCorreo(correo);
 

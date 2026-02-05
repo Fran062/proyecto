@@ -13,7 +13,7 @@ public class Resena {
     private Long id;
 
     @Column(name = "resCalificacion", nullable = false)
-    private Integer calificacion; // 1 to 5
+    private Integer calificacion; // 1 a 5
 
     @Column(name = "resComentario", columnDefinition = "TEXT")
     private String comentario;
@@ -25,7 +25,6 @@ public class Resena {
 
     @ManyToOne
     @JoinColumn(name = "usrId", nullable = false)
-    // Avoid circular recursion or too much data
     @JsonIgnoreProperties({ "password", "roles" })
     private Usuario usuario;
 

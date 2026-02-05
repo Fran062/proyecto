@@ -9,7 +9,7 @@ public class ServicioDTO {
     private String categoria;
     private String imagen;
 
-    // El profesional que ofrece el servicio (UsuarioDTO ya existe)
+    // El profesional que ofrece el servicio
     private UsuarioDTO profesional;
 
     public ServicioDTO() {

@@ -43,7 +43,6 @@ public class UsuarioServicio {
         String contrasenaHasheada = encriptadorContrasena.encode(contrasenaTextoPlano);
         usuario.setPassword(contrasenaHasheada);
 
-        // Verification logic
         usuario.setHabilitado(false);
         String token = java.util.UUID.randomUUID().toString();
         usuario.setTokenVerificacion(token);
@@ -134,11 +133,6 @@ public class UsuarioServicio {
 
             // Si la contraseña viene rellena, la actualizamos hasheada
             if (usuarioActualizado.getPassword() != null && !usuarioActualizado.getPassword().isEmpty()) {
-                // Verificar si ya está haseada (esto es un poco hacky, mejor sería un flag en
-                // el DTO)
-                // Asumimos que si viene del frontend en texto plano, no empieza por $2a$
-                // Pero como el DTO del frontend es UsuarioDTO y aquí llega Usuario entity,
-                // asumiremos siempre que si viene algo es para cambiarla
                 String nuevaPass = encriptadorContrasena.encode(usuarioActualizado.getPassword());
                 usuarioExistente.setPassword(nuevaPass);
             }
@@ -189,7 +183,6 @@ public class UsuarioServicio {
             return false;
         }
 
-        // Trim just in case
         String dbCode = usuario.getCodigoRecuperacion().trim();
         String inputCode = codigo != null ? codigo.trim() : "";
 

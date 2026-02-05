@@ -39,7 +39,7 @@ public class Usuario {
     private String ubicacion;
 
     @Column(name = "usrHabilitado")
-    private Boolean habilitado = false; // Default false for email confirmation
+    private Boolean habilitado = false;
 
     @Column(name = "usrFechaRegistro")
     private LocalDateTime fechaRegistro;

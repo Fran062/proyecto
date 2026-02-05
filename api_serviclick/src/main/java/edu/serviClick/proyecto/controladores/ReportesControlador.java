@@ -120,9 +120,6 @@ public class ReportesControlador {
                     ? usuario.getSuscripcion().getFechaInicio().toString()
                     : "N/A"), fontNormal));
         } else {
-            // Si no tiene plan, no mostrar nada (según requisito) o indicar 'Sin plan
-            // activo'
-            // Requisito: "si el usuario no tiene seleccionado ningun plan no se pone nada"
         }
 
         document.close();

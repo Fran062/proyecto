@@ -27,12 +27,6 @@ public class ResenaControlador {
 
     @PostMapping
     public ResponseEntity<Resena> crearResena(@RequestBody Resena resena) {
-        // Here we assume the passed Resena object has properly populated Servicio and
-        // Usuario objects (at least IDs)
-        // Spring Data JPA + Hibernate often handles { "id": X } references if
-        // configured,
-        // but to be safe, valid validations should exist.
-        // For MVP:
         try {
             Resena nueva = resenaServicio.guardarResena(resena);
             return ResponseEntity.ok(nueva);

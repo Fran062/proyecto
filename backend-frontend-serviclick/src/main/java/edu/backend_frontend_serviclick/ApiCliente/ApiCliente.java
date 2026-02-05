@@ -41,7 +41,7 @@ public class ApiCliente {
     public UsuarioDTO buscarUsuarioPorId(Long id) {
         try {
             return webClient.get()
-                    .uri("/usuarios/" + id) // Asumiendo que la API tiene GET /usuarios/{id}
+                    .uri("/usuarios/" + id)
                     .retrieve()
                     .bodyToMono(UsuarioDTO.class)
                     .block();

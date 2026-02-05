@@ -32,7 +32,7 @@ public class PortalControlador {
         return "lista-planes";
     }
 
-    // Endpoint para procesar el pago (AJAX)
+    // Endpoint para procesar el pago
     @org.springframework.web.bind.annotation.PostMapping("/web/pago/procesar")
     @org.springframework.web.bind.annotation.ResponseBody
     public org.springframework.http.ResponseEntity<Void> procesarPago(
@@ -89,7 +89,7 @@ public class PortalControlador {
             Model model) {
         java.util.List<edu.backend_frontend_serviclick.dto.ServicioDTO> servicios = apiCliente.listarServicios();
 
-        // Filtrado en el cliente (Frontend/Controller)
+        // Filtrado en el cliente
         if (servicios != null) {
             java.util.stream.Stream<edu.backend_frontend_serviclick.dto.ServicioDTO> stream = servicios.stream();
 
@@ -112,7 +112,6 @@ public class PortalControlador {
                 stream = stream.filter(s -> s.getCategoria() != null && s.getCategoria().equalsIgnoreCase(categoria));
             }
 
-            // Convertir a lista mutable para ordenar
             servicios = stream.collect(java.util.stream.Collectors.toList());
 
             // Lógica de ordenación
@@ -241,7 +240,6 @@ public class PortalControlador {
 
         apiCliente.crearResena(resena);
 
-        // Redirect back to the service details
         return "redirect:/web/detalle-servicio?id=" + servicioId + "&resenaExito=true";
     }
 
@@ -261,32 +259,27 @@ public class PortalControlador {
             @RequestParam(required = false) String nuevaPassword,
             jakarta.servlet.http.HttpSession session) {
 
-        // Ensure user is logged in
         Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
         if (usuarioLogueadoObj == null) {
             return "redirect:/login";
         }
         edu.backend_frontend_serviclick.dto.UsuarioDTO usuarioLogueado = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
 
-        // Update fields (except email which is read-only usually, or ID)
         usuarioLogueado.setNombreCompleto(usuarioDTO.getNombreCompleto());
         usuarioLogueado.setTelefono(usuarioDTO.getTelefono());
 
-        // Pass password only if it's set
         if (nuevaPassword != null && !nuevaPassword.isBlank()) {
             usuarioLogueado.setPassword(nuevaPassword);
         }
 
-        // Call API to update user
         apiCliente.actualizarUsuario(usuarioLogueado.getId(), usuarioLogueado);
 
-        // Update session
         session.setAttribute("usuarioLogueado", usuarioLogueado);
 
         return "redirect:/web/perfil?exito=true";
     }
 
-    // Endpoint para solicitar el código (AJAX)
+    // Endpoint para solicitar el código
     @org.springframework.web.bind.annotation.PostMapping("/api/recuperar-password/solicitar")
     @org.springframework.web.bind.annotation.ResponseBody
     public org.springframework.http.ResponseEntity<Void> solicitarCodigo(
@@ -309,7 +302,7 @@ public class PortalControlador {
         }
     }
 
-    // Endpoint para verificar el código (AJAX)
+    // Endpoint para verificar el código
     @org.springframework.web.bind.annotation.PostMapping("/api/recuperar-password/verificar")
     @org.springframework.web.bind.annotation.ResponseBody
     public org.springframework.http.ResponseEntity<Boolean> verificarCodigo(
@@ -320,7 +313,7 @@ public class PortalControlador {
         return org.springframework.http.ResponseEntity.ok(valido);
     }
 
-    // Endpoint para cambiar la contraseña (AJAX)
+    // Endpoint para cambiar la contraseña
     @org.springframework.web.bind.annotation.PostMapping("/api/recuperar-password/cambiar")
     @org.springframework.web.bind.annotation.ResponseBody
     public org.springframework.http.ResponseEntity<Void> cambiarPassword(
@@ -352,7 +345,7 @@ public class PortalControlador {
         return "pago-servicio";
     }
 
-    // Endpoint para procesar el pago de servicio (AJAX)
+    // Endpoint para procesar el pago de servicio
     @org.springframework.web.bind.annotation.PostMapping("/web/pago-servicio/procesar")
     @org.springframework.web.bind.annotation.ResponseBody
     public org.springframework.http.ResponseEntity<Void> procesarPagoServicio(

@@ -76,15 +76,6 @@ public class ServiciosService {
             throw new RuntimeException("No se puede eliminar el servicio. Tiene " + count
                     + " contrataciones asociadas. Por seguridad, no se permite el borrado directo.");
         }
-
-        // Borrar reseñas asociadas (Limpieza segura)
-        // Necesitamos un método en resenaRepositorio o iterar.
-        // Como resenaRepositorio es Jpa, podemos usar deleteInBatch si tuvieramos la
-        // lista, o un delete custom.
-        // Por simplicidad para este paso, intentamos borrar. Si falla por FK es que
-        // falta cascade.
-        // Pero idealmente deberíamos borrar las reseñas primero.
-
         serviciosRepositorio.deleteById(id);
     }
 }

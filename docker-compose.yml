@@ -17,7 +17,7 @@ services:
 
   # 2. PROYECTO API (BACKEND PURO)
   serviclick-api:
-    build: ./api_serviclick  # <--- Ruta a la carpeta de tu API
+    build: ./api_serviclick
     container_name: springboot_serviclick_container
     restart: on-failure
     ports:
@@ -25,7 +25,7 @@ services:
     depends_on:
       - postgresdbserviclick
     volumes:
-      - ./logs:/logs  # <--- MAPEO DE LOGS: Carpeta local ./logs <-> Carpeta contenedora /logs
+      - ./logs:/logs
     environment:
       # Conecta con la BBDD por el nombre del contenedor
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgresdbserviclick:5432/${DB_NAME}
@@ -42,7 +42,7 @@ services:
     depends_on:
       - serviclick-api # Espera a que la API arranque
     volumes:
-      - ./logs:/logs  # <--- MAPEO DE LOGS: Misma carpeta local ./logs
+      - ./logs:/logs
     environment:
       API_URL: http://serviclick-api:8080/api
 
