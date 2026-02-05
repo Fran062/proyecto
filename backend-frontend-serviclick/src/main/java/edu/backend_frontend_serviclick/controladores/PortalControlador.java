@@ -166,8 +166,13 @@ public class PortalControlador {
      */
     @GetMapping("/web/publicar")
     public String publicar(jakarta.servlet.http.HttpSession session) {
-        if (session.getAttribute("usuarioLogueado") == null) {
+        Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueadoObj == null) {
             return "redirect:/login";
+        }
+        edu.backend_frontend_serviclick.dto.UsuarioDTO usuario = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+        if (!"PROFESIONAL".equalsIgnoreCase(usuario.getRol())) {
+            return "redirect:/";
         }
         return "publicar";
     }
@@ -196,6 +201,9 @@ public class PortalControlador {
         }
 
         edu.backend_frontend_serviclick.dto.UsuarioDTO usuario = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueado;
+        if (!"PROFESIONAL".equalsIgnoreCase(usuario.getRol())) {
+            return "redirect:/";
+        }
 
         edu.backend_frontend_serviclick.dto.ServicioDTO nuevoServicio = new edu.backend_frontend_serviclick.dto.ServicioDTO();
         nuevoServicio.setTitulo(titulo);

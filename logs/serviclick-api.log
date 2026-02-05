@@ -129,3 +129,22 @@
 2026-02-05 07:52:22.801 [http-nio-8080-exec-5] INFO  e.s.p.servicios.UsuarioServicio - Perfil actualizado exitosamente para usuario ID: 4
 2026-02-05 07:52:54.955 [http-nio-8080-exec-1] INFO  e.s.p.servicios.SuscripcionServicio - Usuario ID: 4 iniciando contratación/cambio de plan a: Pack Desplazamiento
 2026-02-05 07:52:54.989 [http-nio-8080-exec-1] INFO  e.s.p.servicios.SuscripcionServicio - Éxito: Nueva contratación completada para usuario ID: 4. Plan: Pack Desplazamiento
+2026-02-05 08:17:06.174 [main] INFO  e.s.proyecto.ProyectoAplicacion - Starting ProyectoAplicacion v0.0.1-SNAPSHOT using Java 25.0.1 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 08:17:06.192 [main] INFO  e.s.proyecto.ProyectoAplicacion - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 08:17:12.279 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-05 08:17:12.568 [main] WARN  org.hibernate.orm.deprecation - HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at edu.serviClick.proyecto.entidades.Suscripcion.fechaInicio.
+2026-02-05 08:17:14.626 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05 08:17:15.127 [main] INFO  e.s.proyecto.ProyectoAplicacion - Started ProyectoAplicacion in 10.153 seconds (process running for 12.391)
+2026-02-05 08:36:51.428 [main] INFO  e.s.proyecto.ProyectoAplicacion - Starting ProyectoAplicacion v0.0.1-SNAPSHOT using Java 25.0.1 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 08:36:51.441 [main] INFO  e.s.proyecto.ProyectoAplicacion - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 08:36:58.008 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-05 08:36:58.309 [main] WARN  org.hibernate.orm.deprecation - HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at edu.serviClick.proyecto.entidades.Suscripcion.fechaInicio.
+2026-02-05 08:37:00.183 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05 08:37:00.716 [main] INFO  e.s.proyecto.ProyectoAplicacion - Started ProyectoAplicacion in 10.706 seconds (process running for 12.777)
+2026-02-05 08:39:52.963 [http-nio-8080-exec-8] INFO  e.s.p.servicios.ServiciosService - Nuevo servicio publicado: 'asdasdasdasdasd' (ID: 4) por Usuario ID: 3
+2026-02-05 08:42:45.406 [main] INFO  e.s.proyecto.ProyectoAplicacion - Starting ProyectoAplicacion v0.0.1-SNAPSHOT using Java 25.0.1 with PID 1 (/app/app.jar started by root in /app)
+2026-02-05 08:42:45.420 [main] INFO  e.s.proyecto.ProyectoAplicacion - No active profile set, falling back to 1 default profile: "default"
+2026-02-05 08:42:51.335 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-05 08:42:51.622 [main] WARN  org.hibernate.orm.deprecation - HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at edu.serviClick.proyecto.entidades.Suscripcion.fechaInicio.
+2026-02-05 08:42:53.680 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05 08:42:54.169 [main] INFO  e.s.proyecto.ProyectoAplicacion - Started ProyectoAplicacion in 10.05 seconds (process running for 12.154)
