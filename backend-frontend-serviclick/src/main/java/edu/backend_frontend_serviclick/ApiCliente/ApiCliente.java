@@ -435,8 +435,24 @@ public class ApiCliente {
                     .toBodilessEntity()
                     .block();
         } catch (Exception e) {
-            System.out.println("Error eliminando usuario: " + e.getMessage());
         }
     }
 
+    /**
+     * Obtiene la factura en PDF de un usuario.
+     * @param usuarioId ID del usuario.
+     * @return Arreglo de bytes del PDF o null.
+     */
+    public byte[] obtenerFacturaPDF(Long usuarioId) {
+        try {
+            return webClient.get()
+                    .uri("/reportes/factura/" + usuarioId)
+                    .retrieve()
+                    .bodyToMono(byte[].class)
+                    .block();
+        } catch (Exception e) {
+            System.out.println("Error descargando factura: " + e.getMessage());
+            return null;
+        }
+    }
 }

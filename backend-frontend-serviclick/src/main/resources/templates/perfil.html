@@ -169,7 +169,7 @@
                     e Historial</h2>
                 <p style="color: #64748b; margin-bottom: 1rem;">Descarga un informe detallado con tus servicios
                     contratados y plan activo.</p>
-                <a th:href="@{'http://localhost:8080/api/reportes/factura/' + ${session.usuarioLogueado.id}}"
+                <a th:href="@{'/web/reportes/factura/' + ${session.usuarioLogueado.id}}"
                     target="_blank" class="btn-primary"
                     style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
                     <i class="fas fa-file-pdf"></i> Descargar Factura Completa

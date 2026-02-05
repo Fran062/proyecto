@@ -614,4 +614,35 @@ public class PortalControlador {
         redirectAttributes.addFlashAttribute("mensajeExitoAdmin", "Usuario eliminado correctamente.");
         return "redirect:/web/perfil?exitoBorrado=true";
     }
+
+    /**
+     * Descarga la factura en PDF de un usuario (Proxy a API).
+     */
+    @GetMapping("/web/reportes/factura/{usuarioId}")
+    public org.springframework.http.ResponseEntity<byte[]> descargarFactura(
+            @org.springframework.web.bind.annotation.PathVariable Long usuarioId,
+            jakarta.servlet.http.HttpSession session) {
+
+        Object usuarioLogueadoObj = session.getAttribute("usuarioLogueado");
+        if (usuarioLogueadoObj == null) {
+            return org.springframework.http.ResponseEntity.status(401).build();
+        }
+        edu.backend_frontend_serviclick.dto.UsuarioDTO u = (edu.backend_frontend_serviclick.dto.UsuarioDTO) usuarioLogueadoObj;
+
+        // Security check: Only allow downloading own invoice or Admin
+        if (!u.getId().equals(usuarioId) && !"ADMIN".equalsIgnoreCase(u.getRol())) {
+            return org.springframework.http.ResponseEntity.status(403).build();
+        }
+
+        byte[] pdfBytes = apiCliente.obtenerFacturaPDF(usuarioId);
+
+        if (pdfBytes != null) {
+            return org.springframework.http.ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=factura_" + usuarioId + ".pdf")
+                    .contentType(org.springframework.http.MediaType.APPLICATION_PDF)
+                    .body(pdfBytes);
+        } else {
+            return org.springframework.http.ResponseEntity.notFound().build();
+        }
+    }
 }
